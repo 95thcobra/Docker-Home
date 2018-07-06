@@ -10,14 +10,17 @@ help:
 	@echo "usage: make COMMAND"
 	@echo ""
 	@echo "Commands:"
-	@echo "  pull			           Get the latest GitHub repos"
-	@echo "  start			         Create and start containers"
-	@echo "  stop								 Stop all services"
-	@echo "  restart			       Restart containers"
-	@echo "  logs                Follow log output"
-	@echo "  import        Import all databases from the GitHub repos"
-	@echo "  dump          Create backup of all local databases"
-	@echo "  restore       Restore backup of all local databases"
+	@echo "  clone					Clone the GitHub repos"
+	@echo "  pull						Get the latest GitHub repo updates"
+	@echo "  start					Create and start containers"
+	@echo "  stop						Stop all services"
+	@echo "  restart				Restart containers"
+	@echo "  logs						Follow log output"
+	@echo "  import					Import all databases from the GitHub repos"
+	@echo "  dump						Create backup of all local databases"
+	@echo "  restore				Restore backup of all local databases"
+	@echo "  flush					Delete local GitHub repos"
+	@echo ""
 
 start: init
 	docker-compose up -d
@@ -25,22 +28,18 @@ start: init
 stop:
 	@docker-compose down -v
 
-restart:
+restart: init
 	@docker-compose down -v
 	docker-compose up -d
 
-pull:
-	@$(shell git clone https://github.com/Marwolf/Open-RSC-Website.git)
-	cd Open-RSC-Website
-	git pull
-	cd ..
+clone:
+	@$(shell git clone https://github.com/Marwolf/Open-RSC-Website.git && git clone https://github.com/Marwolf/Open-RSC)
 	@$(shell git clone https://github.com/Marwolf/Open-RSC)
-	cd Open-RSC
-	git pull
-	cd ..
+	@$(shell sudo chmod -R 777 Open-RSC-Website/board/cache/ && sudo chmod 644 Open-RSC-Website/board/config.php)
 
-gen-certs:
-	@docker run --rm -v $(shell pwd)/etc/ssl:/certificates -e "SERVER=$(NGINX_HOST)" jacoelho/generate-certificate
+pull:
+	@$(shell cd Open-RSC-Website && git pull && cd .. && cd Open-RSC && git pull && cd ..)
+	@$(shell sudo chmod -R 777 Open-RSC-Website/board/cache/ && sudo chmod 644 Open-RSC-Website/board/config.php)
 
 logs:
 	@docker-compose logs -f
@@ -59,7 +58,10 @@ import:
 	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc.sql 2>/dev/null
 	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC-Website/openrsc_forum.sql 2>/dev/null
 
+flush:
+	@$(shell rm -rf Open-RSC-Website && rm -rf Open-RSC)
+
 resetOwner:
-	@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" 2> /dev/null)
+		@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" 2> /dev/null)
 
 .PHONY: clean test code-sniff init
