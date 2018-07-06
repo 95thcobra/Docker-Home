@@ -30,54 +30,30 @@ On Ubuntu and Debian these are available in the meta-package build-essential. On
 sudo apt install build-essential
 ```
 
-This project use the following ports :
+This project uses the following ports :
 
-| Server     | Port |
-|------------|------|
-| MySQL      | 3306 |
-| PHPMyAdmin | 8080 |
-| Nginx      | 80   |
-
+| Server                 | Port  |
+|------------------------|-------|
+| MySQL database server  | 3306  |
+| PHPMyAdmin             | 8080  |
+| Nginx web server       | 80    |
+| Game server            | 53595 |
 ___
 
 ## Clone the project
 
-To install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), download it and install following the instructions :
+Install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), then clone the project:
 
 ```sh
-git clone https://github.com/nanoninja/docker-nginx-php-mysql.git
+git clone https://github.com/Marwolf/Open-RSC-Docker.git
 ```
 
 Go to the project directory :
 
 ```sh
-cd docker-nginx-php-mysql
+cd Open-RSC-Docker
 ```
 
-
-___
-
-## Configure Nginx With SSL Certificates
-
-You can change the host name by editing the `.env` file.
-
-If you modify the host name, do not forget to add it to the `/etc/hosts` file.
-
-1. Configure Nginx
-
-    Do not modify the `Website/etc/nginx/default.conf` file, it is overwritten by  `Website/etc/nginx/default.template.conf`
-
-    Edit nginx file `Website/etc/nginx/default.template.conf` and uncomment the SSL server section :
-
-    ```sh
-    # server {
-    #     server_name ${NGINX_HOST};
-    #
-    #     listen 443 ssl;
-    #     fastcgi_param HTTPS on;
-    #     ...
-    # }
-    ```
 
 ___
 
@@ -152,3 +128,28 @@ ___
 | backup        | Create backup of all local databases         |
 | restore       | Restore backup of all local databases        |
 | flush         | Delete local git repository folders          |
+
+___
+
+## Optional: configure Nginx With SSL Certificates
+
+You can change the host name by editing the `.env` file.
+
+If you modify the host name, do not forget to add it to the `/etc/hosts` file.
+
+1. Configure Nginx
+
+    Do not modify the `Website/etc/nginx/default.conf` file, it is overwritten by  `Website/etc/nginx/default.template.conf`
+
+    Edit nginx file `Website/etc/nginx/default.template.conf` and uncomment the SSL server section :
+
+    ```sh
+    # server {
+    #     server_name ${NGINX_HOST};
+    #
+    #     listen 443 ssl;
+    #     fastcgi_param HTTPS on;
+    #     ...
+    # }
+    ```
+2. Copy your server.pem and server.key files in to the `Website/etc/nginx/ssl` folder. ([Lets Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04) can register SSL certs for free)
