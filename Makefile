@@ -10,48 +10,34 @@ help:
 	@echo "usage: make COMMAND"
 	@echo ""
 	@echo "Commands:"
-	@echo "  apidoc              Generate documentation of API"
-	@echo "  code-sniff          Check the API with PHP Code Sniffer (PSR2)"
-	@echo "  clean               Clean directories for reset"
-	@echo "  composer-up         Update PHP dependencies with composer"
-	@echo "  docker-start        Create and start containers"
-	@echo "  docker-stop         Stop and clear all services"
-	@echo "  gen-certs           Generate SSL certificates"
+	@echo "  pull			           Get the latest GitHub repos"
+	@echo "  start			         Create and start containers"
+	@echo "  stop								 Stop all services"
+	@echo "  restart			       Restart containers"
 	@echo "  logs                Follow log output"
-	@echo "  mysql-dump          Create backup of all databases"
-	@echo "  mysql-restore       Restore backup of all databases"
-	@echo "  phpmd               Analyse the API with PHP Mess Detector"
-	@echo "  test                Test application"
+	@echo "  import        Import all databases from the GitHub repos"
+	@echo "  dump          Create backup of all local databases"
+	@echo "  restore       Restore backup of all local databases"
 
-init:
-	@$(shell cp -n $(shell pwd)/web/app/composer.json.dist $(shell pwd)/web/app/composer.json 2> /dev/null)
-
-apidoc:
-	@docker-compose exec -T php php -d memory_limit=256M -d xdebug.profiler_enable=0 ./app/vendor/bin/apigen generate app/src --destination app/doc
-	@make resetOwner
-
-clean:
-	@rm -Rf data/db/mysql/*
-	@rm -Rf $(MYSQL_DUMPS_DIR)/*
-	@rm -Rf web/app/vendor
-	@rm -Rf web/app/composer.lock
-	@rm -Rf web/app/doc
-	@rm -Rf web/app/report
-	@rm -Rf etc/ssl/*
-
-code-sniff:
-	@echo "Checking the standard code..."
-	@docker-compose exec -T php ./app/vendor/bin/phpcs -v --standard=PSR2 app/src
-
-composer-up:
-	@docker run --rm -v $(shell pwd)/web/app:/app composer update
-
-docker-start: init
+start: init
 	docker-compose up -d
 
-docker-stop:
+stop:
 	@docker-compose down -v
-	@make clean
+
+restart:
+	@docker-compose down -v
+	docker-compose up -d
+
+pull:
+	@$(shell git clone https://github.com/Marwolf/Open-RSC-Website.git)
+	cd Open-RSC-Website
+	git pull
+	cd ..
+	@$(shell git clone https://github.com/Marwolf/Open-RSC)
+	cd Open-RSC
+	git pull
+	cd ..
 
 gen-certs:
 	@docker run --rm -v $(shell pwd)/etc/ssl:/certificates -e "SERVER=$(NGINX_HOST)" jacoelho/generate-certificate
@@ -59,25 +45,21 @@ gen-certs:
 logs:
 	@docker-compose logs -f
 
-mysql-dump:
+dump:
 	@mkdir -p $(MYSQL_DUMPS_DIR)
 	@docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
 	@make resetOwner
 
-mysql-restore:
+restore:
 	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
 
-phpmd:
-	@docker-compose exec -T php \
-	./app/vendor/bin/phpmd \
-	./app/src \
-	text cleancode,codesize,controversial,design,naming,unusedcode
-
-test: code-sniff
-	@docker-compose exec -T php ./app/vendor/bin/phpunit --colors=always --configuration ./app/
-	@make resetOwner
+import:
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc_config.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc_logs.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC-Website/openrsc_forum.sql 2>/dev/null
 
 resetOwner:
-	@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" "$(shell pwd)/web/app" 2> /dev/null)
+	@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" 2> /dev/null)
 
 .PHONY: clean test code-sniff init
