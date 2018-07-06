@@ -59,10 +59,10 @@ ___
 
 ## Run the application
 
-1. Start the Docker application:
+1. Perform first time setup and start the Docker application:
 
     ```sh
-    sudo make start
+    sudo make first
     ```
 
     **Please wait this might take a several minutes...**
@@ -71,63 +71,64 @@ ___
     sudo make logs # Follow log output
     ```
 
-2. Clone the required git repositories:
-
-    ```sh
-    sudo make clone
-    ```
-
-3. Import the required databases:
-
-    ```sh
-    sudo make import
-    ```
-
-4. Open your favorite browser:
+2. Open your favorite browser:
 
     * [http://localhost](http://localhost/)
     * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: root, password: root)
 
-5. Backup your databases:
+3. Backup your databases:
 
     ```sh
     sudo make backup
     ```
 
-6. Restore your databases:
+4. Restore your databases:
 
     ```sh
     sudo make restore
     ```
 
-7. Get help:
+5. Get help:
 
     ```sh
     sudo make help
     ```
 
-8. Stop the application:
+6. Stop the application:
 
     ```sh
     sudo make stop
+    ```
+
+7. Start the application:
+
+    ```sh
+    sudo make start
+    ```
+
+8. Restart the application:
+
+    ```sh
+    sudo make restart
     ```
 
 ___
 
 ## Additional commands
 
-| Name          | Description                                  |
-|---------------|----------------------------------------------|
-| clone         | Clone the git repository folders             |
-| pull          | Get the latest git repository updates        |
-| start         | Create and start containers                  |
-| stop          | Stop all containers                          |
-| restart       | Restart all containers                       |
-| logs          | Display log output                           |
-| import        | Import all databases from git repositories   |
-| backup        | Create backup of all local databases         |
-| restore       | Restore backup of all local databases        |
-| flush         | Delete local git repository folders          |
+| Name          | Description                                   |
+|---------------|-----------------------------------------------|
+| first         | Perform first time setup and start containers |
+| clone         | Clone the git repository folders              |
+| pull          | Get the latest git repository updates         |
+| start         | Create and start containers                   |
+| stop          | Stop all containers                           |
+| restart       | Restart all containers                        |
+| logs          | Display log output                            |
+| import        | Import all databases from git repositories    |
+| backup        | Create backup of all local databases          |
+| restore       | Restore backup of all local databases         |
+| flush         | Delete local git repository folders           |
 
 ___
 
