@@ -12,13 +12,13 @@ ___
 
 This project has been created for `(Linux/MacOS)`.
 
-All requisites should be available for your distribution. The most important are :
+Requisites:
 
 * [Git](https://git-scm.com/downloads)
 * [Docker](https://docs.docker.com/engine/installation/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-Check if `docker-compose` is already installed by entering the following command :
+Check if `docker-compose` is already installed by entering the following command:
 
 ```sh
 which docker-compose
@@ -30,7 +30,7 @@ On Ubuntu and Debian these are available in the meta-package build-essential. On
 sudo apt install build-essential
 ```
 
-This project uses the following ports :
+This project uses the following ports:
 
 | Server                 | Port  |
 |------------------------|-------|
@@ -48,7 +48,7 @@ Install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), the
 git clone https://github.com/Marwolf/Open-RSC-Docker.git
 ```
 
-Go to the project directory :
+Go to the project directory:
 
 ```sh
 cd Open-RSC-Docker
@@ -59,7 +59,7 @@ ___
 
 ## Run the application
 
-1. Start the Docker application :
+1. Start the Docker application:
 
     ```sh
     sudo make start
@@ -83,7 +83,7 @@ ___
     sudo make import
     ```
 
-4. Open your favorite browser :
+4. Open your favorite browser:
 
     * [http://localhost](http://localhost/)
     * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: root, password: root)
@@ -137,7 +137,7 @@ You can change the host name by editing the `.env` file.
 
 If you modify the host name, do not forget to add it to the `/etc/hosts` file.
 
-1. Configure Nginx
+1. Configure Nginx:
 
     Do not modify the `Website/etc/nginx/default.conf` file, it is overwritten by  `Website/etc/nginx/default.template.conf`
 
@@ -152,4 +152,8 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     #     ...
     # }
     ```
-2. Copy your server.pem and server.key files in to the `Website/etc/nginx/ssl` folder. ([Lets Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04) can register SSL certs for free)
+2. Copy your server.pem and server.key files in to the `Website/etc/nginx/ssl` folder and restart the application. ([Lets Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04) can register SSL certs for free)
+
+    ```sh
+    sudo make restart
+    ```
