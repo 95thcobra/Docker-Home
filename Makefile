@@ -33,13 +33,12 @@ restart: init
 	docker-compose up -d
 
 clone:
-	@$(shell git clone https://github.com/Marwolf/Open-RSC-Website.git && git clone https://github.com/Marwolf/Open-RSC)
+	@$(shell git clone https://github.com/Marwolf/Open-RSC-Website.git)
 	@$(shell git clone https://github.com/Marwolf/Open-RSC)
 	@$(shell sudo chmod -R 777 Open-RSC-Website/board/cache/ && sudo chmod 644 Open-RSC-Website/board/config.php)
 
 pull:
 	@$(shell cd Open-RSC-Website && git pull && cd .. && cd Open-RSC && git pull && cd ..)
-	@$(shell sudo chmod -R 777 Open-RSC-Website/board/cache/ && sudo chmod 644 Open-RSC-Website/board/config.php)
 
 logs:
 	@docker-compose logs -f
