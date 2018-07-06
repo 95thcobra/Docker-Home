@@ -3,23 +3,23 @@
 include .env
 
 # MySQL
-MYSQL_DUMPS_DIR=data/db/dumps
+MYSQL_DUMPS_DIR=data/db
 
 help:
 	@echo ""
 	@echo "usage: make COMMAND"
 	@echo ""
 	@echo "Commands:"
-	@echo "  clone					Clone the GitHub repos"
-	@echo "  pull						Get the latest GitHub repo updates"
+	@echo "  clone					Clone the git repository folders"
+	@echo "  pull						Get the latest git repository updates"
 	@echo "  start					Create and start containers"
-	@echo "  stop						Stop all services"
-	@echo "  restart				Restart containers"
-	@echo "  logs						Follow log output"
-	@echo "  import					Import all databases from the GitHub repos"
-	@echo "  dump						Create backup of all local databases"
+	@echo "  stop						Stop all containers"
+	@echo "  restart				Restart all containers"
+	@echo "  logs						Display log output"
+	@echo "  import					Import all databases from git repositories"
+	@echo "  backup					Create backup of all local databases"
 	@echo "  restore				Restore backup of all local databases"
-	@echo "  flush					Delete local GitHub repos"
+	@echo "  flush					Delete local git repository folders"
 	@echo ""
 
 start: init
@@ -33,34 +33,32 @@ restart: init
 	docker-compose up -d
 
 clone:
-	@$(shell git clone https://github.com/Marwolf/Open-RSC-Website.git)
-	@$(shell git clone https://github.com/Marwolf/Open-RSC)
-	@$(shell sudo chmod -R 777 Open-RSC-Website/board/cache/ && sudo chmod 644 Open-RSC-Website/board/config.php)
+	@$(shell cd Website && git clone https://github.com/Marwolf/Open-RSC-Website.git)
+	@$(shell cd Game && git clone https://github.com/Marwolf/Open-RSC-Game.git)
+	@$(shell sudo chmod -R 777 Website/Open-RSC-Website && sudo chmod -R 777 Game/Open-RSC-Game && sudo chmod 644 Website/Open-RSC-Website/board/config.php)
 
 pull:
-	@$(shell cd Open-RSC-Website && git pull && cd .. && cd Open-RSC && git pull && cd ..)
+	@$(shell cd Website/Open-RSC-Website && git pull)
+	@$(shell cd Game/Open-RSC-Game && git pull)
 
 logs:
 	@docker-compose logs -f
 
-dump:
+backup:
 	@mkdir -p $(MYSQL_DUMPS_DIR)
-	@docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
+	@docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" > Website/$(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
 	@make resetOwner
 
 restore:
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/$(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
 
 import:
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc_config.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc_logs.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC/Databases/openrsc.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Open-RSC-Website/openrsc_forum.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Open-RSC-Game/Databases/openrsc_config.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Open-RSC-Game/Databases/openrsc_logs.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Open-RSC-Game/Databases/openrsc.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Open-RSC-Website/openrsc_forum.sql 2>/dev/null
 
 flush:
-	@$(shell rm -rf Open-RSC-Website && rm -rf Open-RSC)
-
-resetOwner:
-		@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" 2> /dev/null)
+	@$(shell rm -rf Website/Open-RSC-Website && rm -rf Game/Open-RSC-Game)
 
 .PHONY: clean test code-sniff init

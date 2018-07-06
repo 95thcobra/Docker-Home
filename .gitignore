@@ -3,19 +3,13 @@
 .DS_Store
 
 # Website
-Open-RSC-Website
+Website/Open-RSC-Website
 
 # Game
-Open-RSC
-
-# Netbeans
-nbproject/
-/nbproject/
-/nbproject/private/
-/nbproject/private/private.properties
-
-# SSL Certs
-etc/ssl/
+Game/
 
 # Database
-data
+Website/data
+
+# SSL Certs
+Website/etc/ssl/
