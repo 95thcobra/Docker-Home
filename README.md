@@ -37,7 +37,7 @@ This project uses the following ports:
 | MySQL database server  | 3306  |
 | PHPMyAdmin             | 8080  |
 | Nginx web server       | 80    |
-| Game server            | 53595 |
+
 ___
 
 ## Clone the project
@@ -59,29 +59,13 @@ ___
 
 ## Run the application
 
-1. Start the Docker application:
+1. Perform first time setup and start the Docker application:
 
     ```sh
-    sudo make start
+    ./first-time-setup.sh
     ```
 
     **Please wait this might take a several minutes...**
-
-    ```sh
-    sudo make logs # Follow log output
-    ```
-
-2. Clone the git repository:
-
-    ```sh
-    sudo make clone
-    ```
-
-3. Import the databases:
-
-    ```sh
-    sudo make import
-    ```
 
 2. Open your favorite browser:
 
@@ -91,13 +75,13 @@ ___
 3. Backup your databases:
 
     ```sh
-    sudo make backup
+    ./backup-database.sh
     ```
 
 4. Restore your databases:
 
     ```sh
-    sudo make restore
+    ./restore-database.sh
     ```
 
 5. Get help:
@@ -109,24 +93,24 @@ ___
 6. Stop the application:
 
     ```sh
-    sudo make stop
+    ./stop.sh
     ```
 
 7. Start the application:
 
     ```sh
-    sudo make start
+    ./start.sh
     ```
 
 8. Restart the application:
 
     ```sh
-    sudo make restart
+    ./restart.sh
     ```
 
 ___
 
-## Additional commands
+## Additional commands for troubleshooting use
 
 | Name          | Description                                   |
 |---------------|-----------------------------------------------|
