@@ -10,7 +10,7 @@ help:
 	@echo "usage: make COMMAND"
 	@echo ""
 	@echo "Commands:"
-	@echo "  first					Perform first time setup and start containers"
+	@echo "  first					Perform first time setup"
 	@echo "  clone					Clone the git repository folders"
 	@echo "  pull						Get the latest git repository updates"
 	@echo "  start					Create and start containers"
@@ -22,18 +22,6 @@ help:
 	@echo "  restore				Restore backup of all local databases"
 	@echo "  flush					Delete local git repository folders"
 	@echo ""
-
-first: init
-	docker-compose up -d
-	@$(shell cd Website && git clone https://github.com/Marwolf/Open-RSC-Website.git)
-	@$(shell mkdir Game && cd Game && git clone https://github.com/Marwolf/Open-RSC-Game.git)
-	@$(shell sudo chmod -R 777 Website/Open-RSC-Website && sudo chmod -R 777 Game/Open-RSC-Game && sudo chmod 644 Website/Open-RSC-Website/board/config.php)
-	@$(shell cd Website/Open-RSC-Website && git pull)
-	@$(shell cd Game/Open-RSC-Game && git pull)
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Open-RSC-Game/Databases/openrsc_config.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Open-RSC-Game/Databases/openrsc_logs.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Open-RSC-Game/Databases/openrsc.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Open-RSC-Website/openrsc_forum.sql 2>/dev/null
 
 start: init
 	docker-compose up -d

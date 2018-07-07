@@ -59,16 +59,28 @@ ___
 
 ## Run the application
 
-1. Perform first time setup and start the Docker application:
+1. Start the Docker application:
 
     ```sh
-    sudo make first
+    sudo make start
     ```
 
     **Please wait this might take a several minutes...**
 
     ```sh
     sudo make logs # Follow log output
+    ```
+
+2. Clone the git repository:
+
+    ```sh
+    sudo make clone
+    ```
+
+3. Import the databases:
+
+    ```sh
+    sudo make import
     ```
 
 2. Open your favorite browser:
@@ -118,7 +130,7 @@ ___
 
 | Name          | Description                                   |
 |---------------|-----------------------------------------------|
-| first         | Perform first time setup and start containers |
+| first         | Perform first time setup                      |
 | clone         | Clone the git repository folders              |
 | pull          | Get the latest git repository updates         |
 | start         | Create and start containers                   |
