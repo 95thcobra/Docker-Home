@@ -10,25 +10,12 @@ ___
 
 ## Install prerequisites
 
-This project has been created for `(Linux/MacOS)`.
+This project has been created for `(Windows, Linux, and OS X)`.
 
 Requisites:
 
 * [Git](https://git-scm.com/downloads)
 * [Docker](https://docs.docker.com/engine/installation/)
-* [Docker Compose](https://docs.docker.com/compose/install/)
-
-Check if `docker-compose` is already installed by entering the following command:
-
-```sh
-which docker-compose
-```
-
-On Ubuntu and Debian these are available in the meta-package build-essential. On other distributions, you may need to install the GNU C++ compiler separately.
-
-```sh
-sudo apt install build-essential
-```
 
 This project uses the following ports:
 
@@ -54,6 +41,13 @@ Go to the project directory:
 cd Open-RSC-Docker
 ```
 
+___
+
+## Important!
+
+If you are using Windows, open Docker and make your drives available to your Docker containers:
+
+![Shared drives setting](https://i.imgur.com/6YsGkoZ.png)
 
 ___
 
@@ -62,7 +56,11 @@ ___
 1. Perform first time setup and start the Docker application:
 
     ```sh
-    ./first-time-setup.sh
+    OS X/Linux: ./first-time-setup.sh
+    ```
+
+    ```sh
+    Windows: "First time setup.cmd"
     ```
 
     **Please wait this might take a several minutes...**
@@ -75,38 +73,72 @@ ___
 3. Backup your databases:
 
     ```sh
-    ./backup-database.sh
+    OS X/Linux: ./backup-database.sh
+    ```
+
+    ```sh
+    Windows: "Backup Databases.cmd"
     ```
 
 4. Restore your databases:
 
     ```sh
-    ./restore-database.sh
+    OS X/Linux: ./restore-database.sh
     ```
-
-5. Get help:
 
     ```sh
-    sudo make help
+    Windows: "Restore Databases.cmd"
     ```
 
-6. Stop the application:
+5. Stop the application:
 
     ```sh
-    ./stop.sh
+    OS X/Linux: ./stop.sh
     ```
-
-7. Start the application:
 
     ```sh
-    ./start.sh
+    Windows: "Stop Containers.cmd"
     ```
 
-8. Restart the application:
+6. Start the application:
+
+    ```sh
+    OS X/Linux: ./start.sh
+    ```
+
+    ```sh
+    Windows: "Start Containers.cmd"
+    ```
+
+7. Restart the application:
 
     ```sh
     ./restart.sh
     ```
+
+    ```sh
+    Windows: "Restart Containers.cmd"
+    ```
+
+8. View container logs:
+
+```sh
+./view-logs.sh
+```
+
+```sh
+Windows: "View Container Logs.cmd"
+```
+
+9. Pull repository updates:
+
+```sh
+./pull-updates.sh
+```
+
+```sh
+Windows: "Pull Repository Updates.cmd"
+```
 
 ___
 
