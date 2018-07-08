@@ -17,6 +17,10 @@ Requisites:
 * [Git](https://git-scm.com/downloads)
 * [Docker](https://docs.docker.com/engine/installation/)
 
+[Guide for installing Docker on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
+
+___
+
 This project uses the following ports:
 
 | Server                 | Port  |
@@ -31,15 +35,15 @@ ___
 
 Install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), then clone the project:
 
-```sh
-git clone https://github.com/Marwolf/Open-RSC-Docker.git
-```
+  ```sh
+  git clone https://github.com/Marwolf/Open-RSC-Docker.git
+  ```
 
 Go to the project directory:
 
-```sh
-cd Open-RSC-Docker
-```
+  ```sh
+  cd Open-RSC-Docker
+  ```
 
 ___
 
@@ -48,6 +52,12 @@ ___
 If you are using Windows, open Docker and make your drives available to your Docker containers:
 
 ![Shared drives setting](https://i.imgur.com/6YsGkoZ.png)
+
+If you are using Linux (suggested to be Ubuntu 18.04 or above), install the build essentials AND docker-compose so that the make command works:
+
+    ```sh
+    sudo apt install build-essential docker-compose
+    ```
 
 ___
 
