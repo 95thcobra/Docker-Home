@@ -25,5 +25,11 @@ timeout 5
 Windows\make import-windows
 
 cls
+echo Extracting client cache
+echo:
+mkdir %userprofile%/OpenRSC
+Windows/PKUNZIP.EXE Game/Open-RSC-Game/client/cache.zip %userprofile%/OpenRSC
+
+cls
 echo First time setup is now complete. Visit http://localhost in your browser to verify.
 pause
