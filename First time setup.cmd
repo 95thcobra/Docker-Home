@@ -18,14 +18,19 @@ echo:
 Windows\make start
 
 cls
-echo Downloading a copy of the Open-RSC Website repository
+echo Downloading a copy of the Website repository
 echo:
 Windows\make clone-windows-website
 
 cls
-echo Downloading a copy of the Open-RSC Game repository
+echo Downloading a copy of the Game repository
 echo:
 Windows\make clone-windows-game
+
+cls
+echo Downloading a copy of the Wiki repository
+echo:
+Windows\make clone-windows-wiki
 
 cls
 echo Importing the databases.
