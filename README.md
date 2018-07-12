@@ -16,6 +16,7 @@ Requisites:
 
 * [Git](https://git-scm.com/downloads)
 * [Docker](https://docs.docker.com/engine/installation/)
+* [A DockerHub Account](https://hub.docker.com/) 
 
 [Guide for installing Docker on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
 

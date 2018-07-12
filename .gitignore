@@ -3,13 +3,13 @@
 .DS_Store
 
 # Website
-Website/Open-RSC-Website
+Website
 
 # Game
-Game/
+Game
 
 # Database
-Website/data
+data
 
 # SSL Certs
-Website/etc/ssl/
+etc/ssl/

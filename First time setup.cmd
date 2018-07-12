@@ -1,35 +1,44 @@
-@echo off
+
+@echo off
+
+cls
+git pull
+
 cls
 docker login
+
 cls
 echo Attempting to stop any running Docker containers.
 echo:
 Windows\make stop
+
 cls
 echo Starting Docker containers and downloading what is needed. This may take a while the first time.
 echo:
 Windows\make start
 
 cls
-echo Downloading a copy of the Open-RSC-Website repository
+echo Downloading a copy of the Open-RSC Website repository
 echo:
 Windows\make clone-windows-website
+
 cls
-echo Downloading a copy of the Open-RSC-Game repository
+echo Downloading a copy of the Open-RSC Game repository
 echo:
 Windows\make clone-windows-game
+
 cls
-echo Waiting for 5 seconds to give the MySQL server time to start before importing the databases.
+echo Importing the databases.
 echo:
-timeout 5
 Windows\make import-windows
+
 
 cls
 echo Extracting client cache
 echo:
-mkdir %userprofile%/OpenRSC
-Windows/PKUNZIP.EXE Game/Open-RSC-Game/client/cache.zip %userprofile%/OpenRSC
+md "%HOMEPATH%/OpenRSC"
+"Windows/7z.exe" x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r
 
 cls
-echo First time setup is now complete. Visit http://localhost in your browser to verify.
+echo First time setup is now complete. Go ahead and open "Start Game.cmd" now.
 pause
