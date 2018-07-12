@@ -1,24 +1,24 @@
-# Open-RSC Docker Home
-An easy to run RSC private server environment
+# Open RSC Docker Home
+An easy to run RSC private server environment using Docker.
 
 ___
 
 ## Install prerequisites
 
-This project has been made to work in `(Windows, Ubuntu Linux, and macOS)`.
+This is compatible with `(Windows, Ubuntu Linux, and macOS)`.
 
 Prerequisites:
 
 * [Git](https://git-scm.com/downloads)
 * [Docker](https://docs.docker.com/engine/installation/)
 
-If your running Ubuntu 18.04, execute this script and skip the rest of this section:
+If your running Ubuntu 18.04, execute the following script and skip the rest of this section:
 
   ```sh
   ./install-docker-linux.sh
   ```
 
-To manually set up the prerequisites in Ubuntu 18.04 (bionic) Linux (modify as needed):
+To manually set up the prerequisites in Ubuntu 18.04 (bionic) Linux (modify where it reads "bionic" below as needed for your Ubuntu distro):
 
   ```sh
   sudo apt update && install build-essential apt-transport-https ca-certificates curl software-properties-common -y
@@ -28,7 +28,7 @@ To manually set up the prerequisites in Ubuntu 18.04 (bionic) Linux (modify as n
   ```
 ___
 
-## Choice 1 (easy): Download the project zip, extract it, and open the "Single-Player" folder
+## Choice 1 (easy): Download the project zip, extract it, and open the "Docker-Home" folder
 
 https://github.com/Open-RSC/Docker-Home/archive/master.zip
 
