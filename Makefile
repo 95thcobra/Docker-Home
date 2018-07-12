@@ -14,7 +14,7 @@ restart: init
 clone:
 	@$(shell git clone https://github.com/Open-RSC/Website.git)
 	@$(shell git clone https://github.com/Open-RSC/Game.git)
-	@$(shell git clone https://github.com/Open-RSC/Wiki.git)
+	@$(shell cd Website && git clone https://github.com/Open-RSC/Wiki.git)
 	#@$(shell sudo chmod -R 777 Website && sudo chmod -R 777 Game && sudo chmod 644 Website/board/config.php)
 
 clone-windows-website:
@@ -26,17 +26,17 @@ clone-windows-game:
 	#icacls Game /grant Everyone:F /t
 
 clone-windows-wiki:
-	@git clone https://github.com/Open-RSC/Wiki.git
+	@git clone https://github.com/Open-RSC/Wiki.git Website/Wiki
 
 pull:
 	@$(shell cd Website && git pull)
 	@$(shell cd Game && git pull)
-	@$(shell cd Wiki && git pull)
+	@$(shell cd Website/Wiki && git pull)
 
 pull-windows:
 	@cd Website && git pull
 	@cd Game && git pull
-	@cd Wiki && git pull
+	@cd Website/Wiki && git pull
 
 logs:
 	@docker-compose logs -f
@@ -60,21 +60,20 @@ import:
 	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_logs.sql 2>/dev/null
 	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc.sql 2>/dev/null
 	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/openrsc_forum.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Wiki/openrsc_wiki.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql 2>/dev/null
 
 import-windows:
 	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_logs.sql
 	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_config.sql
 	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc.sql
 	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/openrsc_forum.sql
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Wiki/openrsc_wiki.sql
+	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql
 
 flush:
-	@$(shell rm -rf Website && rm -rf Game && rm -rf Wiki)
+	@$(shell rm -rf Website && rm -rf Game)
 
 flush-windows:
 	@rmdir "Website" /s /Q
 	@rmdir "Game" /s /Q
-	@rmdir "Wiki" /s /Q
 
 .PHONY: clean test code-sniff init
