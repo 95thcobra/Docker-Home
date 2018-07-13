@@ -1,4 +1,3 @@
-#!/bin/sh
 clear
 choice=""
 RED=`tput setaf 1`
