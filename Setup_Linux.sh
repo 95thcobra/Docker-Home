@@ -83,7 +83,17 @@ if [ "$install" == "1" ]; then
         if [ "$brew" == "1" ]; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             brew install git
+            echo ""
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
         else
+            echo ""
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
             continue
         fi
     elif [ "$os" == "4" ]; then
@@ -91,23 +101,14 @@ if [ "$install" == "1" ]; then
         echo "You will have to install Git manually then. Press enter to continue."
         echo ""
         read
-
         echo ""
         echo "Attempting to install Docker now"
         echo ""
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
-        sudo apt install docker-compose
     else
         continue
     fi
-
-    echo ""
-    echo "Attempting to install Docker now"
-    echo ""
-    curl -fsSL get.docker.com -o get-docker.sh
-    sudo sh get-docker.sh
-    sudo apt install docker-compose
 else
     continue
 fi
