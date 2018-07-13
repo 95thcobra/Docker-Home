@@ -58,6 +58,7 @@ if [ "$install" == "1" ]; then
     echo "Attempting to install Docker now"
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
+        sudo apt install docker-compose
     else
         continue
     fi
