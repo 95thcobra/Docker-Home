@@ -28,9 +28,49 @@ if [ "$install" == "1" ]; then
     read os
 
     if [ "$os" == "1" ]; then
-        sudo apt-get update && sudo apt-get install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+
+        echo ""
+        echo "Which Ubuntu version are you running?"
+        echo ""
+        echo "${RED}1${NC} - 16.04"
+        echo "${RED}2${NC} - 16.10"
+        echo "${RED}3${NC} - 17.04"
+        echo "${RED}4${NC} - 17.10"
+        echo "${RED}5${NC} - 18.04"
+        echo "${RED}5${NC} - 18.10"
+        echo ""
+        read ubuntu
+
+        if [ "$ubuntu" == "1" ]; then
+            vers="xenial"
+        elif [ "$ubuntu" == "2" ]; then
+            vers="yakkety"
+        elif [ "$ubuntu" == "3" ]; then
+            vers="zesty"
+        elif [ "$ubuntu" == "4" ]; then
+            vers="artful"
+        elif [ "$ubuntu" == "5" ]; then
+            vers="bionic"
+        elif [ "$ubuntu" == "6" ]; then
+            vers="cosmic"
+        else
+            vers="bionic"
+            continue
+        fi
+
+        echo "Attempting to install Docker now"
+        echo ""
+        sudo apt update && install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
+        sudo apt update && install docker-ce docker-compose -y
     elif [ "$os" == "2" ]; then
         su -c 'yum update && yum install git'
+        echo ""
+        echo "Attempting to install Docker now"
+        echo ""
+        curl -fsSL get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
     elif [ "$os" == "3" ]; then
         clear
         echo "Do you have brew installed?"
@@ -44,6 +84,12 @@ if [ "$install" == "1" ]; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             brew install git
         else
+            echo ""
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+            sudo apt install docker-compose
             continue
         fi
     elif [ "$os" == "4" ]; then
@@ -51,17 +97,26 @@ if [ "$install" == "1" ]; then
         echo "You will have to install Git manually then. Press enter to continue."
         echo ""
         read
-    else
-        continue
-    fi
 
-    echo "Attempting to install Docker now"
+        echo ""
+        echo "Attempting to install Docker now"
+        echo ""
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
         sudo apt install docker-compose
     else
         continue
     fi
+
+    echo ""
+    echo "Attempting to install Docker now"
+    echo ""
+    curl -fsSL get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    sudo apt install docker-compose
+else
+    continue
+fi
 
 clear
 echo "Checking the Docker Home git repo for any recent updates."
