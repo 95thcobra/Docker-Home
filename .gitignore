@@ -16,3 +16,5 @@ data
 
 # SSL Certs
 etc/ssl/
+
+get-docker\.sh
