@@ -11,10 +11,14 @@ restart: init
 	@docker-compose down -v
 	docker-compose up -d
 
-clone-game-website:
+clone-game:
 	@$(shell git clone https://github.com/Open-RSC/Website.git)
 	@$(shell git clone https://github.com/Open-RSC/Game.git)
-	#@$(shell sudo chmod -R 777 Website && sudo chmod -R 777 Game && sudo chmod 644 Website/board/config.php)
+	#@$(&& sudo chmod -R 777 Game)
+
+clone-website:
+	@$(shell git clone https://github.com/Open-RSC/Website.git)
+	#@$(shell sudo chmod -R 777 Website && sudo chmod 644 Website/board/config.php)
 
 clone-wiki:
 	@$(shell cd Website && git clone https://github.com/Open-RSC/Wiki.git)
@@ -30,14 +34,22 @@ clone-windows-game:
 clone-windows-wiki:
 	@git clone https://github.com/Open-RSC/Wiki.git Website/Wiki
 
-pull:
-	@$(shell cd Website && git pull)
+pull-game:
 	@$(shell cd Game && git pull)
+
+pull-website:
+		@$(shell cd Website && git pull)
+
+pull-wiki:
 	@$(shell cd Website/Wiki && git pull)
 
-pull-windows:
-	@cd Website && git pull
+pull-game-windows:
 	@cd Game && git pull
+
+pull-website-windows:
+	@cd Website && git pull
+
+pull-wiki-windows:
 	@cd Website/Wiki && git pull
 
 logs:

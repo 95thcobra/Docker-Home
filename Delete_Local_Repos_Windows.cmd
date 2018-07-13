@@ -1,5 +1,8 @@
 @echo off
+echo:
 Windows\make flush-windows
-cls
+echo:
+echo:
 echo Local repositories have been deleted.
+echo:
 pause

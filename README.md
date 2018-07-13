@@ -1,49 +1,24 @@
 # Open RSC Docker Home
-An easy to run RSC private server environment using Docker.
+An easy to run RSC private server environment using Docker that works in Windows, Mac, and Linux.
+
+Choices:
+
+  1. Single player RSC game + basic database editing (PHPMyAdmin)
+  2. Game + Website + PHPMyAdmin
+  3. Game + Website + PHPMyAdmin + RSC Preservation Wiki
 
 ___
 
-## Install prerequisites
-
-This is compatible with `(Windows, Ubuntu Linux, and macOS)`.
-
-Prerequisites:
-
-* [Git](https://git-scm.com/downloads)
-* [Docker](https://docs.docker.com/engine/installation/)
-
-If your running Ubuntu 18.04, execute the following script and skip the rest of this section:
-
-  ```sh
-  ./install-docker-linux.sh
-  ```
-
-To manually set up the prerequisites in Ubuntu 18.04 (bionic) Linux (modify where it reads "bionic" below as needed for your Ubuntu distro):
-
-  ```sh
-  sudo apt update && install build-essential apt-transport-https ca-certificates curl software-properties-common -y
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-  sudo apt update && install docker-ce docker-compose -y
-  ```
-___
-
-## Choice 1 (easy): Download the project zip, extract it, and open the "Docker-Home" folder
+## Choice 1: Download the zip, extract it, and open the "Docker-Home" folder
 
 https://github.com/Open-RSC/Docker-Home/archive/master.zip
 
-## Choice 2 (advanced): Clone the project with git
+## Choice 2: Clone the project with git
 
 Install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), then clone the project:
 
   ```sh
   git clone https://github.com/Open-RSC/Docker-Home.git
-  ```
-
-Go to the project directory:
-
-  ```sh
-  cd Docker-Home
   ```
 
 ___
@@ -58,72 +33,69 @@ ___
 
 ## Run the scripts
 
-1. Perform first time setup and start the Docker application:
+1. Perform the first time setup:
 
     ```sh
-    macOS/Ubuntu: ./first-time-setup-linux.sh
+    macOS/Ubuntu: ./Setup_Linux.sh
     ```
 
     ```sh
-    Windows: "First Time Setup.cmd"
+    Windows: "Setup_Windows.cmd"
     ```
-
-    **Please wait this might take a several minutes...**
 
 2. Open your favorite browser:
 
-    * [http://localhost](http://localhost/)
+    * [http://localhost](http://localhost/) (username: Marwolf, password: malware)
     * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: root, password: root)
-
+    * [http://localhost/wiki](http://localhost/wiki) (username: Marwolf, password: openrscpassword)
 
 3. Start the game's Docker containers, then run the game server and client:
 
     ```sh
-    macOS/Ubuntu: ./start-game-linux.sh
+    macOS/Ubuntu: ./Start_Single_Player_Game_Linux.sh
     ```
 
     ```sh
-    Windows: "Start Game.cmd"
+    Windows: "Start_Single_Player_Game_Windows.cmd"
     ```
 
 4. Backup game databases:
 
     ```sh
-    macOS/Ubuntu: ./backup-game-databases-linux.sh
+    macOS/Ubuntu: ./Backup_Game_Databases_Linux.sh
     ```
 
     ```sh
-    Windows: "Backup Game Databases.cmd"
+    Windows: "Backup_Game_Databases_Windows.cmd"
     ```
 
 5. Restore game databases:
 
     ```sh
-    macOS/Ubuntu: ./restore-game-databases-linux.sh
+    macOS/Ubuntu: ./Restore_Game_Database_Backup_Linux.sh
     ```
 
     ```sh
-    Windows: "Restore Game Databases.cmd"
+    Windows: "Restore_Game_Database_Backup_Windows.cmd"
     ```
-
-6. Stop the game's Docker containers and shut down the game server:
+6. View the game's Docker container logs:
 
     ```sh
-    macOS/Ubuntu: ./stop-game-linux.sh
-    ```
-
-    ```sh
-    Windows: "Stop Game.cmd"
-    ```
-
-7. View the game's Docker container logs:
-
-    ```sh
-    ./view-docker-container-logs-linux.sh
+    ./View_Docker_Container_Logs_Linux.sh
     ```
 
     ```sh
-    Windows: "View Docker Container Logs.cmd"
+    Windows: "View_Docker_Container_Logs_Windows.cmd"
+    ```
+
+7. Stop the game's Docker containers and shut down the game server:
+
+    ```sh
+    macOS/Ubuntu: ./Stop-Game-Linux.sh
+    ```
+
+    ```sh
+    Windows: "Stop_Game_Windows.cmd"
     ```
 
 ___
