@@ -37,7 +37,7 @@ if [ "$install" == "1" ]; then
         echo "${RED}3${NC} - 17.04"
         echo "${RED}4${NC} - 17.10"
         echo "${RED}5${NC} - 18.04"
-        echo "${RED}5${NC} - 18.10"
+        echo "${RED}6${NC} - 18.10"
         echo ""
         read ubuntu
 
