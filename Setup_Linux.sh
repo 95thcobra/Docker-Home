@@ -8,7 +8,7 @@ NC=`tput sgr0` # No Color
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server environment using Docker magic.
 
-Before continuing, Open RSC needs to know if you have Docker and git installed.
+Before continuing, Open RSC needs to know if you have Docker, and Git installed.
 This installer can install one or both for you if needed.
 
 Choices:
@@ -29,10 +29,9 @@ if [ "$install" == "1" ]; then
     read os
 
     if [ "$os" == "1" ]; then
-        sudo apt-get install git -y
-        #build-essential apt-transport-https ca-certificates curl software-properties-common
+        sudo apt-get update && sudo apt-get install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
     elif [ "$os" == "2" ]; then
-        su -c 'yum install git'
+        su -c 'yum update && yum install git'
     elif [ "$os" == "3" ]; then
         clear
         echo "Do you have brew installed?"
@@ -50,13 +49,12 @@ if [ "$install" == "1" ]; then
         fi
     elif [ "$os" == "4" ]; then
         echo ""
-        echo "You will have to install git manually then. Press enter to continue."
+        echo "You will have to install Git manually then. Press enter to continue."
         echo ""
         read
     else
         continue
     fi
-
 
     echo "Attempting to install Docker now"
         curl -fsSL get.docker.com -o get-docker.sh
