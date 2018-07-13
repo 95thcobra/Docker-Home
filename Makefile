@@ -14,8 +14,10 @@ restart: init
 clone-game-website:
 	@$(shell git clone https://github.com/Open-RSC/Website.git)
 	@$(shell git clone https://github.com/Open-RSC/Game.git)
-	@$(shell cd Website && git clone https://github.com/Open-RSC/Wiki.git)
 	#@$(shell sudo chmod -R 777 Website && sudo chmod -R 777 Game && sudo chmod 644 Website/board/config.php)
+
+clone-wiki:
+	@$(shell cd Website && git clone https://github.com/Open-RSC/Wiki.git)
 
 clone-windows-website:
 	@git clone https://github.com/Open-RSC/Website.git
