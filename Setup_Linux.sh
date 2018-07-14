@@ -7,7 +7,7 @@ NC=`tput sgr0` # No Color
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server environment using Docker magic.
 
-Before continuing, Open RSC needs to know if you have Docker, and Git installed.
+Before continuing, Open RSC needs to know if you have Java, Docker, and Git installed.
 This installer can install one or both for you if needed.
 
 Choices:
@@ -15,7 +15,6 @@ Choices:
   ${RED}2${NC} - I'm all set, continue! (default)"
 echo ""
 read install
-
 if [ "$install" == "1" ]; then
     clear
     echo "Which operating system are you running?"
@@ -26,7 +25,6 @@ if [ "$install" == "1" ]; then
     echo "${RED}4${NC} - Other"
     echo ""
     read os
-
     if [ "$os" == "1" ]; then
 
         echo ""
@@ -40,7 +38,6 @@ if [ "$install" == "1" ]; then
         echo "${RED}6${NC} - 18.10"
         echo ""
         read ubuntu
-
         if [ "$ubuntu" == "1" ]; then
             vers="xenial"
         elif [ "$ubuntu" == "2" ]; then
@@ -57,18 +54,44 @@ if [ "$install" == "1" ]; then
             vers="bionic"
             continue
         fi
-
         echo "Attempting to install Docker now"
         echo ""
         sudo apt update && sudo apt install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
         sudo apt update && sudo apt install docker-ce docker-compose -y
+        echo ""
+        echo ""
+        echo "Do you have Java installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - I'm all set"
+        echo ""
+        read java
+        if [ "$java" == "1" ]; then
+            sudo apt update && sudo apt install default-jdk ant
+        else
+          continue
+        fi
     elif [ "$os" == "2" ]; then
         su -c 'yum update && yum install git'
         echo ""
-        echo "Attempting to install Docker now"
         echo ""
+        echo "Do you have Java installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - I'm all set"
+        echo ""
+        read java
+        if [ "$java" == "1" ]; then
+            su -c "yum install alternatives"
+            su -c "/usr/sbin/alternatives --config java"
+        else
+          continue
+        fi
+        echo ""
+        echo ""
+        echo "Attempting to install Docker now"
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
     elif [ "$os" == "3" ]; then
@@ -79,16 +102,45 @@ if [ "$install" == "1" ]; then
         echo "${RED}2${NC} - Yes"
         echo ""
         read brew
-
         if [ "$brew" == "1" ]; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             brew install git
+            echo ""
+            echo ""
+            echo "Do you have Java installed already?"
+            echo ""
+            echo "${RED}1${NC} - Install for me!"
+            echo "${RED}2${NC} - I'm all set"
+            echo ""
+            read java
+            if [ "$java" == "1" ]; then
+                brew tap AdoptOpenJDK/openjdk
+                brew install adoptopenjdk-openjdk10
+            else
+              continue
+            fi
+            echo ""
             echo ""
             echo "Attempting to install Docker now"
             echo ""
             curl -fsSL get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
         else
+            echo ""
+            echo ""
+            echo "Do you have Java installed already?"
+            echo ""
+            echo "${RED}1${NC} - Install for me!"
+            echo "${RED}2${NC} - I'm all set"
+            echo ""
+            read java
+            if [ "$java" == "1" ]; then
+                brew tap AdoptOpenJDK/openjdk
+                brew install adoptopenjdk-openjdk10
+            else
+              continue
+            fi
+            echo ""
             echo ""
             echo "Attempting to install Docker now"
             echo ""
@@ -106,6 +158,18 @@ if [ "$install" == "1" ]; then
         echo ""
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
+        echo ""
+        echo "Do you have Java installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - I'm all set"
+        echo ""
+        read java
+        if [ "$java" == "1" ]; then
+            sudo apt update && sudo apt install default-jdk ant
+        else
+          continue
+        fi
     else
         continue
     fi
@@ -130,7 +194,6 @@ Choices:
 Which of the above do you want? Type 1, 2, or 3, and press enter."
 echo ""
 read choice
-
 if [ "$choice" == "1" ]; then
     clear
     echo "You have picked ${GREEN}single player RSC + PHPMyAdmin!${NC}"
@@ -175,7 +238,6 @@ if [ "$choice" == "1" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
-
 elif [ "$choice" == "2" ]; then
     clear
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin!${NC}"
@@ -224,7 +286,6 @@ elif [ "$choice" == "2" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
-
 elif [ "$choice" == "3" ]; then
     clear
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin + RSC Preservation Wiki!${NC}"
@@ -284,7 +345,6 @@ elif [ "$choice" == "3" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
-
 else
     echo ""
     echo "Error! ${RED}$choice${NC} is not a valid option. Press enter to try again."
