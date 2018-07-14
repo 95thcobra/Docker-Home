@@ -69,7 +69,7 @@ if [ "$install" == "1" ]; then
         echo ""
         read java
         if [ "$java" == "1" ]; then
-            sudo apt update && sudo apt install default-jdk ant -y
+            sudo apt update && sudo apt install default-jdk ant openjfx -y
         else
           continue
         fi
@@ -115,7 +115,7 @@ if [ "$install" == "1" ]; then
             read java
             if [ "$java" == "1" ]; then
                 brew tap AdoptOpenJDK/openjdk
-                brew install adoptopenjdk-openjdk10
+                brew install adoptopenjdk-openjdk8
             else
               continue
             fi
@@ -136,7 +136,7 @@ if [ "$install" == "1" ]; then
             read java
             if [ "$java" == "1" ]; then
                 brew tap AdoptOpenJDK/openjdk
-                brew install adoptopenjdk-openjdk10
+                brew install adoptopenjdk-openjdk8
             else
               continue
             fi
@@ -166,7 +166,7 @@ if [ "$install" == "1" ]; then
         echo ""
         read java
         if [ "$java" == "1" ]; then
-            sudo apt update && sudo apt install default-jdk ant
+            sudo apt update && sudo apt install default-jdk ant openjfx -y
         else
           continue
         fi
