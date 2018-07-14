@@ -12,7 +12,7 @@ This installer can install one or both for you if needed.
 
 Choices:
   ${RED}1${NC} - Install for me!
-  ${RED}2${NC} - I'm all set, continue! (default)"
+  ${RED}2${NC} - Im all set, continue! (default)"
 echo ""
 read install
 if [ "$install" == "1" ]; then
@@ -65,7 +65,7 @@ if [ "$install" == "1" ]; then
         echo "Do you have Java OpenJDK installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
-        echo "${RED}2${NC} - I'm all set"
+        echo "${RED}2${NC} - Im all set"
         echo ""
         read java
         if [ "$java" == "1" ]; then
@@ -74,18 +74,18 @@ if [ "$install" == "1" ]; then
           continue
         fi
     elif [ "$os" == "2" ]; then
-        su -c 'yum update && yum install git'
+        su -c "yum update && yum install git"
         echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
-        echo "${RED}2${NC} - I'm all set"
+        echo "${RED}2${NC} - Im all set"
         echo ""
         read java
         if [ "$java" == "1" ]; then
-            su -c "yum install alternatives"
-            su -c "/usr/sbin/alternatives --config java"
+            yum install alternatives
+            /usr/sbin/alternatives --config java
         else
           continue
         fi
@@ -110,7 +110,7 @@ if [ "$install" == "1" ]; then
             echo "Do you have Java OpenJDK 8 installed already?"
             echo ""
             echo "${RED}1${NC} - Install for me!"
-            echo "${RED}2${NC} - I'm all set"
+            echo "${RED}2${NC} - Im all set"
             echo ""
             read java
             if [ "$java" == "1" ]; then
@@ -126,7 +126,7 @@ if [ "$install" == "1" ]; then
             wget https://download.docker.com/mac/stable/Docker.dmg
             hdiutil attach Docker.dmg
             echo ""
-            echo "Please drag Docker as instructed in the popup.
+            echo "Please drag Docker as instructed in the popup."
             echo ""
             echo "Press enter when finished."
             echo ""
@@ -145,7 +145,7 @@ if [ "$install" == "1" ]; then
             echo "Do you have Java OpenJDK 8 installed already?"
             echo ""
             echo "${RED}1${NC} - Install for me!"
-            echo "${RED}2${NC} - I'm all set"
+            echo "${RED}2${NC} - Im all set"
             echo ""
             read java
             if [ "$java" == "1" ]; then
@@ -171,7 +171,7 @@ if [ "$install" == "1" ]; then
         echo "Do you have Java OpenJDK installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
-        echo "${RED}2${NC} - I'm all set"
+        echo "${RED}2${NC} - Im all set"
         echo ""
         read java
         if [ "$java" == "1" ]; then
