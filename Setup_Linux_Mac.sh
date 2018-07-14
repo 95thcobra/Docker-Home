@@ -121,9 +121,24 @@ if [ "$install" == "1" ]; then
             fi
             echo ""
             echo ""
-            echo "Attempting to install Docker now"
+            echo "Downloading the Docker for Mac installer"
+            brew install wget
+            wget https://download.docker.com/mac/stable/Docker.dmg
+            hdiutil attach Docker.dmg
             echo ""
-            brew install docker docker-compose docker-machine xhyve docker-machine-driver-xhyve
+            echo "Please drag Docker as instructed in the popup.
+            echo ""
+            echo "Press enter when finished."
+            echo ""
+            read
+            echo ""
+            open /Applications/Docker.app
+            echo ""
+            echo "Docker is launching. Please follow the directions that it gives you."
+            echo ""
+            echo "Press enter when finished."
+            echo ""
+            read
         else
             echo ""
             echo ""
@@ -151,6 +166,7 @@ if [ "$install" == "1" ]; then
         echo ""
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
+        echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
         echo ""
