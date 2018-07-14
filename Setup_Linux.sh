@@ -69,7 +69,7 @@ if [ "$install" == "1" ]; then
         echo ""
         read java
         if [ "$java" == "1" ]; then
-            sudo apt update && sudo apt install default-jdk ant
+            sudo apt update && sudo apt install default-jdk ant -y
         else
           continue
         fi
