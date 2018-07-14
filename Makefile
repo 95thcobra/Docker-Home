@@ -12,7 +12,6 @@ restart: init
 	docker-compose up -d
 
 clone-game:
-	@$(shell git clone https://github.com/Open-RSC/Website.git)
 	@$(shell git clone https://github.com/Open-RSC/Game.git)
 	#@$(&& sudo chmod -R 777 Game)
 

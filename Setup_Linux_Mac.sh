@@ -62,7 +62,7 @@ if [ "$install" == "1" ]; then
         sudo apt update && sudo apt install docker-ce docker-compose -y
         echo ""
         echo ""
-        echo "Do you have Java installed already?"
+        echo "Do you have Java OpenJDK installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - I'm all set"
@@ -77,7 +77,7 @@ if [ "$install" == "1" ]; then
         su -c 'yum update && yum install git'
         echo ""
         echo ""
-        echo "Do you have Java installed already?"
+        echo "Do you have Java OpenJDK installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - I'm all set"
@@ -107,7 +107,7 @@ if [ "$install" == "1" ]; then
             brew install git
             echo ""
             echo ""
-            echo "Do you have Java installed already?"
+            echo "Do you have Java OpenJDK 8 installed already?"
             echo ""
             echo "${RED}1${NC} - Install for me!"
             echo "${RED}2${NC} - I'm all set"
@@ -123,12 +123,11 @@ if [ "$install" == "1" ]; then
             echo ""
             echo "Attempting to install Docker now"
             echo ""
-            brew install docker docker
-            brew install docker-compose
+            brew install docker docker-compose docker-machine xhyve docker-machine-driver-xhyve
         else
             echo ""
             echo ""
-            echo "Do you have Java installed already?"
+            echo "Do you have Java OpenJDK 8 installed already?"
             echo ""
             echo "${RED}1${NC} - Install for me!"
             echo "${RED}2${NC} - I'm all set"
@@ -153,7 +152,7 @@ if [ "$install" == "1" ]; then
         curl -fsSL get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
         echo ""
-        echo "Do you have Java installed already?"
+        echo "Do you have Java OpenJDK installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - I'm all set"
@@ -213,7 +212,7 @@ if [ "$choice" == "1" ]; then
     sudo make start
     echo ""
     echo ""
-    echo "Fetching the Website and Game from the Open RSC git repo."
+    echo "Fetching the Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
     echo ""
