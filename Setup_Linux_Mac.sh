@@ -121,24 +121,34 @@ if [ "$install" == "1" ]; then
             fi
             echo ""
             echo ""
-            echo "Downloading the Docker for Mac installer"
-            brew install wget
-            wget https://download.docker.com/mac/stable/Docker.dmg
-            hdiutil attach Docker.dmg
+            echo "Do you have Docker installed?"
             echo ""
-            echo "Please drag Docker as instructed in the popup."
+            echo "${RED}1${NC} - No, install it for me!"
+            echo "${RED}2${NC} - Yes"
             echo ""
-            echo "Press enter when finished."
-            echo ""
-            read
-            echo ""
-            open /Applications/Docker.app
-            echo ""
-            echo "Docker is launching. Please follow the directions that it gives you."
-            echo ""
-            echo "Press enter when finished."
-            echo ""
-            read
+            read docker
+            if [ "$docker" == "1" ]; then
+                echo "Downloading the Docker for Mac installer"
+                brew install wget
+                wget https://download.docker.com/mac/stable/Docker.dmg
+                hdiutil attach Docker.dmg
+                echo ""
+                echo "Please drag Docker as instructed in the popup."
+                echo ""
+                echo "Press enter when finished."
+                echo ""
+                read
+                echo ""
+                open /Applications/Docker.app
+                echo ""
+                echo "Docker is launching. Please follow the directions that it gives you."
+                echo ""
+                echo "Press enter when finished."
+                echo ""
+                read
+            else
+              continue
+            fi
         else
             echo ""
             echo ""
