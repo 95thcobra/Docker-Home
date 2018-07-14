@@ -359,5 +359,5 @@ else
     echo "Error! ${RED}$choice${NC} is not a valid option. Press enter to try again."
     echo ""
     read
-    ./Setup_Linux.sh
+    ./Setup_Linux_Mac.sh
 fi
