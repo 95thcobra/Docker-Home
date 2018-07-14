@@ -326,7 +326,7 @@ elif [ "$choice" == "3" ]; then
     echo ""
     echo "Extracting the Wiki database."
     echo ""
-    unzip -o Website/Wiki/openrsc_wiki.sql.zip -d Website/Wiki
+    sudo unzip -o Website/Wiki/openrsc_wiki.sql.zip -d Website/Wiki
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
