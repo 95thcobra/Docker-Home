@@ -123,8 +123,8 @@ if [ "$install" == "1" ]; then
             echo ""
             echo "Attempting to install Docker now"
             echo ""
-            curl -fsSL get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
+            brew install docker docker
+            brew install docker-compose
         else
             echo ""
             echo ""
@@ -140,12 +140,6 @@ if [ "$install" == "1" ]; then
             else
               continue
             fi
-            echo ""
-            echo ""
-            echo "Attempting to install Docker now"
-            echo ""
-            curl -fsSL get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
             continue
         fi
     elif [ "$os" == "4" ]; then
