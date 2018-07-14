@@ -161,15 +161,15 @@ if [ "$choice" == "1" ]; then
     sudo make clone-game
     echo ""
     echo ""
-    echo "Importing the databases."
-    echo ""
-    sudo make import
-    echo ""
-    echo ""
     echo "Creating the client cache in your home folder."
     echo ""
     mkdir ~/OpenRSC
     unzip -o Game/client/cache.zip -d ~/OpenRSC
+    echo ""
+    echo ""
+    echo "Importing the databases."
+    echo ""
+    sudo make import
     echo ""
     echo ""
     echo "Open RSC setup complete!"
@@ -210,15 +210,15 @@ elif [ "$choice" == "2" ]; then
     sudo make clone-website
     echo ""
     echo ""
-    echo "Importing the databases."
-    echo ""
-    sudo make import
-    echo ""
-    echo ""
     echo "Creating the client cache in your home folder."
     echo ""
     mkdir ~/OpenRSC
     unzip -o Game/client/cache.zip -d ~/OpenRSC
+    echo ""
+    echo ""
+    echo "Importing the databases in 15 seconds."
+    echo ""
+    sudo make import
     echo ""
     echo ""
     echo "Open RSC setup complete!"
@@ -268,17 +268,17 @@ elif [ "$choice" == "3" ]; then
     unzip -o Website/Wiki/openrsc_wiki.sql.zip -d Website/Wiki
     echo ""
     echo ""
+    echo "Creating the client cache in your home folder."
+    echo ""
+    mkdir ~/OpenRSC
+    unzip -o Game/client/cache.zip -d ~/OpenRSC
+    echo ""
+    echo ""
     echo "Importing the game, forum, and wiki databases."
     echo ""
     sudo make import
     echo ""
     sudo make import-wiki
-    echo ""
-    echo ""
-    echo "Creating the client cache in your home folder."
-    echo ""
-    mkdir ~/OpenRSC
-    unzip -o Game/client/cache.zip -d ~/OpenRSC
     echo ""
     echo ""
     echo "Open RSC setup complete!"
