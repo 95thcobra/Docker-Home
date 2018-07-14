@@ -36,7 +36,7 @@ ___
 1. Perform the first time setup:
 
     ```sh
-    Mac/Linux: ./Setup_Linux.sh
+    Mac/Linux: ./Setup_Linux_Mac.sh
     ```
 
     ```sh
@@ -52,7 +52,7 @@ ___
 3. Start the game's Docker containers, then run the game server and client:
 
     ```sh
-    Mac/Linux: ./Start_Single_Player_Game_Linux.sh
+    Mac/Linux: ./Start_Single_Player_Game_Linux_Mac.sh
     ```
 
     ```sh
@@ -62,7 +62,7 @@ ___
 4. Backup game databases:
 
     ```sh
-    Mac/Linux: ./Backup_Game_Databases_Linux.sh
+    Mac/Linux: ./Backup_Game_Databases_Linux_Mac.sh
     ```
 
     ```sh
@@ -72,7 +72,7 @@ ___
 5. Restore game databases:
 
     ```sh
-    Mac/Linux: ./Restore_Game_Database_Backup_Linux.sh
+    Mac/Linux: ./Restore_Game_Database_Backup_Linux_Mac.sh
     ```
 
     ```sh
@@ -81,7 +81,7 @@ ___
 6. View the game's Docker container logs:
 
     ```sh
-    ./View_Docker_Container_Logs_Linux.sh
+    ./View_Docker_Container_Logs_Linux_Mac.sh
     ```
 
     ```sh
@@ -91,7 +91,7 @@ ___
 7. Stop the game's Docker containers and shut down the game server:
 
     ```sh
-    Mac/Linux: ./Stop-Game-Linux.sh
+    Mac/Linux: ./Stop-Game-Linux_Mac.sh
     ```
 
     ```sh
