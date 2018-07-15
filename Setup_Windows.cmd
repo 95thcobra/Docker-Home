@@ -164,9 +164,13 @@ echo:
 Windows\make clone-windows-game
 echo:
 echo:
-echo Importing the databases.
+echo Importing the game databases.
 echo:
-Windows\make import-windows
+Windows\make import-windows-game
+echo:
+echo Importing the website database.
+echo:
+Windows\make import-windows-website
 echo:
 echo:
 echo Extracting client cache

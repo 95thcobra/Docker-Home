@@ -22,14 +22,15 @@ clone-wiki:
 
 clone-windows-website:
 	@git clone https://github.com/Open-RSC/Website.git
-	cacls Website /grant Everyone:F /t
+	echo y| cacls Website /grant Everyone:F /t
 
 clone-windows-game:
 	@git clone https://github.com/Open-RSC/Game.git
-	cacls Game /grant Everyone:F /t
+	echo y| cacls Game /grant Everyone:F /t
 
 clone-windows-wiki:
 	@git clone https://github.com/Open-RSC/Wiki.git Website/Wiki
+	echo y| cacls Website/Wiki /grant Everyone:F /t
 
 pull-game-windows:
 	@cd Game && git reset HEAD --hard &&  git pull
