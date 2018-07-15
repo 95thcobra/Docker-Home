@@ -266,7 +266,7 @@ fi
 clear
 echo "Checking the Docker Home git repo for any recent updates."
 echo ""
-git pull
+git reset HEAD --hard && git pull
 echo ""
 clear
 echo "${RED}Open RSC Installer:${NC}

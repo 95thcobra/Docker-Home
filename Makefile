@@ -34,22 +34,22 @@ clone-windows-wiki:
 	@git clone https://github.com/Open-RSC/Wiki.git Website/Wiki
 
 pull-game:
-	@$(shell cd Game && git pull)
+	@$(shell cd Game && git reset HEAD --hard && git pull)
 
 pull-website:
-		@$(shell cd Website && git pull)
+		@$(shell cd Website && git reset HEAD --hard && git pull)
 
 pull-wiki:
-	@$(shell cd Website/Wiki && git pull)
+	@$(shell cd Website/Wiki && git reset HEAD --hard && git pull)
 
 pull-game-windows:
-	@cd Game && git pull
+	@cd Game && git reset HEAD --hard &&  git pull
 
 pull-website-windows:
-	@cd Website && git pull
+	@cd Website && git reset HEAD --hard &&  git pull
 
 pull-wiki-windows:
-	@cd Website/Wiki && git pull
+	@cd Website/Wiki git reset HEAD --hard &&  && git pull
 
 logs:
 	@docker-compose logs -f
