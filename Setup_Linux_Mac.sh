@@ -208,24 +208,6 @@ if [ "$install" == "1" ]; then
             read
         fi
         # Mac Docker <===================================================
-
-        echo ""
-        echo ""
-        echo "Do you have Java OpenJDK 8 installed already?"
-        echo ""
-        echo "${RED}1${NC} - Install for me!"
-        echo "${RED}2${NC} - Im all set"
-        echo ""
-        read java
-
-        # Mac Java ===================================================>
-        if [ "$java" == "1" ]; then
-            brew tap AdoptOpenJDK/openjdk
-            brew install adoptopenjdk-openjdk8
-        else
-          continue
-        fi
-        # Mac Java <===================================================
     # Mac OS <===================================================
 
     # Other OS ===================================================>
