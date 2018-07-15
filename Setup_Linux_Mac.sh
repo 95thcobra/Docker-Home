@@ -4,6 +4,7 @@ RED=`tput setaf 1`
 GREEN=`tput setaf 2`
 NC=`tput sgr0` # No Color
 
+# Install Choice ===================================================>
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server environment using Docker magic.
 
@@ -15,6 +16,8 @@ Choices:
   ${RED}2${NC} - Im all set, continue! (default)"
 echo ""
 read install
+
+# OS Selection ===================================================>
 if [ "$install" == "1" ]; then
     clear
     echo "Which operating system are you running?"
@@ -25,10 +28,11 @@ if [ "$install" == "1" ]; then
     echo "${RED}4${NC} - Other"
     echo ""
     read os
-    if [ "$os" == "1" ]; then
 
+    # Ubuntu OS ===================================================>
+    if [ "$os" == "1" ]; then
         echo ""
-        echo "Which Ubuntu version are you running?"
+        echo "Which Ubuntu Linux version are you running?"
         echo ""
         echo "${RED}1${NC} - 16.04"
         echo "${RED}2${NC} - 16.10"
@@ -38,6 +42,8 @@ if [ "$install" == "1" ]; then
         echo "${RED}6${NC} - 18.10"
         echo ""
         read ubuntu
+
+        # Ubuntu Version ===================================================>
         if [ "$ubuntu" == "1" ]; then
             vers="xenial"
         elif [ "$ubuntu" == "2" ]; then
@@ -54,12 +60,30 @@ if [ "$install" == "1" ]; then
             vers="bionic"
             continue
         fi
-        echo "Attempting to install Docker now"
+        # UBUNTU Version <===================================================
+
         echo ""
-        sudo apt update && sudo apt install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
-        sudo apt update && sudo apt install docker-ce docker-compose -y
+        echo ""
+        echo "Do you have Docker installed?"
+        echo ""
+        echo "${RED}1${NC} - No, install it for me!"
+        echo "${RED}2${NC} - Yes"
+        echo ""
+        read docker
+
+        # Ubuntu Docker ===================================================>
+        if [ "$docker" == "1" ]; then
+            echo "Attempting to install Docker now"
+            echo ""
+            sudo apt update && sudo apt install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
+            sudo apt update && sudo apt install docker-ce docker-compose -y
+        else
+          continue
+        fi
+        # Ubuntu Docker <===================================================
+
         echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
@@ -68,13 +92,19 @@ if [ "$install" == "1" ]; then
         echo "${RED}2${NC} - Im all set"
         echo ""
         read java
+
+        # Ubuntu Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo apt update && sudo apt install default-jdk ant openjfx -y
         else
           continue
         fi
+        # Ubuntu Java <===================================================
+    # Ubuntu OS <===================================================
+
+    # Fedora OS ===================================================>
     elif [ "$os" == "2" ]; then
-        su -c "yum update && yum install git"
+        su -c 'yum update && yum install git'
         echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
@@ -83,17 +113,38 @@ if [ "$install" == "1" ]; then
         echo "${RED}2${NC} - Im all set"
         echo ""
         read java
+
+        # Fedora Java ===================================================>
         if [ "$java" == "1" ]; then
-            yum install alternatives
-            /usr/sbin/alternatives --config java
+            su -c 'yum install alternatives'
+            su -c '/usr/sbin/alternatives --config java'
         else
           continue
         fi
+        # Fedora Java <===================================================
+
         echo ""
         echo ""
-        echo "Attempting to install Docker now"
-        curl -fsSL get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh
+        echo "Do you have Docker installed?"
+        echo ""
+        echo "${RED}1${NC} - No, install it for me!"
+        echo "${RED}2${NC} - Yes"
+        echo ""
+        read docker
+
+        # Fedora Docker ===================================================>
+        if [ "$docker" == "1" ]; then
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL get.docker.com -o get-docker.sh
+            su -c 'sh get-docker.sh'
+        else
+          continue
+        fi
+        # Fedora Docker <===================================================
+    # Fedora OS <===================================================
+
+    # Mac OS ===================================================>
     elif [ "$os" == "3" ]; then
         clear
         echo "Do you have brew installed?"
@@ -102,80 +153,106 @@ if [ "$install" == "1" ]; then
         echo "${RED}2${NC} - Yes"
         echo ""
         read brew
+
+        # Mac Brew ===================================================>
         if [ "$brew" == "1" ]; then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             brew install git
-            echo ""
-            echo ""
-            echo "Do you have Java OpenJDK 8 installed already?"
-            echo ""
-            echo "${RED}1${NC} - Install for me!"
-            echo "${RED}2${NC} - Im all set"
-            echo ""
-            read java
-            if [ "$java" == "1" ]; then
-                brew tap AdoptOpenJDK/openjdk
-                brew install adoptopenjdk-openjdk8
-            else
-              continue
-            fi
-            echo ""
-            echo ""
-            echo "Do you have Docker installed?"
-            echo ""
-            echo "${RED}1${NC} - No, install it for me!"
-            echo "${RED}2${NC} - Yes"
-            echo ""
-            read docker
-            if [ "$docker" == "1" ]; then
-                echo "Downloading the Docker for Mac installer"
-                brew install wget
-                wget https://download.docker.com/mac/stable/Docker.dmg
-                hdiutil attach Docker.dmg
-                echo ""
-                echo "Please drag Docker as instructed in the popup."
-                echo ""
-                echo "Press enter when finished."
-                echo ""
-                read
-                echo ""
-                open /Applications/Docker.app
-                echo ""
-                echo "Docker is launching. Please follow the directions that it gives you."
-                echo ""
-                echo "Press enter when finished."
-                echo ""
-                read
-            else
-              continue
-            fi
-        else
-            echo ""
-            echo ""
-            echo "Do you have Java OpenJDK 8 installed already?"
-            echo ""
-            echo "${RED}1${NC} - Install for me!"
-            echo "${RED}2${NC} - Im all set"
-            echo ""
-            read java
-            if [ "$java" == "1" ]; then
-                brew tap AdoptOpenJDK/openjdk
-                brew install adoptopenjdk-openjdk8
-            else
-              continue
-            fi
-            continue
         fi
+        # Mac Brew <===================================================
+
+        echo ""
+        echo ""
+        echo "Do you have Java OpenJDK 8 installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - Im all set"
+        echo ""
+        read java
+
+        # Mac Java ===================================================>
+        if [ "$java" == "1" ]; then
+            brew tap AdoptOpenJDK/openjdk
+            brew install adoptopenjdk-openjdk8
+        fi
+        # Mac Java <===================================================
+
+        echo ""
+        echo ""
+        echo "Do you have Docker installed?"
+        echo ""
+        echo "${RED}1${NC} - No, install it for me!"
+        echo "${RED}2${NC} - Yes"
+        echo ""
+        read docker
+
+        # Mac Docker ===================================================>
+        if [ "$docker" == "1" ]; then
+            echo "Downloading the Docker for Mac installer"
+            brew install wget
+            wget https://download.docker.com/mac/stable/Docker.dmg
+            hdiutil attach Docker.dmg
+            echo ""
+            echo "Please drag Docker as instructed in the popup."
+            echo ""
+            echo "Press enter when finished."
+            echo ""
+            read
+            echo ""
+            open /Applications/Docker.app
+            echo ""
+            echo "Docker is launching. Please follow the directions that it gives you."
+            echo ""
+            echo "Press enter when finished."
+            echo ""
+            read
+        fi
+        # Mac Docker <===================================================
+
+        echo ""
+        echo ""
+        echo "Do you have Java OpenJDK 8 installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - Im all set"
+        echo ""
+        read java
+
+        # Mac Java ===================================================>
+        if [ "$java" == "1" ]; then
+            brew tap AdoptOpenJDK/openjdk
+            brew install adoptopenjdk-openjdk8
+        else
+          continue
+        fi
+        # Mac Java <===================================================
+    # Mac OS <===================================================
+
+    # Other OS ===================================================>
     elif [ "$os" == "4" ]; then
         echo ""
         echo "You will have to install Git manually then. Press enter to continue."
         echo ""
         read
         echo ""
-        echo "Attempting to install Docker now"
+        echo "Do you have Docker installed?"
         echo ""
-        curl -fsSL get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh
+        echo "${RED}1${NC} - No, install it for me!"
+        echo "${RED}2${NC} - Yes"
+        echo ""
+        read docker
+
+        # Other OS Docker ===================================================>
+        if [ "$docker" == "1" ]; then
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+        else
+          continue
+        fi
+        # Other OS Docker <===================================================
+
         echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
@@ -184,17 +261,25 @@ if [ "$install" == "1" ]; then
         echo "${RED}2${NC} - Im all set"
         echo ""
         read java
+
+        # Other OS Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo apt update && sudo apt install default-jdk ant openjfx -y
         else
           continue
         fi
+        # Other OS Java <===================================================
+    # Other OS <===================================================
+
     else
-        continue
+      continue
     fi
+    # OS Selection <===================================================
+
 else
-    continue
+  continue
 fi
+# Install Choice <===================================================
 
 clear
 echo "Checking the Docker Home git repo for any recent updates."
@@ -213,6 +298,9 @@ Choices:
 Which of the above do you want? Type 1, 2, or 3, and press enter."
 echo ""
 read choice
+
+# Selection ===================================================>
+# 1. Single player RSC game ===================================================>
 if [ "$choice" == "1" ]; then
     clear
     echo "You have picked ${GREEN}single player RSC + PHPMyAdmin!${NC}"
@@ -257,6 +345,9 @@ if [ "$choice" == "1" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
+# 1. Single player RSC game <===================================================
+
+# 2. Game + Website + PHPMyAdmin ===================================================>
 elif [ "$choice" == "2" ]; then
     clear
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin!${NC}"
@@ -305,6 +396,9 @@ elif [ "$choice" == "2" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
+# 2. Game + Website + PHPMyAdmin <===================================================
+
+# 3. Game + Website + PHPMyAdmin + RSC Preservation Wiki ===================================================>
 elif [ "$choice" == "3" ]; then
     clear
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin + RSC Preservation Wiki!${NC}"
@@ -364,6 +458,8 @@ elif [ "$choice" == "3" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
+    # 3. Game + Website + PHPMyAdmin + RSC Preservation Wiki <===================================================
+
 else
     echo ""
     echo "Error! ${RED}$choice${NC} is not a valid option. Press enter to try again."
@@ -371,3 +467,4 @@ else
     read
     ./Setup_Linux_Mac.sh
 fi
+# Selection <===================================================
