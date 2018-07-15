@@ -293,6 +293,7 @@ if [ "$choice" == "1" ]; then
     echo "You may now be prompted for your password so the installer has sudo access."
     echo ""
     cd Game && sudo git reset HEAD --hard && sudo git pull
+    sudo chmod -r 777 Game
     cd ..
     echo ""
     echo ""
@@ -312,6 +313,7 @@ if [ "$choice" == "1" ]; then
     echo "Fetching the Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
+    sudo chmod -r 777 Game
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
@@ -341,9 +343,12 @@ elif [ "$choice" == "2" ]; then
     echo "You may now be prompted for your password so the installer has sudo access."
     echo ""
     cd Game && sudo git reset HEAD --hard && sudo git pull
+    sudo chmod -r 777 Game
     cd ..
     echo ""
     cd Website && sudo git reset HEAD --hard && sudo git pull
+    sudo chmod -r 777 Website
+    sudo chmod -r 644 Website/board/config.php
     cd ..
     echo ""
     echo ""
@@ -363,8 +368,11 @@ elif [ "$choice" == "2" ]; then
     echo "Fetching the Website and Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
+    sudo chmod -r 777 Game
     echo ""
     sudo make clone-website
+    sudo chmod -r 777 Website
+    sudo chmod -r 644 Website/board/config.php
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
@@ -394,12 +402,16 @@ elif [ "$choice" == "3" ]; then
     echo "You may now be prompted for your password so the installer has sudo access."
     echo ""
     cd Game && git sudo reset HEAD --hard && sudo git pull
+    sudo chmod -r 777 Game
     cd ..
     echo ""
     cd Website && sudo git reset HEAD --hard && sudo git pull
+    sudo chmod -r 777 Website
+    sudo chmod -r 644 Website/board/config.php
     cd ..
     echo ""
     cd Website/Wiki && sudo git reset HEAD --hard && sudo git pull
+    sudo chmod -r 777 Website/Wiki
     cd ..
     echo ""
     echo ""
@@ -419,10 +431,14 @@ elif [ "$choice" == "3" ]; then
     echo "Fetching the Website, Game, and Wiki from the Open RSC git repo."
     echo ""
     sudo make clone-game
+    sudo chmod -r 777 Game
     echo ""
     sudo make clone-website
+    sudo chmod -r 777 Website
+    sudo chmod -r 644 Website/board/config.php
     echo ""
     sudo make clone-wiki
+    sudo chmod -r 777 Website/Wiki
     echo ""
     echo ""
     echo "Extracting the Wiki database."
