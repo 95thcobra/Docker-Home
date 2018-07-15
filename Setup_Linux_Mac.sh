@@ -264,11 +264,12 @@ fi
 # Install Choice <===================================================
 
 clear
-echo "Checking the Docker Home git repo for any recent updates."
+echo "Checking for updates to the Docker-Home repository."
 echo ""
 git reset HEAD --hard && git pull
 echo ""
-clear
+echo ""
+echo ""
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server environment using Docker magic.
 
