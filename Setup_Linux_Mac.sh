@@ -323,9 +323,9 @@ if [ "$choice" == "1" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC
     echo ""
     echo ""
-    echo "Importing the databases."
+    echo "Importing the game databases."
     echo ""
-    sudo make import
+    sudo make import-game
     echo ""
     echo ""
     echo "Open RSC setup complete!"
@@ -382,9 +382,14 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC
     echo ""
     echo ""
-    echo "Importing the databases in 15 seconds."
+    echo "Importing the game databases."
     echo ""
-    sudo make import
+    sudo make import-game
+    echo ""
+    echo ""
+    echo "Importing the website database."
+    echo ""
+    sudo make import-website
     echo ""
     echo ""
     echo "Open RSC setup complete!"
@@ -453,9 +458,17 @@ elif [ "$choice" == "3" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC
     echo ""
     echo ""
-    echo "Importing the game, forum, and wiki databases."
+    echo "Importing the game databases."
     echo ""
-    sudo make import
+    sudo make import-game
+    echo ""
+    echo ""
+    echo "Importing the website database."
+    echo ""
+    sudo make import-website
+    echo ""
+    echo ""
+    echo "Importing the wiki database."
     echo ""
     sudo make import-wiki
     echo ""
