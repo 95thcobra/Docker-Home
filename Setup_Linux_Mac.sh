@@ -294,7 +294,7 @@ if [ "$choice" == "1" ]; then
     echo ""
     cd Game && sudo git reset HEAD --hard && sudo git pull
     cd ..
-    sudo chmod -r 777 Game
+    sudo chmod -R 777 Game
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
@@ -313,7 +313,7 @@ if [ "$choice" == "1" ]; then
     echo "Fetching the Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
-    sudo chmod -r 777 Game
+    sudo chmod -R 777 Game
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
@@ -344,12 +344,12 @@ elif [ "$choice" == "2" ]; then
     echo ""
     cd Game && sudo git reset HEAD --hard && sudo git pull
     cd ..
-    sudo chmod -r 777 Game
+    sudo chmod -R 777 Game
     echo ""
     cd Website && sudo git reset HEAD --hard && sudo git pull
     cd ..
-    sudo chmod -r 777 Website
-    sudo chmod -r 644 Website/board/config.php
+    sudo chmod -R 777 Website
+    sudo chmod -R 644 Website/board/config.php
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
@@ -368,11 +368,11 @@ elif [ "$choice" == "2" ]; then
     echo "Fetching the Website and Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
-    sudo chmod -r 777 Game
+    sudo chmod -R 777 Game
     echo ""
     sudo make clone-website
-    sudo chmod -r 777 Website
-    sudo chmod -r 644 Website/board/config.php
+    sudo chmod -R 777 Website
+    sudo chmod -R 644 Website/board/config.php
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
@@ -403,16 +403,16 @@ elif [ "$choice" == "3" ]; then
     echo ""
     cd Game && git sudo reset HEAD --hard && sudo git pull
     cd ..
-    sudo chmod -r 777 Game
+    sudo chmod -R 777 Game
     echo ""
     cd Website && sudo git reset HEAD --hard && sudo git pull
     cd ..
-    sudo chmod -r 777 Website
-    sudo chmod -r 644 Website/board/config.php
+    sudo chmod -R 777 Website
+    sudo chmod -R 644 Website/board/config.php
     echo ""
     cd Website/Wiki && sudo git reset HEAD --hard && sudo git pull
     cd ..
-    sudo chmod -r 777 Website/Wiki
+    sudo chmod -R 777 Website/Wiki
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
@@ -431,14 +431,14 @@ elif [ "$choice" == "3" ]; then
     echo "Fetching the Website, Game, and Wiki from the Open RSC git repo."
     echo ""
     sudo make clone-game
-    sudo chmod -r 777 Game
+    sudo chmod -R 777 Game
     echo ""
     sudo make clone-website
-    sudo chmod -r 777 Website
-    sudo chmod -r 644 Website/board/config.php
+    sudo chmod -R 777 Website
+    sudo chmod -R 644 Website/board/config.php
     echo ""
     sudo make clone-wiki
-    sudo chmod -r 777 Website/Wiki
+    sudo chmod -R 777 Website/Wiki
     echo ""
     echo ""
     echo "Extracting the Wiki database."
