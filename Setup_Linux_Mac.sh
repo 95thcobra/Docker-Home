@@ -293,8 +293,8 @@ if [ "$choice" == "1" ]; then
     echo "You may now be prompted for your password so the installer has sudo access."
     echo ""
     cd Game && sudo git reset HEAD --hard && sudo git pull
-    sudo chmod -r 777 Game
     cd ..
+    sudo chmod -r 777 Game
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
@@ -343,13 +343,13 @@ elif [ "$choice" == "2" ]; then
     echo "You may now be prompted for your password so the installer has sudo access."
     echo ""
     cd Game && sudo git reset HEAD --hard && sudo git pull
-    sudo chmod -r 777 Game
     cd ..
+    sudo chmod -r 777 Game
     echo ""
     cd Website && sudo git reset HEAD --hard && sudo git pull
+    cd ..
     sudo chmod -r 777 Website
     sudo chmod -r 644 Website/board/config.php
-    cd ..
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
@@ -402,17 +402,17 @@ elif [ "$choice" == "3" ]; then
     echo "You may now be prompted for your password so the installer has sudo access."
     echo ""
     cd Game && git sudo reset HEAD --hard && sudo git pull
-    sudo chmod -r 777 Game
     cd ..
+    sudo chmod -r 777 Game
     echo ""
     cd Website && sudo git reset HEAD --hard && sudo git pull
+    cd ..
     sudo chmod -r 777 Website
     sudo chmod -r 644 Website/board/config.php
-    cd ..
     echo ""
     cd Website/Wiki && sudo git reset HEAD --hard && sudo git pull
-    sudo chmod -r 777 Website/Wiki
     cd ..
+    sudo chmod -r 777 Website/Wiki
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
