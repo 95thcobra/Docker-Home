@@ -4,7 +4,7 @@
 echo "Pulling recent updates from the Open-RSC Game repository."
 echo ""
 echo ""
-sudo make pull
+sudo make pull-game
 echo ""
 echo ""
 

@@ -4,7 +4,7 @@
 echo ""
 echo "Pulling recent updates from the Open-RSC Game repository."
 echo ""
-sudo make pull
+sudo make pull-game
 echo ""
 echo ""
 echo "Starting any stopped Docker containers."

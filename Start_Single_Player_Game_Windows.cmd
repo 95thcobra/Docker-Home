@@ -2,7 +2,7 @@
 echo:
 echo Pulling recent updates from the Open-RSC Game repository.
 echo:
-Windows\make pull
+Windows\make pull-game
 echo:
 echo:
 echo Starting any stopped Docker containers.
