@@ -108,15 +108,20 @@ if [ "$install" == "1" ]; then
 
     # Fedora OS ===================================================>
     elif [ "$os" == "2" ]; then
-        su -c 'yum update && yum install git'
         echo ""
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        su -c 'yum update && yum install unzip git build-essential apt-transport-https ca-certificates curl software-properties-common'
+        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK installed already?"
+        echo "Permitting default game port 53595/tcp through the firewall."
+        firewall-cmd --permanent --add-port=53595/tcp
+        echo ""
+        firewall-cmd --reload
+        echo ""
+        echo ""
+        echo "Do you have Java OpenJDK and Apache Ant installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -125,8 +130,7 @@ if [ "$install" == "1" ]; then
 
         # Fedora Java ===================================================>
         if [ "$java" == "1" ]; then
-            su -c 'yum install alternatives'
-            su -c '/usr/sbin/alternatives --config java'
+            sudo dnf -y install ant
         else
           continue
         fi
@@ -143,10 +147,31 @@ if [ "$install" == "1" ]; then
 
         # Fedora Docker ===================================================>
         if [ "$docker" == "1" ]; then
+            echo "Removing any old versions of Docker that might confict."
+            echo ""
+            sudo dnf -y remove docker \
+                 docker-client \
+                 docker-client-latest \
+                 docker-common \
+                 docker-latest \
+                 docker-latest-logrotate \
+                 docker-logrotate \
+                 docker-selinux \
+                 docker-engine-selinux \
+                 docker-engine
+            echo ""
+            echo ""
             echo "Attempting to install Docker now"
             echo ""
-            curl -fsSL get.docker.com -o get-docker.sh
-            su -c 'sh get-docker.sh'
+            sudo dnf -y install dnf-plugins-core
+            sudo dnf -y config-manager \
+              --add-repo \
+              https://download.docker.com/linux/fedora/docker-ce.repo
+            sudo dnf -y install docker-ce docker-compose
+            sudo systemctl start docker
+            sudo groupadd docker
+            sudo usermod -aG docker $USER
+            sudo systemctl enable docker
         else
           continue
         fi

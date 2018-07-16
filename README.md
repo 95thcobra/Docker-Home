@@ -7,6 +7,17 @@ Choices:
   2. Game + Website + PHPMyAdmin
   3. Game + Website + PHPMyAdmin + RSC Preservation Wiki
 
+
+Operating systems supported:
+
+* Windows 10 x64
+
+* Mac OS X High Sierra
+
+* Ubuntu Linux 18.04 x64
+
+* Fedora Linux 28 x64
+
 ___
 
 ## Choice 1: Download the zip, extract it, and open the "Docker-Home" folder
