@@ -64,6 +64,11 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        sudo apt update && sudo apt install unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        echo ""
+        echo ""
         echo "Do you have Docker installed?"
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
@@ -75,7 +80,6 @@ if [ "$install" == "1" ]; then
         if [ "$docker" == "1" ]; then
             echo "Attempting to install Docker now"
             echo ""
-            sudo apt update && sudo apt install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
             sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
             sudo apt update && sudo apt install docker-ce docker-compose -y
@@ -105,6 +109,11 @@ if [ "$install" == "1" ]; then
     # Fedora OS ===================================================>
     elif [ "$os" == "2" ]; then
         su -c 'yum update && yum install git'
+        echo ""
+        echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        su -c 'yum update && yum install unzip git build-essential apt-transport-https ca-certificates curl software-properties-common'
         echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
@@ -163,6 +172,11 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        brew install unzip wget git curl
+        echo ""
+        echo ""
         echo "Do you have Java OpenJDK 8 installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
@@ -189,7 +203,7 @@ if [ "$install" == "1" ]; then
         # Mac Docker ===================================================>
         if [ "$docker" == "1" ]; then
             echo "Downloading the Docker for Mac installer"
-            brew install wget
+            echo ""
             wget https://download.docker.com/mac/stable/Docker.dmg
             hdiutil attach Docker.dmg
             echo ""
