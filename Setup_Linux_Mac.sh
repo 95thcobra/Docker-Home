@@ -289,19 +289,10 @@ if [ "$choice" == "1" ]; then
     echo "You have picked ${GREEN}single player RSC + PHPMyAdmin!${NC}"
     echo ""
     echo ""
-    echo "Checking the git repos for any recent updates."
-    echo ""
-    echo "You may now be prompted for your password so the installer has sudo access."
-    echo ""
-    cd Game && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Game
-    echo ""
-    echo ""
     echo "Logging into Docker Hub to get the required images."
     echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
     echo ""
-    docker login
+    sudo docker login
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
@@ -339,24 +330,10 @@ elif [ "$choice" == "2" ]; then
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin!${NC}"
     echo ""
     echo ""
-    echo "Checking the git repos for any recent updates."
-    echo ""
-    echo "You may now be prompted for your password so the installer has sudo access."
-    echo ""
-    cd Game && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Game
-    echo ""
-    cd Website && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Website
-    sudo chmod -R 644 Website/board/config.php
-    echo ""
-    echo ""
     echo "Logging into Docker Hub to get the required images."
     echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
     echo ""
-    docker login
+    sudo docker login
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
@@ -403,28 +380,10 @@ elif [ "$choice" == "3" ]; then
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin + RSC Preservation Wiki!${NC}"
     echo ""
     echo ""
-    echo "Checking the git repos for any recent updates."
-    echo ""
-    echo "You may now be prompted for your password so the installer has sudo access."
-    echo ""
-    cd Game && git sudo reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Game
-    echo ""
-    cd Website && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Website
-    sudo chmod -R 644 Website/board/config.php
-    echo ""
-    cd Website/Wiki && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Website/Wiki
-    echo ""
-    echo ""
     echo "Logging into Docker Hub to get the required images."
     echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
     echo ""
-    docker login
+    sudo docker login
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
