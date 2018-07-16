@@ -24,9 +24,9 @@ if [ "$install" == "1" ]; then
     echo ""
     echo "${RED}1${NC} - Ubuntu Linux"
     echo "${RED}2${NC} - Fedora 28 Linux"
-    echo "${RED}5${NC} - CentOS 7 Linux"
-    echo "${RED}3${NC} - Mac OS High Sierra"
-    echo "${RED}4${NC} - Other"
+    echo "${RED}3${NC} - CentOS 7 Linux"
+    echo "${RED}4${NC} - Mac OS High Sierra"
+    echo "${RED}5${NC} - Other"
     echo ""
     read os
 
@@ -179,7 +179,7 @@ if [ "$install" == "1" ]; then
     # Fedora OS <===================================================
 
     # CentOS 7 OS ===================================================>
-  elif [ "$os" == "5" ]; then
+    elif [ "$os" == "3" ]; then
         echo ""
         echo ""
         echo "Verifying the basics are installed."
@@ -250,7 +250,7 @@ if [ "$install" == "1" ]; then
     # CentOS 7 OS <===================================================
 
     # Mac OS ===================================================>
-    elif [ "$os" == "3" ]; then
+    elif [ "$os" == "4" ]; then
         clear
         echo "Do you have brew installed?"
         echo ""
@@ -321,7 +321,7 @@ if [ "$install" == "1" ]; then
     # Mac OS <===================================================
 
     # Other OS ===================================================>
-    elif [ "$os" == "4" ]; then
+    elif [ "$os" == "5" ]; then
         echo ""
         echo "You will have to install Git manually then. Press enter to continue."
         echo ""
