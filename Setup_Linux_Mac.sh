@@ -23,8 +23,9 @@ if [ "$install" == "1" ]; then
     echo "Which operating system are you running?"
     echo ""
     echo "${RED}1${NC} - Ubuntu Linux"
-    echo "${RED}2${NC} - Fedora Linux"
-    echo "${RED}3${NC} - Mac OS"
+    echo "${RED}2${NC} - Fedora 28 Linux"
+    echo "${RED}5${NC} - CentOS 7 Linux"
+    echo "${RED}3${NC} - Mac OS High Sierra"
     echo "${RED}4${NC} - Other"
     echo ""
     read os
@@ -169,14 +170,84 @@ if [ "$install" == "1" ]; then
               https://download.docker.com/linux/fedora/docker-ce.repo
             sudo dnf -y install docker-ce docker-compose
             sudo systemctl start docker
-            sudo groupadd docker
-            sudo usermod -aG docker $USER
             sudo systemctl enable docker
+            sudo usermod -aG docker $USER
         else
           continue
         fi
         # Fedora Docker <===================================================
     # Fedora OS <===================================================
+
+    # CentOS 7 OS ===================================================>
+  elif [ "$os" == "5" ]; then
+        echo ""
+        echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64//dnf-0.6.4-2.sdl7.noarch.rpm
+        sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/dnf-conf-0.6.4-2.sdl7.noarch.rpm
+        sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/python-dnf-0.6.4-2.sdl7.noarch.rpm
+        sudo yum -y install dnf-0.6.4-2.sdl7.noarch.rpm dnf-conf-0.6.4-2.sdl7.noarch.rpm python-dnf-0.6.4-2.sdl7.noarch.rpm
+        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
+        echo ""
+        echo ""
+        echo "Permitting default game port 53595/tcp through the firewall."
+        firewall-cmd --permanent --add-port=53595/tcp
+        echo ""
+        firewall-cmd --reload
+        echo ""
+        echo ""
+        echo "Do you have Java OpenJDK and Apache Ant installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - Im all set"
+        echo ""
+        read java
+
+        # CentOS 7 Java ===================================================>
+        if [ "$java" == "1" ]; then
+            sudo dnf -y install ant
+        else
+          continue
+        fi
+        # CentOS 7 Java <===================================================
+
+        echo ""
+        echo ""
+        echo "Do you have Docker installed?"
+        echo ""
+        echo "${RED}1${NC} - No, install it for me!"
+        echo "${RED}2${NC} - Yes"
+        echo ""
+        read docker
+
+        # CentOS 7 Docker ===================================================>
+        if [ "$docker" == "1" ]; then
+            echo "Removing any old versions of Docker that might confict."
+            echo ""
+            sudo dnf -y remove docker \
+                 docker-client \
+                 docker-client-latest \
+                 docker-common \
+                 docker-latest \
+                 docker-latest-logrotate \
+                 docker-logrotate \
+                 docker-selinux \
+                 docker-engine-selinux \
+                 docker-engine
+            echo ""
+            echo ""
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL https://get.docker.com/ | sh
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo usermod -aG docker $USER
+        else
+          continue
+        fi
+        # CentOS 7 Docker <===================================================
+    # CentOS 7 OS <===================================================
 
     # Mac OS ===================================================>
     elif [ "$os" == "3" ]; then

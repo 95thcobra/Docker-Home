@@ -7,8 +7,9 @@ Choices:
   2. Game + Website + PHPMyAdmin
   3. Game + Website + PHPMyAdmin + RSC Preservation Wiki
 
+___
 
-Operating systems supported:
+## Operating systems supported:
 
 * Windows 10 x64
 
