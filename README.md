@@ -21,6 +21,8 @@ ___
 
 * Fedora Linux 28 x64
 
+* CentOS 7 x64
+
 ___
 
 ## Choice 1: Download the zip, extract it, and open the "Docker-Home" folder
