@@ -10,12 +10,12 @@ echo Open RSC Installer:
 echo:
 echo An easy to run RSC private server environment using Docker magic.
 echo:
-echo Before continuing, Open RSC needs to know if you have Java, Docker, and Git installed.
+echo Before continuing, Open RSC needs to know if you have Java JDK, Docker, and Git installed.
 echo This installer can install one or both for you if needed.
 echo:
 echo Choices:
 echo   1 - Install for me!
-echo   2 - I'm all set, continue! (default)"
+echo   2 - I'm all set, continue!
 echo:
 SET /P install=Please enter a number choice from above:
 echo:
@@ -30,11 +30,21 @@ Setup_Windows.cmd
 
 :doinstall
 echo:
-echo Do you have Java OpenJDK installed already?"
+echo Installing Chocolatey base system.
+echo:
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+echo:
+echo:
+echo Installing basic software needed to run.
+echo:
+choco install -y 7zip.install
+echo:
+echo:
+echo Do you have Java JDK installed already?"
 echo:
 echo Choices:
 echo   1 - Install for me!
-echo   2 - I'm all set, continue! (default)"
+echo   2 - I'm all set, continue!
 echo:
 SET /P java=Please enter a number choice from above:
 echo:
@@ -48,13 +58,10 @@ goto doinstall
 
 :installjava
 echo:
-echo Downloading Java OpenJDK.
+echo Installing Java JDK.
 echo:
-"Windows/wget.exe" "http://download.oracle.com/otn-pub/java/jdk/10.0.1+10/fb4372174a714e6b8c52526dc134031e/jdk-10.0.1_windows-x64_bin.exe" --no-check-certificate
+choco install -y jdk8
 echo:
-echo Download complete. Installing Oracle Java JDK 10.
-echo:
-"jdk-10.0.1_windows-x64_bin.exe"
 echo:
 SET /P install="Please follow the Java install prompts and press enter here once finished."
 echo:
@@ -66,7 +73,7 @@ echo Do you have Docker installed already?
 echo:
 echo Choices:
 echo   1 - Install for me!
-echo   2 - I'm all set, continue! (default)"
+echo   2 - I'm all set, continue!
 echo:
 SET /P docker=Please enter a number choice from above:
 echo:
@@ -80,13 +87,10 @@ goto askdocker
 
 :installdocker
 echo:
-echo Downloading Docker.
+echo Installing Docker.
 echo:
-"Windows/wget.exe" "https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe"
+choco install -y docker docker-compose
 echo:
-echo Download complete. Installing Docker.
-echo:
-"Docker%20for%20Windows%20Installer.exe"
 echo:
 SET /P install="Please follow the Docker install prompts and press enter here once finished."
 echo:
@@ -98,12 +102,12 @@ echo Do you have Git installed already?
 echo:
 echo Choices:
 echo   1 - Install for me!
-echo   2 - I'm all set, continue! (default)"
+echo   2 - I'm all set, continue!
 echo:
 SET /P git=Please enter a number choice from above:
 echo:
 IF /i "%git%"=="1" goto installgit
-IF /i "%git%"=="2" goto skip
+IF /i "%git%"=="2" goto askide
 
 echo Error! %git% is not a valid option. Press enter to try again."
 echo:
@@ -112,13 +116,52 @@ goto askgit
 
 :installgit
 echo:
-"Windows/wget.exe" "https://github.com/git-for-windows/git/releases/download/v2.18.0.windows.1/Git-2.18.0-64-bit.exe"
+echo Installing Git
 echo:
-echo Installing Git.
+choco install -y git.install
 echo:
-"Git-2.18.0-64-bit.exe"
 echo:
 SET /P install="Please follow the Git install prompts and press enter here once finished."
+echo:
+goto askide
+
+:askide
+echo:
+echo Do you want a programming IDE installed?
+echo:
+echo Choices:
+echo   1 - Install NetBeans
+echo   2 - Install IntelliJ IDEA Community Edition
+echo   3 - Install Eclipse
+echo   4 - I'm all set, continue!
+echo:
+SET /P git=Please enter a number choice from above:
+echo:
+IF /i "%git%"=="1" goto installnetbeans
+IF /i "%git%"=="2" goto installintellij
+IF /i "%git%"=="3" goto installeclipse
+IF /i "%git%"=="4" goto skip
+
+echo Error! %git% is not a valid option. Press enter to try again."
+echo:
+SET /P git=""
+goto askide
+
+:installnetbeans
+echo:
+choco install netbeans
+echo:
+goto skip
+
+:installintellij
+echo:
+choco install intellijidea-community
+echo:
+goto skip
+
+:installeclipse
+echo:
+choco install eclipse
 echo:
 goto skip
 
