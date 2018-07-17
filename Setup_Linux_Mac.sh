@@ -23,9 +23,10 @@ if [ "$install" == "1" ]; then
     echo "Which operating system are you running?"
     echo ""
     echo "${RED}1${NC} - Ubuntu Linux"
-    echo "${RED}2${NC} - Fedora Linux"
-    echo "${RED}3${NC} - Mac OS"
-    echo "${RED}4${NC} - Other"
+    echo "${RED}2${NC} - Fedora 28 Linux"
+    echo "${RED}3${NC} - CentOS 7 Linux"
+    echo "${RED}4${NC} - Mac OS High Sierra"
+    echo "${RED}5${NC} - Other"
     echo ""
     read os
 
@@ -64,6 +65,11 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        sudo apt update && sudo apt install unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        echo ""
+        echo ""
         echo "Do you have Docker installed?"
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
@@ -75,7 +81,6 @@ if [ "$install" == "1" ]; then
         if [ "$docker" == "1" ]; then
             echo "Attempting to install Docker now"
             echo ""
-            sudo apt update && sudo apt install git build-essential apt-transport-https ca-certificates curl software-properties-common -y
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
             sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
             sudo apt update && sudo apt install docker-ce docker-compose -y
@@ -104,10 +109,20 @@ if [ "$install" == "1" ]; then
 
     # Fedora OS ===================================================>
     elif [ "$os" == "2" ]; then
-        su -c 'yum update && yum install git'
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK installed already?"
+        echo "Verifying the basics are installed."
+        echo ""
+        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
+        echo ""
+        echo ""
+        echo "Permitting default game port 53595/tcp through the firewall."
+        firewall-cmd --permanent --add-port=53595/tcp
+        echo ""
+        firewall-cmd --reload
+        echo ""
+        echo ""
+        echo "Do you have Java OpenJDK and Apache Ant installed already?"
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -116,8 +131,7 @@ if [ "$install" == "1" ]; then
 
         # Fedora Java ===================================================>
         if [ "$java" == "1" ]; then
-            su -c 'yum install alternatives'
-            su -c '/usr/sbin/alternatives --config java'
+            sudo dnf -y install ant
         else
           continue
         fi
@@ -134,18 +148,114 @@ if [ "$install" == "1" ]; then
 
         # Fedora Docker ===================================================>
         if [ "$docker" == "1" ]; then
+            echo "Removing any old versions of Docker that might confict."
+            echo ""
+            sudo dnf -y remove docker \
+                 docker-client \
+                 docker-client-latest \
+                 docker-common \
+                 docker-latest \
+                 docker-latest-logrotate \
+                 docker-logrotate \
+                 docker-selinux \
+                 docker-engine-selinux \
+                 docker-engine
+            echo ""
+            echo ""
             echo "Attempting to install Docker now"
             echo ""
-            curl -fsSL get.docker.com -o get-docker.sh
-            su -c 'sh get-docker.sh'
+            sudo dnf -y install dnf-plugins-core
+            sudo dnf -y config-manager \
+              --add-repo \
+              https://download.docker.com/linux/fedora/docker-ce.repo
+            sudo dnf -y install docker-ce docker-compose
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo usermod -aG docker $USER
         else
           continue
         fi
         # Fedora Docker <===================================================
     # Fedora OS <===================================================
 
-    # Mac OS ===================================================>
+    # CentOS 7 OS ===================================================>
     elif [ "$os" == "3" ]; then
+        echo ""
+        echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64//dnf-0.6.4-2.sdl7.noarch.rpm
+        sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/dnf-conf-0.6.4-2.sdl7.noarch.rpm
+        sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/python-dnf-0.6.4-2.sdl7.noarch.rpm
+        sudo yum -y install dnf-0.6.4-2.sdl7.noarch.rpm dnf-conf-0.6.4-2.sdl7.noarch.rpm python-dnf-0.6.4-2.sdl7.noarch.rpm
+        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
+        sudo yum install -y python-pip
+        sudo pip install --upgrade pip
+        sudo pip install docker-compose
+        sudo yum upgrade python*
+        echo ""
+        echo ""
+        echo "Permitting default game port 53595/tcp through the firewall."
+        firewall-cmd --permanent --add-port=53595/tcp
+        echo ""
+        firewall-cmd --reload
+        echo ""
+        echo ""
+        echo "Do you have Java OpenJDK and Apache Ant installed already?"
+        echo ""
+        echo "${RED}1${NC} - Install for me!"
+        echo "${RED}2${NC} - Im all set"
+        echo ""
+        read java
+
+        # CentOS 7 Java ===================================================>
+        if [ "$java" == "1" ]; then
+            sudo dnf -y install ant
+        else
+          continue
+        fi
+        # CentOS 7 Java <===================================================
+
+        echo ""
+        echo ""
+        echo "Do you have Docker installed?"
+        echo ""
+        echo "${RED}1${NC} - No, install it for me!"
+        echo "${RED}2${NC} - Yes"
+        echo ""
+        read docker
+
+        # CentOS 7 Docker ===================================================>
+        if [ "$docker" == "1" ]; then
+            echo "Removing any old versions of Docker that might confict."
+            echo ""
+            sudo dnf -y remove docker \
+                 docker-client \
+                 docker-client-latest \
+                 docker-common \
+                 docker-latest \
+                 docker-latest-logrotate \
+                 docker-logrotate \
+                 docker-selinux \
+                 docker-engine-selinux \
+                 docker-engine
+            echo ""
+            echo ""
+            echo "Attempting to install Docker now"
+            echo ""
+            curl -fsSL https://get.docker.com/ | sh
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo usermod -aG docker $USER
+            sudo dnf -y install docker-compose
+        else
+          continue
+        fi
+        # CentOS 7 Docker <===================================================
+    # CentOS 7 OS <===================================================
+
+    # Mac OS ===================================================>
+    elif [ "$os" == "4" ]; then
         clear
         echo "Do you have brew installed?"
         echo ""
@@ -161,6 +271,11 @@ if [ "$install" == "1" ]; then
         fi
         # Mac Brew <===================================================
 
+        echo ""
+        echo ""
+        echo "Verifying the basics are installed."
+        echo ""
+        brew install unzip wget git curl
         echo ""
         echo ""
         echo "Do you have Java OpenJDK 8 installed already?"
@@ -189,7 +304,7 @@ if [ "$install" == "1" ]; then
         # Mac Docker ===================================================>
         if [ "$docker" == "1" ]; then
             echo "Downloading the Docker for Mac installer"
-            brew install wget
+            echo ""
             wget https://download.docker.com/mac/stable/Docker.dmg
             hdiutil attach Docker.dmg
             echo ""
@@ -211,7 +326,7 @@ if [ "$install" == "1" ]; then
     # Mac OS <===================================================
 
     # Other OS ===================================================>
-    elif [ "$os" == "4" ]; then
+    elif [ "$os" == "5" ]; then
         echo ""
         echo "You will have to install Git manually then. Press enter to continue."
         echo ""
@@ -289,19 +404,10 @@ if [ "$choice" == "1" ]; then
     echo "You have picked ${GREEN}single player RSC + PHPMyAdmin!${NC}"
     echo ""
     echo ""
-    echo "Checking the git repos for any recent updates."
-    echo ""
-    echo "You may now be prompted for your password so the installer has sudo access."
-    echo ""
-    cd Game && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Game
-    echo ""
-    echo ""
     echo "Logging into Docker Hub to get the required images."
     echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
     echo ""
-    docker login
+    sudo docker login
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
@@ -339,24 +445,10 @@ elif [ "$choice" == "2" ]; then
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin!${NC}"
     echo ""
     echo ""
-    echo "Checking the git repos for any recent updates."
-    echo ""
-    echo "You may now be prompted for your password so the installer has sudo access."
-    echo ""
-    cd Game && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Game
-    echo ""
-    cd Website && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Website
-    sudo chmod -R 644 Website/board/config.php
-    echo ""
-    echo ""
     echo "Logging into Docker Hub to get the required images."
     echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
     echo ""
-    docker login
+    sudo docker login
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
@@ -403,28 +495,10 @@ elif [ "$choice" == "3" ]; then
     echo "You have picked ${GREEN}Game + Website + PHPMyAdmin + RSC Preservation Wiki!${NC}"
     echo ""
     echo ""
-    echo "Checking the git repos for any recent updates."
-    echo ""
-    echo "You may now be prompted for your password so the installer has sudo access."
-    echo ""
-    cd Game && git sudo reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Game
-    echo ""
-    cd Website && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Website
-    sudo chmod -R 644 Website/board/config.php
-    echo ""
-    cd Website/Wiki && sudo git reset HEAD --hard && sudo git pull
-    cd ..
-    sudo chmod -R 777 Website/Wiki
-    echo ""
-    echo ""
     echo "Logging into Docker Hub to get the required images."
     echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
     echo ""
-    docker login
+    sudo docker login
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."

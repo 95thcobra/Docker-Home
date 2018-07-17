@@ -22,13 +22,22 @@ clone-wiki:
 
 clone-windows-website:
 	@git clone https://github.com/Open-RSC/Website.git
-	
+
 clone-windows-game:
 	@git clone https://github.com/Open-RSC/Game.git
-	
+
 clone-windows-wiki:
 	@git clone https://github.com/Open-RSC/Wiki.git Website/Wiki
-	
+
+pull-game:
+	@cd Game && git pull
+
+pull-website:
+	@cd Website && git pull
+
+pull-wiki:
+	@cd Website/Wiki && git pull
+
 pull-game-windows:
 	@cd Game && git reset HEAD --hard &&  git pull
 
