@@ -9,7 +9,9 @@ Choices:
 
 ___
 
-## Operating systems supported:
+## Operating systems supported
+
+* Windows 7 x64
 
 * Windows 10 x64
 
