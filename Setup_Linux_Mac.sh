@@ -189,6 +189,10 @@ if [ "$install" == "1" ]; then
         sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/python-dnf-0.6.4-2.sdl7.noarch.rpm
         sudo yum -y install dnf-0.6.4-2.sdl7.noarch.rpm dnf-conf-0.6.4-2.sdl7.noarch.rpm python-dnf-0.6.4-2.sdl7.noarch.rpm
         sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
+        sudo yum install -y python-pip
+        sudo pip install --upgrade pip
+        sudo pip install docker-compose
+        sudo yum upgrade python*
         echo ""
         echo ""
         echo "Permitting default game port 53595/tcp through the firewall."
@@ -243,6 +247,7 @@ if [ "$install" == "1" ]; then
             sudo systemctl start docker
             sudo systemctl enable docker
             sudo usermod -aG docker $USER
+            sudo dnf -y install docker-compose
         else
           continue
         fi
