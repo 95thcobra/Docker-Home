@@ -92,6 +92,7 @@ echo:
 choco install -y docker docker-compose
 echo:
 echo:
+echo Don't forget to make your C: drive shared with containers in the Docker settings!
 SET /P install="Please follow the Docker install prompts and press enter here once finished."
 echo:
 goto askgit
