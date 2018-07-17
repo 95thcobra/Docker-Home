@@ -115,3 +115,71 @@ ___
     ```
 
 ___
+
+## Ready to host a public version on your own VPS?
+
+You will need to edit:
+
+* PHPMyAdmin's MySQL users
+
+  * Create a new user in PHPMyAdmin, grant permissions, remove existing users.
+
+  * Secure your users by making them only accessible from specific hostnames
+
+  * Each Docker container will have it's own assigned internal IP address.
+
+  * Examples:
+
+    * openrsc_forum @ 172.18.0.3 (only accessible via Nginx Docker container)
+
+    * openrsc_game @ 172.18.0.1 (only accessible via locally running Open RSC game server)
+
+    * Marwolf @ 172.18.0.4 (only accessible via PHPMyAdmin Docker container)
+
+  * Avoid: % for any host (risks allowing remote brute force MySQL server attacks)
+
+* Launcher's main.java
+
+  * Edit: /Docker-Home/Game/Launcher/src/Main.java
+
+    * Replace with your domain / IP: private static String URL = "http://localhost";
+
+* Client's config.java
+
+  * Edit: /Docker-Home/Game/client/src/org/openrsc/client/Config.java
+
+    * Replace with your domain / IP: public static String IP = "localhost";
+
+* Server's config.xml
+
+  * Edit: /Docker-Home/Game/server/config/config.xml
+
+    * Replace with your newly created SQL username: <entry key="dblogin">root</entry>
+
+    * Replace with your newly created SQL user pass: <entry key="dbpass">root</entry>
+
+* Website's board/config.php
+
+  * Edit: /Docker-Home/Website/board/config.php
+
+    * Replace with your newly created SQL username: $dbuser = 'root';
+
+    * Replace with your newly created SQL user pass: $dbpasswd = 'root';
+
+* Website's client.zip file
+
+  * Compile changes for your client and compress "Open_RSC_Client.jar" as client.zip
+
+    * Location: /Docker-Home/Game/client/dist/Open_RSC_Client.jar
+
+    * Copy result to: /Docker-Home/Website/downloads/client.zip
+
+* Website's downloads/hashes.txt
+
+  * Edit: /Docker-Home/Website/downloads/hashes.txt
+
+    * Replace with updated md5sum hashes of your client.zip and cache.zip (likely you only will replace client.zip)
+
+    * Obtain MD5sum via md5sum *.zip
+
+___
