@@ -63,8 +63,6 @@ echo:
 choco install -y jdk8
 echo:
 echo:
-SET /P install="Please follow the Java install prompts and press enter here once finished."
-echo:
 goto askdocker
 
 :askdocker
@@ -122,8 +120,6 @@ echo:
 choco install -y git.install
 echo:
 echo:
-SET /P install="Please follow the Git install prompts and press enter here once finished."
-echo:
 goto askide
 
 :askide
@@ -150,19 +146,19 @@ goto askide
 
 :installnetbeans
 echo:
-choco install netbeans
+choco install -y netbeans
 echo:
 goto skip
 
 :installintellij
 echo:
-choco install intellijidea-community
+choco install -y intellijidea-community
 echo:
 goto skip
 
 :installeclipse
 echo:
-choco install eclipse
+choco install -y eclipse
 echo:
 goto skip
 
