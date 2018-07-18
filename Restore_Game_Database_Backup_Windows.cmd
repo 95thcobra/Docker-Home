@@ -2,6 +2,6 @@
 echo:
 echo Restoring game databases from backup.
 echo:
-Windows\make restore-windows
+make restore-windows
 echo:
 pause

@@ -16,24 +16,24 @@ echo ""
 # Compile the game server and client
 echo "Compiling the game client."
 echo ""
-sudo Ant/bin/ant -f Game/client/build.xml compile
+sudo ant -f Game/client/build.xml compile
 echo ""
 echo ""
 echo "Compiling the game server."
 echo ""
-sudo Ant/bin/ant -f Game/server/build.xml compile
+sudo ant -f Game/server/build.xml compile
 echo ""
 echo ""
 
 # Rune the game client in a new window
 echo "Launching the game client."
 echo ""
-Ant/bin/ant -f Game/client/build.xml runclient &
+ant -f Game/client/build.xml runclient &
 echo ""
 echo ""
 
 # Run the game server in the current window
 echo "Launching the game server."
 echo ""
-Ant/bin/ant -f Game/server/build.xml runserver
+ant -f Game/server/build.xml runserver
 echo ""

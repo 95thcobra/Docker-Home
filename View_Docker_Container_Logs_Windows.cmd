@@ -1,5 +1,5 @@
 @echo off
 echo:
-Windows\make logs
+make logs
 echo:
 pause

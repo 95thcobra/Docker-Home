@@ -2,6 +2,6 @@
 echo:
 echo Backing up all databases.
 echo:
-Windows\make backup-windows
+make backup-windows
 echo:
 pause

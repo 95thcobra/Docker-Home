@@ -12,7 +12,7 @@ echo ""
 echo "Compiling the game server."
 echo ""
 echo ""
-sudo Ant/bin/ant -f Game/server/build.xml compile
+sudo ant -f Game/server/build.xml compile
 echo ""
 echo ""
 

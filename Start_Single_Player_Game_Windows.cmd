@@ -2,12 +2,12 @@
 echo:
 echo Pulling recent updates from the Open-RSC Game repository.
 echo:
-Windows\make pull-game
+make pull-game
 echo:
 echo:
 echo Starting any stopped Docker containers.
 echo:
-Windows\make start
+make start
 echo:
 echo:
 set PATH=Ant/bin
