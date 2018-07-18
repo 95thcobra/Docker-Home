@@ -17,7 +17,7 @@ echo:
 echo:
 echo Installing basic software needed to run the rest of this script.
 echo:
-choco install -y 7zip.install make python pip
+choco install -y 7zip.install make
 echo:
 echo:
 echo Before continuing, Open RSC needs to know if you have Java JDK, Docker, and Git installed.
@@ -87,11 +87,18 @@ goto askdocker
 echo:
 echo Installing Docker.
 echo:
-choco install -y virtualbox docker docker-machine docker-compose
+choco install -y docker-for-windows
 echo:
 echo:
-echo Don't forget to make your C: drive shared with containers in the Docker settings!
-SET /P install="Please follow the Docker install prompts and press enter here once finished."
+echo Launching Docker for Windows. The Docker whale icon is by the system clock.
+echo Allow it a short bit of time to start running.
+echo Once started, right click on it and click "Settings..."
+echo Then click the "Shared Drives" tab on the left.
+echo Check the box beside the "C:" drive so that the Docker containers can work.
+echo Click "Apply" and then press enter here so the script can continue.
+echo:
+echo:
+SET /P install="Press enter when the above steps have been completed."
 echo:
 goto askgit
 
