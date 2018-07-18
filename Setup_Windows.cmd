@@ -40,7 +40,7 @@ Setup_Windows.cmd
 
 :doinstall
 echo:
-echo Do you have Java JDK installed already?"
+echo Do you have Java JDK 8 and Apache Ant installed already?"
 echo:
 echo Choices:
 echo   1 - Install for me!
@@ -58,9 +58,9 @@ goto doinstall
 
 :installjava
 echo:
-echo Installing Java JDK.
+echo Installing Java JDK and Apache Ant.
 echo:
-choco install -y jdk8
+choco install -y jdk8 ant
 echo:
 echo:
 goto askdocker

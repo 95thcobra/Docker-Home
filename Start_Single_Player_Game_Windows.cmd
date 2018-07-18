@@ -10,9 +10,6 @@ echo:
 make start
 echo:
 echo:
-set PATH=Ant/bin
-echo:
-echo:
 echo Compiling the game client.
 echo:
 call ant -f Game/client/build.xml compile
