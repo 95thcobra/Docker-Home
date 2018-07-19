@@ -45,7 +45,7 @@ pull-website-windows:
 	@cd Website && git reset HEAD --hard &&  git pull
 
 pull-wiki-windows:
-	@cd Website/Wiki git reset HEAD --hard &&  && git pull
+	@cd Website/Wiki git reset HEAD --hard && git pull
 
 logs:
 	@docker-compose logs -f

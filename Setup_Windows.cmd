@@ -189,6 +189,8 @@ echo:
 make start
 echo:
 echo:
+
+:edition
 echo:
 echo Open RSC Installer
 echo An easy to run RSC private server environment using Docker magic.
@@ -198,8 +200,35 @@ echo  1 - Single player RSC game + basic database editing (using PHPMyAdmin)
 echo  2 - Game + Website + PHPMyAdmin
 echo  3 - Game + Website + PHPMyAdmin + RSC Preservation Wiki
 echo:
-SET /P choice=Which of the above do you want? Type 1, 2, or 3, and press enter."
+SET /P edition=Which of the above do you want? Type 1, 2, or 3, and press enter."
 echo:
+
+IF /i "%edition%"=="1" goto game
+IF /i "%edition%"=="2" goto gameweb
+IF /i "%edition%"=="3" goto gamewebwiki
+
+echo Error! %edition% is not a valid option. Press enter to try again."
+echo:
+SET /P edition=""
+goto edition
+
+:game
+echo:
+echo Downloading a copy of the Game repository
+echo:
+make clone-windows-game
+echo:
+echo:
+echo Importing the game databases.
+echo:
+make pull-game-windows
+echo:
+make import-windows-game
+echo:
+echo:
+goto final
+
+:gameweb
 echo:
 echo Downloading a copy of the Website repository
 echo:
@@ -211,10 +240,7 @@ echo:
 make clone-windows-game
 echo:
 echo:
-echo Downloading a copy of the Wiki repository
-echo:
-make clone-windows-wiki
-echo:
+make pull-game-windows
 echo:
 echo Importing the game databases.
 echo:
@@ -222,6 +248,43 @@ make import-windows-game
 echo:
 echo:
 echo Importing the website database.
+echo:
+make pull-website-windows
+echo:
+make import-windows-website
+echo:
+echo:
+goto final
+
+:gamewebwiki
+echo:
+echo Downloading a copy of the Website repository
+echo:
+make clone-windows-website
+echo:
+echo:
+echo Downloading a copy of the Game repository
+echo:
+make clone-windows-game
+echo:
+echo:
+make pull-wiki-windows
+echo:
+echo Downloading a copy of the Wiki repository
+echo:
+make clone-windows-wiki
+echo:
+echo:
+make pull-game-windows
+echo:
+echo Importing the game databases.
+echo:
+make import-windows-game
+echo:
+echo:
+echo Importing the website database.
+echo:
+make pull-website-windows
 echo:
 make import-windows-website
 echo:
@@ -235,6 +298,9 @@ echo Importing the wiki database.
 echo:
 make import-windows-wiki
 echo:
+goto final
+
+:final
 echo:
 echo Extracting client cache
 echo:
