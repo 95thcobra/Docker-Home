@@ -18,3 +18,12 @@ data
 etc/ssl/
 
 get-docker\.sh
+
+etc/nginx/logs/*
+!etc/nginx/logs/empty
+
+Splunk/opt-splunk-etc/*
+!Splunk/opt-splunk-etc/empty
+
+Splunk/opt-splunk-var/*
+!Splunk/opt-splunk-var/empty
