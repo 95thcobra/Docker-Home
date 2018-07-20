@@ -27,3 +27,5 @@ Splunk/opt-splunk-etc/*
 
 Splunk/opt-splunk-var/*
 !Splunk/opt-splunk-var/empty
+
+*.log
