@@ -105,7 +105,10 @@ if [ "$install" == "1" ]; then
         sudo ufw allow 80/tcp
         sudo ufw allow 53595/tcp
         sudo ufw deny 3306/tcp
-        sudo ufw enable
+        echo ""
+        echo ""
+        echo "UFW firewall rules have been added. Enable it later via:"
+        echo "sudo ufw enable"
         echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
