@@ -93,7 +93,7 @@ echo:
 echo Launching Docker for Windows. The Docker whale icon is by the system clock.
 echo Allow it a short bit of time to start running.
 echo ""
-call "C:\Program Files\Docker\Docker\Docker for Windows.exe"
+call START "C:\Program Files\Docker\Docker\Docker for Windows.exe"
 echo ""
 echo Once started, right click on it and click "Settings..."
 echo Then click the "Shared Drives" tab on the left.
