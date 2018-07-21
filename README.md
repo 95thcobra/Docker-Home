@@ -11,9 +11,7 @@ ___
 
 ## Operating systems supported
 
-* Windows 7 x64
-
-* Windows 10 x64
+* Windows 10 x64 (Not Windows 7)
 
 * Mac OS X High Sierra
 
