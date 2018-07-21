@@ -90,6 +90,23 @@ if [ "$install" == "1" ]; then
         # Ubuntu Docker <===================================================
 
         echo ""
+        echo "Preventing Docker from making the iptables firewall insecure"
+        echo ""
+        echo '{
+    "iptables": false
+}' | sudo tee --append  /etc/docker/daemon.json && sudo service docker restart
+        echo ""
+        echo ""
+        echo "Configuring UFW to allow good ports and block MySQL from outside"
+        echo ""
+        sudo ufw allow 22/tcp
+        sudo ufw allow 80/tcp
+        sudo ufw allow 443/tcp
+        sudo ufw allow 80/tcp
+        sudo ufw allow 53595/tcp
+        sudo ufw deny 3306/tcp
+        sudo ufw enable
+        echo ""
         echo ""
         echo "Do you have Java OpenJDK installed already?"
         echo ""
@@ -116,9 +133,12 @@ if [ "$install" == "1" ]; then
         sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
         echo ""
         echo ""
-        echo "Permitting default game port 53595/tcp through the firewall."
-        firewall-cmd --permanent --add-port=53595/tcp
+        echo "Permitting good ports through the firewall."
         echo ""
+        firewall-cmd --permanent --add-port=53595/tcp
+        firewall-cmd --permanent --add-port=80/tcp
+        firewall-cmd --permanent --add-port=443/tcp
+        firewall-cmd --permanent --add-port=22/tcp
         firewall-cmd --reload
         echo ""
         echo ""
