@@ -20,6 +20,6 @@ services:
             - "1514:1514" #Network Input (not used by default) typically used to collect syslog TCP data
         volumes:
             - "../:/home/Docker-Home"
-            - "../etc/nginx/logs:/home/nginx-logs"
+            - "../etc/logs/nginx:/home/nginx-logs"
             - "./opt-splunk-etc:/opt/splunk/etc"
             - "./opt-splunk-var:/opt/splunk/var"
