@@ -99,12 +99,9 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Configuring UFW to allow good ports and block MySQL from outside"
         echo ""
-        sudo ufw allow 22/tcp
-        sudo ufw allow 80/tcp
-        sudo ufw allow 443/tcp
-        sudo ufw allow 80/tcp
-        sudo ufw allow 53595/tcp
-        sudo ufw deny 3306/tcp
+        sudo ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 443/tcp && ufw allow 80/tcp && ufw allow 53595/tcp && ufw deny 3306/tcp
+        sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
+        sudo ufw reload
         echo ""
         echo ""
         echo "UFW firewall rules have been added. Enable it later via:"
