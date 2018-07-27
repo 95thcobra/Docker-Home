@@ -9,6 +9,7 @@ services:
             - "./Website:/var/www/html/public:ro"
             - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
             - "./etc/logs/nginx:/var/log/nginx"
+            - "./etc/logs/letsencrypt:/var/log/letsencrypt"
             - "./etc/letsencrypt/certs:/etc/letsencrypt"
             - "./etc/letsencrypt/data:/data/letsencrypt"
         ports:
