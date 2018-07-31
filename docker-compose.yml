@@ -71,8 +71,6 @@ services:
         image: mariadb:10.3.8
         container_name: mysql
         restart: always
-        env_file:
-            - ".env"
         environment:
             - MYSQL_DATABASE=test
             - MYSQL_ROOT_PASSWORD=root
