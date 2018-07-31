@@ -414,8 +414,9 @@ An easy to run RSC private server environment using Docker magic.
 
 Choices:
   ${RED}1${NC} - Single player RSC game + basic database editing (using PHPMyAdmin)
-  ${RED}2${NC} - Game + Website + PHPMyAdmin
-  ${RED}3${NC} - Game + Website + PHPMyAdmin + RSC Preservation Wiki
+  ${RED}2${NC} - Game + Website + PHPMyAdmin"
+  #${RED}3${NC} - Game + Website + PHPMyAdmin + RSC Preservation Wiki
+echo "
 
 Which of the above do you want? Type 1, 2, or 3, and press enter."
 echo ""

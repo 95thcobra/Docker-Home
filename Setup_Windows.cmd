@@ -208,7 +208,6 @@ echo:
 
 IF /i "%edition%"=="1" goto game
 IF /i "%edition%"=="2" goto gameweb
-IF /i "%edition%"=="3" goto gamewebwiki
 
 echo Error! %edition% is not a valid option. Press enter to try again."
 echo:
