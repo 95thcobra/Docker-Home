@@ -15,7 +15,6 @@ services:
   - docker
 
 before_install:
-  - cd java
   - sudo make clone-game
   - sudo chmod -R 777 Game
   - sudo make clone-website
