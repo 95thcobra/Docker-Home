@@ -29,3 +29,5 @@ Splunk/opt-splunk-var/*
 !Splunk/opt-splunk-var/empty
 
 *.log
+
+etc/nginx/default\.conf
