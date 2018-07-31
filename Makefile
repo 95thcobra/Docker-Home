@@ -1,4 +1,3 @@
-include .env
 MYSQL_DUMPS_DIR=./data/db
 
 start: init
