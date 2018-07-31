@@ -30,33 +30,9 @@ before_install:
 script:
   - sudo make start
   - docker-compose -f docker-compose.yml ps
-  - sudo make import-game
-  - sudo make import-website
-
-  - export JAVA_HOME=$HOME/oraclejdk8
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install oraclejdk8 --target $JAVA_HOME
-  - sudo ant -f Game/server/build.xml compile
-
-  - export JAVA_HOME=$HOME/oraclejdk9
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install oraclejdk9 --target $JAVA_HOME
-  - sudo ant -f Game/server/build.xml compile
-
-  - export JAVA_HOME=$HOME/oraclejdk10
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install oraclejdk10 --target $JAVA_HOME
-  - sudo ant -f Game/server/build.xml compile
-
-  - export JAVA_HOME=$HOME/openjdk8
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk8 --target $JAVA_HOME
-  - sudo ant -f Game/server/build.xml compile
-
-  - export JAVA_HOME=$HOME/openjdk9
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk9 --target $JAVA_HOME
-  - sudo ant -f Game/server/build.xml compile
-
-  - export JAVA_HOME=$HOME/openjdk10
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk10 --target $JAVA_HOME
-  - sudo ant -f Game/server/build.xml compile
-
-  - export JAVA_HOME=$HOME/openjdk11
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk11 --target $JAVA_HOME
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Game/Databases/openrsc_config.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Game/Databases/openrsc_logs.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Game/Databases/openrsc.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Game/Databases/openrsc_tools.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Website/openrsc_forum.sql 2>/dev/null
   - sudo ant -f Game/server/build.xml compile
