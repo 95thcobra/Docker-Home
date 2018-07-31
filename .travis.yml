@@ -1,5 +1,14 @@
 sudo: required
-
+language: java
+install: ant deps
+jdk:
+  - oraclejdk8
+  - oraclejdk9
+  - oraclejdk10
+  - openjdk8
+  - openjdk9
+  - openjdk10
+  - openjdk11
 env:
   DOCKER_COMPOSE_VERSION: 1.22.0
 
@@ -7,13 +16,48 @@ services:
   - docker
 
 before_install:
+  - sudo make clone-game
+  - sudo chmod -R 777 Game
+  - sudo make clone-website
+  - sudo make clone-website
+  - sudo chmod -R 777 Website
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose -v
   - docker -v
-  - mkdir Docker-Home
+  - sudo service mysql stop
 
 script:
-  - docker-compose -f docker-compose.travis.yml up -d
-  - docker-compose -f docker-compose.travis.yml ps
+  - sudo make start
+  - docker-compose -f docker-compose.yml ps
+  - sudo make import-game
+  - sudo make import-website
+
+  - export JAVA_HOME=$HOME/oraclejdk8
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install oraclejdk8 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
+
+  - export JAVA_HOME=$HOME/oraclejdk9
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install oraclejdk9 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
+
+  - export JAVA_HOME=$HOME/oraclejdk10
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install oraclejdk10 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
+
+  - export JAVA_HOME=$HOME/openjdk8
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk8 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
+
+  - export JAVA_HOME=$HOME/openjdk9
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk9 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
+
+  - export JAVA_HOME=$HOME/openjdk10
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk10 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
+
+  - export JAVA_HOME=$HOME/openjdk11
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk11 --target $JAVA_HOME
+  - sudo ant -f Game/server/build.xml compile
