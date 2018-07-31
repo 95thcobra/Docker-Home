@@ -32,13 +32,13 @@ script:
   - docker-compose -f docker-compose.yml ps
   - cd Game
   - cd Databases
-  - docker exec -i mysql mysql -u"root" -p"root" < openrsc_config.sql
-  - docker exec -i mysql mysql -u"root" -p"root" < openrsc_logs.sql
-  - docker exec -i mysql mysql -u"root" -p"root" < openrsc.sql
-  - docker exec -i mysql mysql -u"root" -p"root" < openrsc_tools.sql
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_config.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_logs.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc.sql 2>/dev/null
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_tools.sql 2>/dev/null
   - cd ..
   - cd ..
   - cd Website
-  - docker exec -i mysql mysql -u"root" -p"root" < openrsc_forum.sql
+  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_forum.sql 2>/dev/null
   - cd ..
   - sudo ant -f Game/server/build.xml compile
