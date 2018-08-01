@@ -1,6 +1,8 @@
 # Open RSC Docker Home [![Build Status](https://travis-ci.org/Open-RSC/Docker-Home.svg?branch=master)](https://travis-ci.org/Open-RSC/Docker-Home)
 An easy to run RSC private server environment using Docker that works in Windows, Mac, and Linux.
 
+![Death](https://i.imgur.com/tzLgEwV.png)
+
 Choices:
 
   1. Single player RSC game + basic database editing (PHPMyAdmin)
