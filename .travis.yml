@@ -1,13 +1,5 @@
 sudo: required
-language: java
-jdk:
-  - oraclejdk8
-  - oraclejdk9
-  - oraclejdk10
-  - openjdk8
-  - openjdk9
-  - openjdk10
-  - openjdk11
+
 env:
   DOCKER_COMPOSE_VERSION: 1.22.0
 
@@ -15,30 +7,12 @@ services:
   - docker
 
 before_install:
-  - sudo make clone-game
-  - sudo chmod -R 777 Game
-  - sudo make clone-website
-  - sudo make clone-website
-  - sudo chmod -R 777 Website
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose -v
   - docker -v
-  - sudo service mysql stop
 
 script:
   - sudo make start
   - docker-compose -f docker-compose.yml ps
-  - cd Game
-  - cd Databases
-  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_config.sql 2>/dev/null
-  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_logs.sql 2>/dev/null
-  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc.sql 2>/dev/null
-  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_tools.sql 2>/dev/null
-  - cd ..
-  - cd ..
-  - cd Website
-  - docker exec -i $(docker-compose ps -q mysqldb) mysql -u"root" -p"root" < openrsc_forum.sql 2>/dev/null
-  - cd ..
-  - sudo ant -f Game/server/build.xml compile

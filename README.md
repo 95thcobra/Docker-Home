@@ -1,11 +1,10 @@
-# Open RSC Docker Home
+# Open RSC Docker Home [![Build Status](https://travis-ci.org/Open-RSC/Docker-Home.svg?branch=master)](https://travis-ci.org/Open-RSC/Docker-Home)
 An easy to run RSC private server environment using Docker that works in Windows, Mac, and Linux.
 
 Choices:
 
   1. Single player RSC game + basic database editing (PHPMyAdmin)
   2. Game + Website + PHPMyAdmin
-  3. Game + Website + PHPMyAdmin + RSC Preservation Wiki
 
 ___
 
@@ -61,7 +60,6 @@ ___
 
     * [http://localhost](http://localhost/) (username: Marwolf, password: malware)
     * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: root, password: root)
-    * [http://localhost/wiki](http://localhost/wiki) (username: Marwolf, password: openrscpassword)
 
 3. Start the game's Docker containers, then run the game server and client:
 
