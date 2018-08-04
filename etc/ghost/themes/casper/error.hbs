@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+  <html lang="en" style="background: url({{@blog.cover_image}}) center/cover no-repeat fixed">
+  <head>
+    <title>404 - Page Not Found</title>
+    {{> meta}}
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,600italic,600,300">
+    <link rel="stylesheet" type="text/css" href="{{asset "css/uno-zen.css"}}" />
+    {{ghost_head}}
+  </head>
+  <body>
+    <article>
+      <section>
+        <div class="astro-wrap">
+          <a class="astronaut" href="#" title="return to base"></a>
+        </div>
+        <div class="mayday">
+          <p align=center><a id="safe-button" class="btn small" href="/">Return to the main page</a></p>
+        </div>
+      </section>
+    </article>
+    {{ghost_foot}}
+    <script src="{{asset "js/uno-zen.common.js"}}" type="text/javascript" charset="utf-8"></script>
+  </body>
+</html>
