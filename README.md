@@ -95,8 +95,9 @@ ___
 
 2. Open your favorite browser:
 
-    * [http://localhost](http://localhost/) (username: Marwolf, password: malware)
-    * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: root, password: root)
+    * [http://localhost](http://localhost) (username: Marwolf, password: malware)
+    * [http://localhost:9000](http://localhost:9000) PHPMyAdmin (username: root, password: root)
+    * [http://localhost:8080](http://localhost:8080) Apache Tomcat webserver, used to serve files over HTTP
 
 3. Start the game's Docker containers, then run the game server and client:
 
@@ -153,6 +154,15 @@ ___
 ## Steps to Host on a VPS <a name="vps"></a>
 
 You will need to edit:
+
+#### Docker-Compose.xml Ghost URL
+
+  * The main website is running through Ghost Blog. Scroll to the bottom of Docker-Compose.xml (located in the root of the Docker-Home repository folder) and edit this line with your hostname / IP: "url: 'http://localhost' #change this!"
+
+  * You will need to reload all docker containers. Shortcut command: "sudo make stop && sudo make start"
+
+  * Nginx has a hostname reference for localhost at the top of the file. It can be safely left alone.
+
 
 #### PHPMyAdmin MariaDB SQL users
 
