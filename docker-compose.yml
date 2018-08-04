@@ -106,6 +106,13 @@ services:
           NODE_ENV: production
           privacy__useUpdateCheck: 0
           url: 'http://localhost' #change this!
+          #mail__from: OpenRSC Emailer <openrsc.emailer@gmail.com>
+          #mail__transport: SMTP
+          #mail__transport__options__host: smtp.gmail.com
+          #mail__transport__options__secureConnection: 1
+          #mail__transport__options__port: 465
+          #mail__transport__options__auth_user: openrsc.emailer@gmail.com
+          #mail__transport__options__auth_pass: OFF
 #        logging:
 #            driver: splunk
 #            options:
