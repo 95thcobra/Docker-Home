@@ -78,13 +78,11 @@ services:
         image: tomcat:9.0.10-jre10-slim
         container_name: tomcat
         ports:
-            - "8082:8082"
+            - "0.0.0.0:8082:8082"
         restart: always
         volumes:
             - "./Website:/usr/local/tomcat/webapps/ROOT"
             - "./etc/tomcat:/usr/local/tomcat/conf"
-        depends_on:
-            - mysqldb
 #        logging:
 #            driver: splunk
 #            options:

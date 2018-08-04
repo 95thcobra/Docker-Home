@@ -99,7 +99,7 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Configuring UFW to allow good ports and block MySQL from outside"
         echo ""
-        sudo ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 443/tcp && ufw allow 80/tcp && ufw allow 53595/tcp && ufw deny 3306/tcp
+        sudo ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 8082/tcp && ufw allow 443/tcp && ufw allow 80/tcp && ufw allow 53595/tcp && ufw deny 3306/tcp
         sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
         sudo ufw reload
         echo ""
@@ -138,6 +138,7 @@ if [ "$install" == "1" ]; then
         echo "Permitting good ports through the firewall."
         echo ""
         firewall-cmd --permanent --add-port=53595/tcp
+        firewall-cmd --permanent --add-port=8082/tcp
         firewall-cmd --permanent --add-port=80/tcp
         firewall-cmd --permanent --add-port=443/tcp
         firewall-cmd --permanent --add-port=22/tcp
@@ -219,9 +220,12 @@ if [ "$install" == "1" ]; then
         sudo systemctl enable fail2ban
         echo ""
         echo ""
-        echo "Permitting default game port 53595/tcp through the firewall."
+        echo "Permitting ports through the firewall."
         firewall-cmd --permanent --add-port=53595/tcp
-        echo ""
+        firewall-cmd --permanent --add-port=8082/tcp
+        firewall-cmd --permanent --add-port=80/tcp
+        firewall-cmd --permanent --add-port=443/tcp
+        firewall-cmd --permanent --add-port=22/tcp
         firewall-cmd --reload
         echo ""
         echo ""
