@@ -174,7 +174,7 @@ You will need to edit:
 
   * Edit: "/Docker-Home/Game/Launcher/src/Main.java"
 
-    * Replace with your domain / IP: private static String URL = "http://localhost";
+    * Replace with your domain / IP: "private static String Domain = "localhost";"
 
   * Compile and copy result from "/Docker-Home/Game/Launcher/dist/Open_RSC_Launcher.jar" to "/Docker-Home/Website/downloads/Open_RSC_Launcher.jar"
 
