@@ -202,5 +202,14 @@ You will need to edit:
 
     * Obtain MD5sum via command: "md5sum *.zip"
 
+### Website config import:
+
+  * Visit http://localhost/ghost
+
+  * Login with admin@openrsc.com / malwareinfection
+
+  * Click on "Labs"
+
+  * Click "Browse" beside "Import content" and select ""/Docker-Home/website_backup.json"
 
 [Return to top](#top)
