@@ -17,6 +17,11 @@ echo ""
 echo ""
 
 # Run the game server in a detached screen
+echo "Importing fresh openrsc_config.sql database."
+echo ""
+sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Game/Databases/openrsc_config.sql 2>/dev/null
+echo ""
+echo ""
 echo "Launching the game server in a new screen."
 echo ""
 echo "Type 'screen -r' to access the game server screen."
