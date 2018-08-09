@@ -4,10 +4,11 @@
 echo ""
 echo "Pulling recent updates from the Open-RSC Game repository."
 echo ""
+sudo git pull
 sudo make pull-game
 echo ""
 echo ""
-echo "Starting any stopped Docker containers."
+echo "Starting Docker containers."
 echo ""
 sudo make start
 echo ""

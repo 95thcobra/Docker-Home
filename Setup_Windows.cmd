@@ -201,7 +201,6 @@ echo:
 echo Choices:
 echo  1 - Single player RSC game + basic database editing (using PHPMyAdmin)
 echo  2 - Game + Website + PHPMyAdmin
-echo  3 - Game + Website + PHPMyAdmin + RSC Preservation Wiki
 echo:
 SET /P edition=Which of the above do you want? Type 1, 2, or 3, and press enter."
 echo:
