@@ -10,7 +10,7 @@ echo ""
 echo ""
 echo "Starting Docker containers."
 echo ""
-sudo make start
+sudo make start-single-player
 echo ""
 echo ""
 
