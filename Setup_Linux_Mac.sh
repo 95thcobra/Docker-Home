@@ -67,7 +67,7 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        sudo apt update && sudo apt install screen fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        sudo apt update && sudo apt install screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
         echo ""
         echo ""
         echo "Do you have Docker installed? It is required for this."
@@ -131,7 +131,7 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install fail2ban screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
+        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install zip fail2ban screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
         sudo systemctl start fail2ban
         sudo systemctl enable fail2ban
         echo ""
@@ -223,7 +223,7 @@ if [ "$install" == "1" ]; then
         sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/dnf-conf-0.6.4-2.sdl7.noarch.rpm
         sudo wget http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/python-dnf-0.6.4-2.sdl7.noarch.rpm
         sudo yum -y install dnf-0.6.4-2.sdl7.noarch.rpm dnf-conf-0.6.4-2.sdl7.noarch.rpm python-dnf-0.6.4-2.sdl7.noarch.rpm
-        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install fail2ban screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
+        sudo dnf -y update && sudo dnf -y upgrade && sudo dnf -y install zip fail2ban screen make unzip git ca-certificates curl yum-utils device-mapper-persistent-data lvm2
         sudo yum install -y python-pip
         sudo pip install --upgrade pip
         sudo pip install docker-compose
@@ -325,7 +325,7 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        brew install unzip wget git curl screen
+        brew install unzip wget git curl zip screen
         echo ""
         echo ""
         echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this."
