@@ -1,10 +1,10 @@
 MYSQL_DUMPS_DIR=./data/db
 
 start:
-	docker-compose -f docker-compose.yml up --force-recreate --remove-orphans --detach
+	docker-compose --file docker-compose.yml up --force-recreate --remove-orphans -d
 
 start-single-player:
-	docker-compose -f docker-compose-single-player.yml up --force-recreate --remove-orphans --detach
+	docker-compose --file docker-compose-single-player.yml up --force-recreate --remove-orphans -d
 
 stop:
 	@docker-compose down -v
