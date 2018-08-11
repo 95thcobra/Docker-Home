@@ -31,7 +31,7 @@ echo Removing old then extracting a fresh client cache to your home folder.
 echo:
 rmdir "%HOMEPATH%/OpenRSC" /s /Q
 md "%HOMEPATH%/OpenRSC"
-7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r > NULL
+7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r
 echo:
 echo:
 

@@ -4,7 +4,7 @@ start:
 	docker-compose --file docker-compose.yml up --force-recreate --remove-orphans -d
 
 start-single-player:
-	docker-compose --file docker-compose-single-player.yml up --force-recreate --remove-orphans -d
+	docker-compose --file docker-compose-single-player.yml up -d
 
 stop:
 	@docker-compose down -v
