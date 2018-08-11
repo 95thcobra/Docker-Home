@@ -1,12 +1,13 @@
 @echo off
 echo:
-echo Stopping the running Docker containers.
+echo Stopping associated Docker containers.
 echo:
 make stop
 echo:
 echo:
-echo Killing any running in the background instance of the game server.
+echo Killing any instances of the game server that are running in the background.
 echo:
 tskill java /a
+echo:
 echo:
 pause
