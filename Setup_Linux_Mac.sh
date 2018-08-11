@@ -67,7 +67,7 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        sudo apt update && sudo apt install fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        sudo apt update && sudo apt install screen fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
         echo ""
         echo ""
         echo "Do you have Docker installed? It is required for this."
@@ -325,7 +325,7 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        brew install unzip wget git curl
+        brew install unzip wget git curl screen
         echo ""
         echo ""
         echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this."
