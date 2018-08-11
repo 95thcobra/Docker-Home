@@ -185,11 +185,6 @@ echo:
 make stop
 echo:
 echo:
-echo Starting Docker containers and downloading what is needed. This may take a while the first time.
-echo:
-make start
-echo:
-echo:
 
 :edition
 echo:
@@ -213,6 +208,12 @@ goto edition
 
 :game
 echo:
+echo Starting Docker containers and downloading what is needed. This may take a while the first time.
+echo:
+make stop
+make start-single-player
+echo:
+echo:
 echo Downloading a copy of the Game repository
 echo:
 make clone-windows-game
@@ -228,6 +229,12 @@ echo:
 goto final
 
 :gameweb
+echo:
+echo Starting Docker containers and downloading what is needed. This may take a while the first time.
+echo:
+make stop
+make start
+echo:
 echo:
 echo Downloading a copy of the Website repository
 echo:

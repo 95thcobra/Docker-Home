@@ -459,7 +459,7 @@ if [ "$choice" == "1" ]; then
     echo ""
     sudo make stop
     echo ""
-    sudo make start
+    sudo make start-single-player
     echo ""
     echo ""
     echo "Fetching the Game from the Open RSC git repo."
