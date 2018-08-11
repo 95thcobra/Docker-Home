@@ -1,7 +1,7 @@
 MYSQL_DUMPS_DIR=./data/db
 
 start: init
-	docker-compose up -d
+	docker-compose up -d --remove-orphans
 
 stop:
 	@docker-compose down -v
