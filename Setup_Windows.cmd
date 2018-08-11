@@ -24,7 +24,7 @@ echo:
 IF /i "%install%"=="1" goto doinstall
 IF /i "%install%"=="2" goto skip
 
-echo Error! %install% is not a valid option. Press enter to try again."
+echo Error! %install% is not a valid option. Press enter to try again.
 echo:
 SET /P install=""
 Setup_Windows.cmd
@@ -52,7 +52,7 @@ echo:
 IF /i "%java%"=="1" goto installjava
 IF /i "%java%"=="2" goto askdocker
 
-echo Error! %java% is not a valid option. Press enter to try again."
+echo Error! %java% is not a valid option. Press enter to try again.
 echo:
 SET /P java=""
 goto doinstall
@@ -79,7 +79,7 @@ echo:
 IF /i "%docker%"=="1" goto installdocker
 IF /i "%docker%"=="2" goto askgit
 
-echo Error! %docker% is not a valid option. Press enter to try again."
+echo Error! %docker% is not a valid option. Press enter to try again.
 echo:
 SET /P docker=""
 goto askdocker
@@ -119,7 +119,7 @@ echo:
 IF /i "%git%"=="1" goto installgit
 IF /i "%git%"=="2" goto askide
 
-echo Error! %git% is not a valid option. Press enter to try again."
+echo Error! %git% is not a valid option. Press enter to try again.
 echo:
 SET /P git=""
 goto askgit
@@ -150,7 +150,7 @@ IF /i "%git%"=="2" goto installintellij
 IF /i "%git%"=="3" goto installeclipse
 IF /i "%git%"=="4" goto skip
 
-echo Error! %git% is not a valid option. Press enter to try again."
+echo Error! %git% is not a valid option. Press enter to try again.
 echo:
 SET /P git=""
 goto askide
@@ -195,13 +195,13 @@ echo Choices:
 echo  1 - Set up for single player
 echo  2 - Deployment for a publicly hosted server
 echo:
-SET /P edition=Which of the above do you want? Type 1, 2, or 3, and press enter."
+SET /P edition=Which of the above do you want? Type 1, 2, or 3, and press enter.
 echo:
 
 IF /i "%edition%"=="1" goto game
 IF /i "%edition%"=="2" goto gameweb
 
-echo Error! %edition% is not a valid option. Press enter to try again."
+echo Error! %edition% is not a valid option. Press enter to try again.
 echo:
 SET /P edition=""
 goto edition
@@ -262,7 +262,7 @@ echo:
 echo Extracting client cache
 echo:
 md "%HOMEPATH%/OpenRSC"
-7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r
+7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r > NULL
 echo:
 echo:
 echo First time setup is now complete. Go ahead and open "Start_Single_Player_Game_Windows.cmd" now.
