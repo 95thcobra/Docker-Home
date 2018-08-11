@@ -17,12 +17,12 @@ echo:
 REM   Compile the game server and client:
 echo Compiling the game client.
 echo:
-call ant -f Game/client/build.xml compile
+call gradle -b Game/client/build.gradle compile
 echo:
 echo:
 echo Compiling the game server.
 echo:
-call ant -f Game/server/build.xml compile
+call gradle -b Game/server/build.gradle compile
 echo:
 echo:
 
@@ -31,7 +31,7 @@ echo Removing old then extracting a fresh client cache to your home folder.
 echo:
 rmdir "%HOMEPATH%/OpenRSC" /s /Q
 md "%HOMEPATH%/OpenRSC"
-7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r
+7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC" -r > NULL
 echo:
 echo:
 
@@ -45,7 +45,7 @@ echo:
 REM   Generate updated cache files, copies them to cache folder overwriting existing:
 echo Generating cache .dat files from current config database and copying to client cache in your home folder.
 echo:
-call ant -f Game/server/build.xml npcs items objects > NULL
+call sudo gradle -b Game/server/build.gradle npcs items objects > NULL
 xcopy /y "Game/server/npcs.dat" "%HOMEPATH%/OpenRSC/npcs.dat"
 xcopy /y "Game/server/objects.dat" "%HOMEPATH%/OpenRSC/objects.dat"
 xcopy /y "Game/server/items.dat" "%HOMEPATH%/OpenRSC/items.dat"
@@ -55,13 +55,15 @@ echo:
 REM   Run the game client in a new window:
 echo Starting the game client in a new window.
 echo:
-call START "" ant -f Game/client/build.xml runclient
+call START "" java -jar Game/client/Open_RSC_Client.jar
 echo:
 echo:
 
 REM   Run the game server in the current window:
 echo Starting the game server in the current window.
 echo:
-call ant -f Game/server/build.xml runserver
+cd Game/server
+call java -jar Open_RSC_Server.jar
+cd ../../
 echo:
 pause

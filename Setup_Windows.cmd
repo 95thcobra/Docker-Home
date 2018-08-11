@@ -59,9 +59,9 @@ goto doinstall
 
 :installjava
 echo:
-echo Installing Oracle Java JDK 8 and Apache Ant.
+echo Installing Oracle Java JDK 8 and Gradle.
 echo:
-choco install -y jdk8 ant
+choco install -y jdk8 gradle ant
 echo:
 echo:
 goto askdocker

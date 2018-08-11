@@ -21,7 +21,6 @@ sudo nano Run_Production_Linux_Game_Server.sh
 sudo nano Game/server/config/config.xml
 echo ""
 echo ""
-echo "Launching Run_Production_Linux_Game_Server.sh"
+echo "Ready to execute Run_Production_Linux_Game_Server.sh"
 echo ""
 echo ""
-./Run_Production_Linux_Game_Server.sh
