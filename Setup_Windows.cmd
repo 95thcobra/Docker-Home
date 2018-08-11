@@ -180,11 +180,6 @@ echo:
 git pull
 echo:
 echo:
-echo Attempting to stop any running Docker containers.
-echo:
-make stop
-echo:
-echo:
 
 :edition
 echo:
@@ -210,7 +205,6 @@ goto edition
 echo:
 echo Starting Docker containers and downloading what is needed. This may take a while the first time.
 echo:
-make stop
 make start-single-player
 echo:
 echo:
