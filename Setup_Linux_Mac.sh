@@ -70,7 +70,7 @@ if [ "$install" == "1" ]; then
         sudo apt update && sudo apt install fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
         echo ""
         echo ""
-        echo "Do you have Docker installed?"
+        echo "Do you have Docker installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -90,14 +90,14 @@ if [ "$install" == "1" ]; then
         # Ubuntu Docker <===================================================
 
         echo ""
-        echo "Preventing Docker from making the iptables firewall insecure"
+        echo "Preventing Docker from making the iptables firewall insecure."
         echo ""
         echo '{
     "iptables": false
 }' | sudo tee --append  /etc/docker/daemon.json && sudo service docker restart
         echo ""
         echo ""
-        echo "Configuring UFW to allow good ports and block MySQL from outside"
+        echo "Configuring UFW to allow good ports and block MySQL from outside."
         echo ""
         sudo ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 8080/tcp && ufw allow 443/tcp && ufw allow 9000/tcp && ufw allow 53595/tcp && ufw deny 3306/tcp
         sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
@@ -108,7 +108,7 @@ if [ "$install" == "1" ]; then
         echo "sudo ufw enable"
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK installed already?"
+        echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -117,7 +117,8 @@ if [ "$install" == "1" ]; then
 
         # Ubuntu Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo apt update && sudo apt install default-jdk ant openjfx -y
+            sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
+            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install ant oracle-java8-set-default -y
         else
           continue
         fi
@@ -146,7 +147,7 @@ if [ "$install" == "1" ]; then
         firewall-cmd --reload
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK and Apache Ant installed already?"
+        echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -156,6 +157,16 @@ if [ "$install" == "1" ]; then
         # Fedora Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo dnf -y install ant
+            wget --no-cookies \
+            --no-check-certificate \
+            --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+            "http://download.oracle.com/otn-pub/java/jdk/8-b132/jdk-8-linux-x64.rpm" \
+            -O jdk-8-linux-x64.rpm
+            sudo rpm -Uvh jdk-8-linux-x64.rpm
+            sudo alternatives --install /usr/bin/java java /usr/java/jdk1.8.0/jre/bin/java 20000
+            sudo alternatives --install /usr/bin/jar jar /usr/java/jdk1.8.0/bin/jar 20000
+            sudo alternatives --install /usr/bin/javac javac /usr/java/jdk1.8.0/bin/javac 20000
+            sudo alternatives --install /usr/bin/javaws javaws /usr/java/jdk1.8.0/jre/bin/javaws 20000
         else
           continue
         fi
@@ -163,7 +174,7 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
-        echo "Do you have Docker installed?"
+        echo "Do you have Docker installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -186,7 +197,7 @@ if [ "$install" == "1" ]; then
                  docker-engine
             echo ""
             echo ""
-            echo "Attempting to install Docker now"
+            echo "Attempting to install Docker now."
             echo ""
             sudo dnf -y install dnf-plugins-core
             sudo dnf -y config-manager \
@@ -230,7 +241,7 @@ if [ "$install" == "1" ]; then
         firewall-cmd --reload
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK and Apache Ant installed already?"
+        echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -240,6 +251,16 @@ if [ "$install" == "1" ]; then
         # CentOS 7 Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo dnf -y install ant
+            wget --no-cookies \
+            --no-check-certificate \
+            --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+            "http://download.oracle.com/otn-pub/java/jdk/8-b132/jdk-8-linux-x64.rpm" \
+            -O jdk-8-linux-x64.rpm
+            sudo rpm -Uvh jdk-8-linux-x64.rpm
+            sudo alternatives --install /usr/bin/java java /usr/java/jdk1.8.0/jre/bin/java 20000
+            sudo alternatives --install /usr/bin/jar jar /usr/java/jdk1.8.0/bin/jar 20000
+            sudo alternatives --install /usr/bin/javac javac /usr/java/jdk1.8.0/bin/javac 20000
+            sudo alternatives --install /usr/bin/javaws javaws /usr/java/jdk1.8.0/jre/bin/javaws 20000
         else
           continue
         fi
@@ -247,7 +268,7 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
-        echo "Do you have Docker installed?"
+        echo "Do you have Docker installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -270,7 +291,7 @@ if [ "$install" == "1" ]; then
                  docker-engine
             echo ""
             echo ""
-            echo "Attempting to install Docker now"
+            echo "Attempting to install Docker now."
             echo ""
             curl -fsSL https://get.docker.com/ | sh
             sudo systemctl start docker
@@ -286,7 +307,7 @@ if [ "$install" == "1" ]; then
     # Mac OS ===================================================>
     elif [ "$os" == "4" ]; then
         clear
-        echo "Do you have brew installed?"
+        echo "Do you have brew installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -307,7 +328,7 @@ if [ "$install" == "1" ]; then
         brew install unzip wget git curl
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK 8 installed already?"
+        echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -323,7 +344,7 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
-        echo "Do you have Docker installed?"
+        echo "Do you have Docker installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -332,7 +353,7 @@ if [ "$install" == "1" ]; then
 
         # Mac Docker ===================================================>
         if [ "$docker" == "1" ]; then
-            echo "Downloading the Docker for Mac installer"
+            echo "Downloading the Docker for Mac installer."
             echo ""
             wget https://download.docker.com/mac/stable/Docker.dmg
             hdiutil attach Docker.dmg
@@ -361,7 +382,7 @@ if [ "$install" == "1" ]; then
         echo ""
         read
         echo ""
-        echo "Do you have Docker installed?"
+        echo "Do you have Docker installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -370,7 +391,7 @@ if [ "$install" == "1" ]; then
 
         # Other OS Docker ===================================================>
         if [ "$docker" == "1" ]; then
-            echo "Attempting to install Docker now"
+            echo "Attempting to install Docker now. If it fails, install manually."
             echo ""
             curl -fsSL get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
@@ -381,7 +402,7 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
-        echo "Do you have Java OpenJDK installed already?"
+        echo "Do you have Oracle Java JDK 8 and Apache Ant installed already? It is required for this. If it fails, install manually."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -390,7 +411,8 @@ if [ "$install" == "1" ]; then
 
         # Other OS Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo apt update && sudo apt install default-jdk ant openjfx -y
+            sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
+            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install ant oracle-java8-set-default -y
         else
           continue
         fi
@@ -415,12 +437,11 @@ echo ""
 echo ""
 echo ""
 echo "${RED}Open RSC Installer:${NC}
-An easy to run RSC private server environment using Docker magic.
+An easy to run RSC private server using Docker magic.
 
 Choices:
-  ${RED}1${NC} - Single player RSC game + basic database editing (using PHPMyAdmin)
-  ${RED}2${NC} - Game + Website + PHPMyAdmin"
-  #${RED}3${NC} - Game + Website + PHPMyAdmin + RSC Preservation Wiki
+  ${RED}1${NC} - Set up for single player
+  ${RED}2${NC} - Deployment for a publicly hosted server"
 echo "
 
 Which of the above do you want? Type 1, 2, or 3, and press enter."
@@ -431,13 +452,7 @@ read choice
 # 1. Single player RSC game ===================================================>
 if [ "$choice" == "1" ]; then
     clear
-    echo "You have picked ${GREEN}single player RSC + PHPMyAdmin!${NC}"
-    echo ""
-    echo ""
-    echo "Logging into Docker Hub to get the required images."
-    echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
-    echo ""
-    sudo docker login
+    echo "You have picked ${GREEN}Set up for single player!${NC}"
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
@@ -472,7 +487,7 @@ if [ "$choice" == "1" ]; then
 # 2. Game + Website + PHPMyAdmin ===================================================>
 elif [ "$choice" == "2" ]; then
     clear
-    echo "You have picked ${GREEN}Game + Website + PHPMyAdmin!${NC}"
+    echo "You have picked ${GREEN}Deployment for a publicly hosted server!${NC}"
     echo ""
     echo ""
     echo "Logging into Docker Hub to get the required images."
@@ -491,11 +506,8 @@ elif [ "$choice" == "2" ]; then
     echo "Fetching the Website and Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
-    sudo chmod -R 777 Game
     echo ""
     sudo make clone-website
-    sudo chmod -R 777 Website
-    sudo chmod -R 644 Website/board/config.php
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
@@ -507,80 +519,12 @@ elif [ "$choice" == "2" ]; then
     echo "Importing the game databases."
     echo ""
     sudo make import-game
-    echo ""
-    echo ""
-    echo "Importing the website database."
-    echo ""
-    sudo make import-website
     echo ""
     echo ""
     echo "Open RSC setup complete!"
     echo ""
     exit
 # 2. Game + Website + PHPMyAdmin <===================================================
-
-# 3. Game + Website + PHPMyAdmin + RSC Preservation Wiki ===================================================>
-elif [ "$choice" == "3" ]; then
-    clear
-    echo "You have picked ${GREEN}Game + Website + PHPMyAdmin + RSC Preservation Wiki!${NC}"
-    echo ""
-    echo ""
-    echo "Logging into Docker Hub to get the required images."
-    echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
-    echo ""
-    sudo docker login
-    echo ""
-    echo ""
-    echo "Starting up the Docker containers and stopping any existing ones."
-    echo ""
-    sudo make stop
-    echo ""
-    sudo make start
-    echo ""
-    echo ""
-    echo "Fetching the Website, Game, and Wiki from the Open RSC git repo."
-    echo ""
-    sudo make clone-game
-    sudo chmod -R 777 Game
-    echo ""
-    sudo make clone-website
-    sudo chmod -R 777 Website
-    sudo chmod -R 644 Website/board/config.php
-    echo ""
-    sudo make clone-wiki
-    sudo chmod -R 777 Website/Wiki
-    echo ""
-    echo ""
-    echo "Extracting the Wiki database."
-    echo ""
-    sudo unzip -o Website/Wiki/openrsc_wiki.sql.zip -d Website/Wiki
-    echo ""
-    echo ""
-    echo "Creating the client cache in your home folder."
-    echo ""
-    mkdir ~/OpenRSC
-    unzip -o Game/client/cache.zip -d ~/OpenRSC
-    echo ""
-    echo ""
-    echo "Importing the game databases."
-    echo ""
-    sudo make import-game
-    echo ""
-    echo ""
-    echo "Importing the website database."
-    echo ""
-    sudo make import-website
-    echo ""
-    echo ""
-    echo "Importing the wiki database."
-    echo ""
-    sudo make import-wiki
-    echo ""
-    echo ""
-    echo "Open RSC setup complete!"
-    echo ""
-    exit
-    # 3. Game + Website + PHPMyAdmin + RSC Preservation Wiki <===================================================
 
 else
     echo ""
