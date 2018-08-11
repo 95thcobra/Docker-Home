@@ -490,12 +490,6 @@ elif [ "$choice" == "2" ]; then
     echo "You have picked ${GREEN}Deployment for a publicly hosted server!${NC}"
     echo ""
     echo ""
-    echo "Logging into Docker Hub to get the required images."
-    echo "You may first need to register an account at ${RED}dockerhub.com${NC}"
-    echo ""
-    sudo docker login
-    echo ""
-    echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
     echo ""
     sudo make stop
