@@ -12,14 +12,16 @@ echo ""
 echo "Compiling the game server."
 echo ""
 echo ""
-sudo ant -f Game/server/build.xml compile
+#sudo ant -f Game/server/build.xml compile
+sudo gradle -b Game/server/build.gradle compile
 echo ""
 echo ""
 
 # Client
 echo "Compiling the game client."
 echo ""
-sudo ant -f "Game/client/build.xml" compile
+#sudo ant -f "Game/client/build.xml" compile
+sudo gradle -b Game/client/build.gradle compile
 echo ""
 echo ""
 echo "Compressing jar into zip"
@@ -39,7 +41,8 @@ echo ""
 # Launcher
 echo "Compiling the game launcher."
 echo ""
-sudo ant -f "Game/Launcher/build.xml"
+#sudo ant -f "Game/Launcher/build.xml" jar
+sudo gradle -b Game/Launcher/build.gradle jar
 echo ""
 echo ""
 echo "Copying result to Website/downloads/"

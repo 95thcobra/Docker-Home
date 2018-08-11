@@ -17,12 +17,14 @@ echo ""
 # Compile the game server and client
 echo "Compiling the game client."
 echo ""
-sudo ant -f Game/client/build.xml compile
+#sudo ant -f Game/client/build.xml compile
+sudo gradle -b Game/client/build.gradle compile
 echo ""
 echo ""
 echo "Compiling the game server."
 echo ""
-sudo ant -f Game/server/build.xml compile
+#sudo ant -f Game/server/build.xml compile
+sudo gradle -b Game/server/build.gradle compile
 echo ""
 echo ""
 
@@ -31,7 +33,7 @@ echo "Removing old then extracting a fresh client cache to your home folder."
 echo ""
 sudo rm -rf ~/OpenRSC
 mkdir ~/OpenRSC
-unzip -o Game/client/cache.zip -d ~/OpenRSC
+unzip -o Game/client/cache.zip -d ~/OpenRSC >/dev/null
 echo ""
 echo ""
 
@@ -55,12 +57,15 @@ echo ""
 # Run the game client in a new window
 echo "Launching the game client."
 echo ""
-ant -f Game/client/build.xml runclient &
+#ant -f Game/client/build.xml runclient &
+java -jar Game/client/Open_RSC_Client.jar &
 echo ""
 echo ""
 
 # Run the game server in the current window
 echo "Launching the game server."
 echo ""
-ant -f Game/server/build.xml runserver
+#ant -f Game/server/build.xml runserver
+cd Game/server
+java -jar Open_RSC_Server.jar
 echo ""

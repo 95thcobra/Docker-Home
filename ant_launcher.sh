@@ -7,4 +7,5 @@ echo "CTRL + A + D to detach the screen so this continues in the background."
 echo ""
 echo "Console output is being saved to gameserver.log"
 echo ""
-ant -f Game/server/build.xml runserver > gameserver.log
+cd Game/server
+java -jar Open_RSC_Server.jar > gameserver.log
