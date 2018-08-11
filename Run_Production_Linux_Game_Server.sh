@@ -33,7 +33,6 @@ echo "Copying result to Website/downloads/"
 echo ""
 yes | sudo cp -rf "Game/client/client.zip" "Website/downloads/"
 sudo rm "Game/client/client.zip"
-
 echo ""
 echo ""
 
