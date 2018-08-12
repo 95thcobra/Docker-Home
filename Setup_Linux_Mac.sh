@@ -118,7 +118,7 @@ if [ "$install" == "1" ]; then
         # Ubuntu Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
-            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install gradle ant oracle-java8-set-default -y
+            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install gradle ant oracle-java8-set-default openjfx -y
         else
           continue
         fi
@@ -156,7 +156,7 @@ if [ "$install" == "1" ]; then
 
         # Fedora Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo dnf -y install gradle ant
+            sudo dnf -y install gradle ant openjfx
             wget --no-cookies \
             --no-check-certificate \
             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
@@ -250,7 +250,7 @@ if [ "$install" == "1" ]; then
 
         # CentOS 7 Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo dnf -y install gradle ant
+            sudo dnf -y install gradle ant openjfx
             wget --no-cookies \
             --no-check-certificate \
             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
@@ -338,7 +338,7 @@ if [ "$install" == "1" ]; then
         # Mac Java ===================================================>
         if [ "$java" == "1" ]; then
             brew tap AdoptOpenJDK/openjdk
-            brew install adoptopenjdk-openjdk8 gradle ant
+            brew install adoptopenjdk-openjdk8 gradle ant openjfx
         fi
         # Mac Java <===================================================
 
@@ -412,7 +412,7 @@ if [ "$install" == "1" ]; then
         # Other OS Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
-            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install gradle ant oracle-java8-set-default -y
+            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install gradle ant oracle-java8-set-default openjfx -y
         else
           continue
         fi
