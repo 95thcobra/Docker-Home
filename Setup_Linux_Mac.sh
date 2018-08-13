@@ -15,6 +15,9 @@ Choices:
   ${RED}1${NC} - Install for me!
   ${RED}2${NC} - Im all set, continue! (default)"
 echo ""
+echo "Which of the above do you wish to do? Type the choice number and press enter."
+echo ""
+echo ""
 read install
 
 # OS Selection ===================================================>
@@ -27,6 +30,9 @@ if [ "$install" == "1" ]; then
     echo "${RED}3${NC} - CentOS 7 Linux"
     echo "${RED}4${NC} - Mac OS High Sierra"
     echo "${RED}5${NC} - Other"
+    echo ""
+    echo "Which of the above do you wish to do? Type the choice number and press enter."
+    echo ""
     echo ""
     read os
 
@@ -75,6 +81,9 @@ if [ "$install" == "1" ]; then
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
         echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
+        echo ""
         read docker
 
         # Ubuntu Docker ===================================================>
@@ -112,6 +121,9 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
+        echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
         echo ""
         read java
 
@@ -152,6 +164,9 @@ if [ "$install" == "1" ]; then
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
         echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
+        echo ""
         read java
 
         # Fedora Java ===================================================>
@@ -178,6 +193,9 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
+        echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
         echo ""
         read docker
 
@@ -246,6 +264,9 @@ if [ "$install" == "1" ]; then
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
         echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
+        echo ""
         read java
 
         # CentOS 7 Java ===================================================>
@@ -272,6 +293,9 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
+        echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
         echo ""
         read docker
 
@@ -312,6 +336,9 @@ if [ "$install" == "1" ]; then
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
         echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
+        echo ""
         read brew
 
         # Mac Brew ===================================================>
@@ -333,6 +360,9 @@ if [ "$install" == "1" ]; then
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
         echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
+        echo ""
         read java
 
         # Mac Java ===================================================>
@@ -348,6 +378,9 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
+        echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
         echo ""
         read docker
 
@@ -387,6 +420,9 @@ if [ "$install" == "1" ]; then
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
         echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
+        echo ""
         read docker
 
         # Other OS Docker ===================================================>
@@ -406,6 +442,9 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
+        echo ""
+        echo "Which of the above do you wish to do? Type the choice number and press enter."
+        echo ""
         echo ""
         read java
 
@@ -435,21 +474,24 @@ echo ""
 sudo git pull
 echo ""
 echo ""
-echo ""
+clear
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server using Docker magic.
 
 Choices:
   ${RED}1${NC} - Set up for single player
-  ${RED}2${NC} - Deployment for a publicly hosted server"
-echo "
-
-Which of the above do you want? Type 1, 2, or 3, and press enter."
+  ${RED}2${NC} - Deployment for a publicly hosted server
+  ${RED}3${NC} - Backup all SQL databases
+  ${RED}4${NC} - Restore all SQL databases
+"
+echo ""
+echo "Which of the above do you wish to do? Type the choice number and press enter."
+echo ""
 echo ""
 read choice
 
 # Selection ===================================================>
-# 1. Single player RSC game ===================================================>
+# 1. Set up for single player ===================================================>
 if [ "$choice" == "1" ]; then
     clear
     echo "You have picked ${GREEN}Set up for single player!${NC}"
@@ -482,12 +524,12 @@ if [ "$choice" == "1" ]; then
     echo "Open RSC setup complete!"
     echo ""
     exit
-# 1. Single player RSC game <===================================================
+# 1. Set up for single player <===================================================
 
-# 2. Game + Website + PHPMyAdmin ===================================================>
+# 2. Deployment for a publicly hosted server ===================================================>
 elif [ "$choice" == "2" ]; then
     clear
-    echo "You have picked ${GREEN}Deployment for a publicly hosted server!${NC}"
+    echo "You have picked ${GREEN}deployment for a publicly hosted server!${NC}"
     echo ""
     echo ""
     echo "Starting up the Docker containers and stopping any existing ones."
@@ -515,10 +557,63 @@ elif [ "$choice" == "2" ]; then
     sudo make import-game
     echo ""
     echo ""
-    echo "Open RSC setup complete!"
+    echo "Creating a backup of your current databases as \"Docker-Home/data/db/db.sql\""
     echo ""
-    exit
-# 2. Game + Website + PHPMyAdmin <===================================================
+    sudo make backup
+    echo ""
+    echo ""
+    echo "Next is manual file editing for the website domain and SQL user/pass."
+    echo ""
+    echo "(Use Ctrl + X to save each file when done editing) - Press enter when ready."
+    read next
+    sudo nano .env
+    sudo nano Game/client/src/org/openrsc/client/Config.java
+    sudo nano Game/Launcher/src/Main.java
+    sudo nano Run_Production_Linux_Game_Server.sh
+    sudo nano Game/server/config/config.xml
+    echo ""
+    echo ""
+    echo "File edits complete. Restarting Docker containers."
+    echo ""
+    sudo make stop && sudo make start
+    echo ""
+    echo ""
+    echo "Ready to launch \"Run_Production_Linux_Game_Server.sh\" - Press enter when ready."
+    echo ""
+    echo ""
+    read next
+    ./Run_Production_Linux_Game_Server.sh
+# 2. Deployment for a publicly hosted server <===================================================
+
+# 3. Backup ===================================================>
+elif [ "$choice" == "3" ]; then
+
+  echo "You have picked ${GREEN}backup all SQL databases!${NC}"
+  echo ""
+  echo ""
+  sudo make backup
+  echo ""
+  echo ""
+  echo "Done! - Press enter to return back to the menu."
+  echo ""
+  read
+  ./Setup_Linux_Mac.sh
+# 3. Backup <===================================================
+
+# 4. Restore ===================================================>
+elif [ "$choice" == "4" ]; then
+
+  echo "You have picked ${GREEN}restore all SQL databases!${NC}"
+  echo ""
+  echo ""
+  sudo make restore
+  echo ""
+  echo ""
+  echo "Done! - Press enter to return back to the menu."
+  echo ""
+  read
+  ./Setup_Linux_Mac.sh
+# 4. Restore <===================================================
 
 else
     echo ""

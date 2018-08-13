@@ -46,7 +46,7 @@ ___
 
 * Mac OS X High Sierra
 
-* Ubuntu Linux 18.04 (or a derivative like Mint Linux)
+* Ubuntu Linux 16.04 and above (or a derivative like Mint Linux)
 
 * Fedora Linux 28
 
@@ -95,8 +95,8 @@ ___
 
 2. Open your favorite browser:
 
-    * [http://localhost](http://localhost) (username: Marwolf, password: malware)
-    * [http://localhost:9000](http://localhost:9000) PHPMyAdmin (username: root, password: root)
+    * [http://localhost](http://localhost)
+    * [http://localhost:9000](http://localhost:9000) PHPMyAdmin (default username: root, password: root)
     * [http://localhost:8080](http://localhost:8080) Apache Tomcat webserver, used to serve files over HTTP
 
 3. Start the game's Docker containers, then run the game server and client:
@@ -128,17 +128,8 @@ ___
     ```sh
     Windows: "Restore_Game_Database_Backup_Windows.cmd"
     ```
-6. View the game's Docker container logs:
 
-    ```sh
-    ./View_Docker_Container_Logs_Linux_Mac.sh
-    ```
-
-    ```sh
-    Windows: "View_Docker_Container_Logs_Windows.cmd"
-    ```
-
-7. Stop the game's Docker containers and shut down the game server:
+6. Stop the game's Docker containers and shut down the game server:
 
     ```sh
     Mac/Linux: ./Stop-Game-Linux_Mac.sh
@@ -153,38 +144,35 @@ ___
 
 ## Steps to Host on a VPS <a name="vps"></a>
 
-You will need to edit:
+* Execute "Setup_Linux_Mac.sh"
 
-#### Docker-Compose.xml Ghost URL
+  * Follow the steps to install needed programs
 
-  * The main website is running through Ghost Blog. Scroll to the bottom of Docker-Compose.xml (located in the root of the Docker-Home repository folder) and edit this line with your hostname / IP: "url: 'http://localhost' #change this!"
+  * Select "2. Deployment for a publicly hosted server"
 
-  * You will need to reload all docker containers. Shortcut command: "sudo make stop && sudo make start"
-
-  * Nginx has a hostname reference for localhost at the top of the file. It can be safely left alone.
-
+  * You will be prompted to edit specific files. Below is how to do each:
 
 #### PHPMyAdmin MariaDB SQL users
 
-  * Create a new user in PHPMyAdmin, grant permissions, remove existing users.
+  * Create a new user in PHPMyAdmin, grant it all permissions, remove pre-existing users.
 
-  * Use % for the host associated with the user. Docker containers get fresh IPs, the setup script configures firewall to block external access to MariaDB and the Docker container for MariaDB is bound to localhost.
+    * Use % for the host associated with the new user. Docker containers do not have static IP addresses and we are using the PHPMyAdmin Docker container to connect to the MariaDB Docker container. Each has a unique internally assigned IP address that is not localhost. The Docker container port of tcp/3306 for MariaDB is bound to the server as localhost so there should be no threat of external connections.
 
-#### Launcher main.java
+#### .env
 
-  * Edit: "/Docker-Home/Game/Launcher/src/Main.java"
+  * This is located in "Docker-Home/.env"
 
-    * Replace with your domain / IP: "private static String Domain = "localhost";"
+    * The main website is running through Ghost CMS. For the section starting with # Ghost:
 
-  * Compile and copy result from "/Docker-Home/Game/Launcher/dist/Open_RSC_Launcher.jar" to "/Docker-Home/Website/downloads/Open_RSC_Launcher.jar"
+      * Edit: "URL=http://localhost"
 
-#### Client config.java
+    * You will need to reload all docker containers. Shortcut command: "sudo make stop && sudo make start"
 
-  * Edit: "/Docker-Home/Game/client/src/org/openrsc/client/Config.java"
+  * Nginx has a hostname reference for localhost as "NGINX_HOST=localhost" under the # Nginx section. It can be safely left alone at this time.
 
-    * Replace with your domain / IP: public static String IP = "localhost";
+  * For the section starting with # MySQL:
 
-    * Compile and compress "/Docker-Home/Game/Launcher/dist/Open_RSC_Launcher.jar" as "/Docker-Home/Game/Launcher/dist/client.zip" then copy "/Docker-Home/Game/Launcher/dist/client.zip" to "/Docker-Home/Website/downloads/client.zip"
+    * Set the username and password that have been granted root privileges in MariaDB SQL that you just created in the previous step with PHPMyAdmin where it reads "MYSQL_ROOT_USER=root" and "MYSQL_ROOT_PASSWORD=root"
 
 #### Server config.xml
 
@@ -194,22 +182,30 @@ You will need to edit:
 
     * Replace with your newly created SQL user pass: <entry key="dbpass">root</entry>
 
-#### Website downloads/hashes.txt
-
-  * Edit: /Docker-Home/Website/downloads/hashes.txt
-
-    * Replace with updated md5sum hashes of client.zip and cache.zip (likely you only will replace client.zip's hash)
-
-    * Obtain MD5sum via command: "md5sum *.zip"
-
 ### Website config import:
 
   * Visit http://localhost/ghost
 
-  * Login with admin@openrsc.com / malwareinfection
+    * If it wants to set up a first user, go for it.
 
-  * Click on "Labs"
+    * If it already has Open RSC news articles, login with admin@openrsc.com / malwareinfection
 
-  * Click "Browse" beside "Import content" and select ""/Docker-Home/website_backup.json"
+    * Either way, click on "Labs" once logged in
+
+    * Click "Browse" beside "Import content" and select ""/Docker-Home/website_backup.json"
+
+#### Run_Production_Linux_Game_Server.sh
+
+  * Compiles client, launcher, and server.
+
+  * Copies "Docker-Home/Game/client/cache.zip" to "Docker-Home/Website/downloads/cache.zip"
+
+  * Copies "Docker-Home/Game/Launcher/Open_RSC_Launcher.jar" to "Docker-Home/Website/downloads/Open_RSC_Launcher.jar"
+
+  * Compresses then copies "Docker-Home/Game/client/client.zip" to "Docker-Home/Website/downloads/client.zip"
+
+  * Md5sums client.zip and cache.zip in "Docker-Home/Website/" and outputs to hashes.txt
+
+  * Starts the game server in a detached screen console. Access via "screen -r", return via "Ctrl + A + D", exit via "Ctrl + C"
 
 [Return to top](#top)

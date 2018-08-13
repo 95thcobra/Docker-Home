@@ -12,7 +12,7 @@ Game
 Wiki
 
 # Database
-data
+data/
 
 # SSL Certs
 etc/ssl/
