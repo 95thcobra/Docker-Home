@@ -8,4 +8,4 @@ echo ""
 echo "Console output is being saved to gameserver.log"
 echo ""
 cd Game/server
-java -jar Open_RSC_Server.jar > gameserver.log
+java -jar Open_RSC_Server.jar > ../../gameserver.log

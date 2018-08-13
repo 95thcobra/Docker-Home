@@ -497,9 +497,7 @@ if [ "$choice" == "1" ]; then
     echo "You have picked ${GREEN}Set up for single player!${NC}"
     echo ""
     echo ""
-    echo "Starting up the Docker containers and stopping any existing ones."
-    echo ""
-    sudo make stop
+    echo "Starting up the Docker containers. If error, do \"sudo make stop\" and rerun script."
     echo ""
     sudo make start-single-player
     echo ""
@@ -532,9 +530,7 @@ elif [ "$choice" == "2" ]; then
     echo "You have picked ${GREEN}deployment for a publicly hosted server!${NC}"
     echo ""
     echo ""
-    echo "Starting up the Docker containers and stopping any existing ones."
-    echo ""
-    sudo make stop
+    echo "Starting up the Docker containers. If error, do \"sudo make stop\" and rerun script."
     echo ""
     sudo make start
     echo ""
