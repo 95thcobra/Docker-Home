@@ -114,16 +114,8 @@ fi
 #fi
 
 # Run the game server in a detached screen
-echo ""
-echo ""
-echo "Launching the game server in a new screen."
-echo ""
-echo "Type 'screen -r' to access the game server screen."
-echo "Use CTRL + A + D to detach the live server screen so it runs in the background."
-echo ""
-echo ""
-cd Game/server
-screen -dmS name ./ant_launcher.sh
+./Linux_Run_Production_Server.sh
+
 #cd ../../
 #touch current_md5sum.txt
 #tar -cf - Game | md5sum | grep -o '^[a-zA-Z0-9]*' > current_md5sum.txt

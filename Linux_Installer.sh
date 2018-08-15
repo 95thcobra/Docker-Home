@@ -519,9 +519,11 @@ if [ "$choice" == "1" ]; then
     sudo make import-game
     echo ""
     echo ""
-    echo "Open RSC setup complete!"
+    echo "Ready to launch \"./Linux_Single_Player.sh\" - Press enter when ready."
     echo ""
-    exit
+    echo ""
+    read next
+    ./Linux_Single_Player.sh
 # 1. Set up for single player <===================================================
 
 # 2. Deployment for a publicly hosted server ===================================================>
@@ -573,11 +575,11 @@ elif [ "$choice" == "2" ]; then
     sudo make stop && sudo make start
     echo ""
     echo ""
-    echo "Ready to launch \"Run_Production_Linux_Game_Server.sh\" - Press enter when ready."
+    echo "Ready to launch \"./Linux_Fetch_Updates_Production.sh\" - Press enter when ready."
     echo ""
     echo ""
     read next
-    ./Run_Production_Linux_Game_Server.sh
+    ./Linux_Fetch_Updates_Production.sh
 # 2. Deployment for a publicly hosted server <===================================================
 
 # 3. Backup ===================================================>
@@ -592,7 +594,7 @@ elif [ "$choice" == "3" ]; then
   echo "Done! - Press enter to return back to the menu."
   echo ""
   read
-  ./Setup_Linux_Mac.sh
+  ./Linux_Installer.sh
 # 3. Backup <===================================================
 
 # 4. Restore ===================================================>
@@ -607,7 +609,7 @@ elif [ "$choice" == "4" ]; then
   echo "Done! - Press enter to return back to the menu."
   echo ""
   read
-  ./Setup_Linux_Mac.sh
+  ./Linux_Installer.sh
 # 4. Restore <===================================================
 
 else
@@ -615,6 +617,6 @@ else
     echo "Error! ${RED}$choice${NC} is not a valid option. Press enter to try again."
     echo ""
     read
-    ./Setup_Linux_Mac.sh
+    ./Linux_Installer.sh
 fi
 # Selection <===================================================
