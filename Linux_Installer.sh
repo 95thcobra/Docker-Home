@@ -117,7 +117,7 @@ if [ "$install" == "1" ]; then
         echo "sudo ufw enable"
         echo ""
         echo ""
-        echo "Do you have Oracle Java JDK 8 and Gradle installed already? It is required for this."
+        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -130,7 +130,7 @@ if [ "$install" == "1" ]; then
         # Ubuntu Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
-            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install gradle ant oracle-java8-set-default openjfx -y
+            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install ant oracle-java8-set-default openjfx -y
         else
           continue
         fi
@@ -159,7 +159,7 @@ if [ "$install" == "1" ]; then
         firewall-cmd --reload
         echo ""
         echo ""
-        echo "Do you have Oracle Java JDK 8 and Gradle installed already? It is required for this."
+        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -171,7 +171,7 @@ if [ "$install" == "1" ]; then
 
         # Fedora Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo dnf -y install gradle ant openjfx
+            sudo dnf -y install ant openjfx
             wget --no-cookies \
             --no-check-certificate \
             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
@@ -259,7 +259,7 @@ if [ "$install" == "1" ]; then
         firewall-cmd --reload
         echo ""
         echo ""
-        echo "Do you have Oracle Java JDK 8 and Gradle installed already? It is required for this."
+        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -271,7 +271,7 @@ if [ "$install" == "1" ]; then
 
         # CentOS 7 Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo dnf -y install gradle ant openjfx
+            sudo dnf -y install ant openjfx
             wget --no-cookies \
             --no-check-certificate \
             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
@@ -355,7 +355,7 @@ if [ "$install" == "1" ]; then
         brew install unzip wget git curl zip screen
         echo ""
         echo ""
-        echo "Do you have Oracle Java JDK 8 and Gradle installed already? It is required for this."
+        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -368,7 +368,7 @@ if [ "$install" == "1" ]; then
         # Mac Java ===================================================>
         if [ "$java" == "1" ]; then
             brew tap AdoptOpenJDK/openjdk
-            brew install adoptopenjdk-openjdk8 gradle ant openjfx
+            brew install adoptopenjdk-openjdk8 ant openjfx
         fi
         # Mac Java <===================================================
 
@@ -438,7 +438,7 @@ if [ "$install" == "1" ]; then
 
         echo ""
         echo ""
-        echo "Do you have Oracle Java JDK 8 and Gradle installed already? It is required for this. If it fails, install manually."
+        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this. If it fails, install manually."
         echo ""
         echo "${RED}1${NC} - Install for me!"
         echo "${RED}2${NC} - Im all set"
@@ -451,7 +451,7 @@ if [ "$install" == "1" ]; then
         # Other OS Java ===================================================>
         if [ "$java" == "1" ]; then
             sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
-            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install gradle ant oracle-java8-set-default openjfx -y
+            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install ant oracle-java8-set-default openjfx -y
         else
           continue
         fi
@@ -565,7 +565,6 @@ elif [ "$choice" == "2" ]; then
     sudo nano .env
     sudo nano Game/client/src/org/openrsc/client/Config.java
     sudo nano Game/Launcher/src/Main.java
-    sudo nano Run_Production_Linux_Game_Server.sh
     sudo nano Game/server/config/config.xml
     echo ""
     echo ""
