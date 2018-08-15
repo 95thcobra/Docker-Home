@@ -78,19 +78,19 @@ import-website:
 	#@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/openrsc_forum.sql 2>/dev/null
 
 import-wiki:
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql 2>/dev/null
+	#@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql 2>/dev/null
 
 import-windows-game:
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_logs.sql
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_config.sql
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc.sql
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_tools.sql
+	@docker exec -i mysql mysql -u"root" -p"root" < Game/Databases/openrsc_logs.sql
+	@docker exec -i mysql mysql -u"root" -p"root" < Game/Databases/openrsc_config.sql
+	@docker exec -i mysql mysql -u"root" -p"root" < Game/Databases/openrsc.sql
+	@docker exec -i mysql mysql -u"root" -p"root" < Game/Databases/openrsc_tools.sql
 
 import-windows-website:
 	#@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/openrsc_forum.sql
 
 import-windows-wiki:
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql
+	#@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql
 
 flush:
 	@$(shell rm -rf Website && rm -rf Game)

@@ -259,6 +259,7 @@ md "%HOMEPATH%/OpenRSC"
 7z x "Game/client/cache.zip" -o"%HOMEPATH%/OpenRSC"
 echo:
 echo:
-echo First time setup is now complete. Go ahead and open "Start_Single_Player_Game_Windows.cmd" now.
+SET /P singleplayer=Ready to launch "Windows_Single_Player.cmd" - Press enter when ready.
 echo:
-pause
+echo:
+Windows_Single_Player.cmd
