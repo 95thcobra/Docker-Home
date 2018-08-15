@@ -3,7 +3,7 @@ include .env
 MYSQL_DUMPS_DIR=./data/db
 
 start:
-	docker-compose --file docker-compose.yml up --force-recreate --remove-orphans -d
+	docker-compose --file docker-compose.yml up -d
 
 start-single-player:
 	docker-compose --file docker-compose-single-player.yml up -d

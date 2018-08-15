@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .env
+
 # Check for any updates to the game server
 echo ""
 echo "Pulling recent updates from the Open-RSC Game repository."
@@ -49,7 +51,7 @@ if git diff --name-only | grep -o '[a-zA-Z0-9]*.sql' > /dev/null; then
     #Import fresh version of config database
     echo "Importing a fresh openrsc_config.sql database."
     echo ""
-    sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u"root" -p"root" < Game/Databases/openrsc_config.sql 2>/dev/null
+    sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < Game/Databases/openrsc_config.sql 2>/dev/null
     echo ""
     echo ""
 

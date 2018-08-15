@@ -565,7 +565,6 @@ elif [ "$choice" == "2" ]; then
     sudo nano .env
     sudo nano Game/client/src/org/openrsc/client/Config.java
     sudo nano Game/Launcher/src/Main.java
-    sudo nano Run_Production_Linux_Game_Server.sh
     sudo nano Game/server/config/config.xml
     echo ""
     echo ""
