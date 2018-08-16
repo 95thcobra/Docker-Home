@@ -39,14 +39,17 @@ if [ "$install" == "1" ]; then
     # Ubuntu OS ===================================================>
     if [ "$os" == "1" ]; then
         echo ""
+        sudo dpkg-reconfigure tzdata
+        echo ""
+        echo ""
         echo "Which Ubuntu Linux version are you running?"
         echo ""
-        echo "${RED}1${NC} - 16.04"
-        echo "${RED}2${NC} - 16.10"
-        echo "${RED}3${NC} - 17.04"
-        echo "${RED}4${NC} - 17.10"
-        echo "${RED}5${NC} - 18.04"
-        echo "${RED}6${NC} - 18.10"
+        echo "${RED}1${NC} - Xenial 16.04"
+        echo "${RED}2${NC} - Yakkety 16.10"
+        echo "${RED}3${NC} - Zesty 17.04"
+        echo "${RED}4${NC} - Artful 17.10"
+        echo "${RED}5${NC} - Bionic 18.04"
+        echo "${RED}6${NC} - Cosmic 18.10"
         echo ""
         read ubuntu
 
@@ -97,13 +100,6 @@ if [ "$install" == "1" ]; then
           continue
         fi
         # Ubuntu Docker <===================================================
-
-        echo ""
-        echo "Preventing Docker from making the iptables firewall insecure."
-        echo ""
-        echo '{
-    "iptables": false
-}' | sudo tee --append  /etc/docker/daemon.json && sudo service docker restart
         echo ""
         echo ""
         echo "Configuring UFW to allow good ports and block MySQL from outside."
