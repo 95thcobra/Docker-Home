@@ -8,15 +8,13 @@ services:
             - "./etc/nginx:/opt/bitnami/nginx/conf/vhosts"
             - "./Website:/opt/bitnami/nginx/html"
             - "./etc/logs/nginx:/opt/bitnami/nginx/logs"
-            - "./etc/letsencrypt/certs:/opt/bitnami/nginx/conf/bitnami/certs"
+            - "./etc/letsencrypt:/etc/letsencrypt"
 #            - "./etc/nginx/fastcgi.conf:/bitnami/nginx/conf/fastcgi.conf"
         ports:
             - "80:8080"
             - "443:443"
         environment:
             - NGINX_HOST=${NGINX_HOST}
-#            - LETSENCRYPT_HOST=localhost
-#            - LETSENCRYPT_EMAIL=root@root.com
         restart: always
 
     myadmin:

@@ -47,7 +47,7 @@ server {
     client_max_body_size                    100M;
 
     location / {
-        try_files $uri $uri/ =404;
+        root   /opt/bitnami/nginx/html;
     }
 
     ####### Proxies #######
@@ -81,7 +81,7 @@ server {
         proxy_pass                          http://tomcat;
     }
 
-    location ~ /.well-known {
+    location ~ /\.well-known/acme-challenge {
             root   /opt/bitnami/nginx/html;
             allow all;
     }
