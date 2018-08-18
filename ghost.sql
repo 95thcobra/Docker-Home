@@ -789,7 +789,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `type`, `created_at`, `created_by`
 ('5b77985f86ea860079567750', 'navigation', '[{\"label\":\"Home\",\"url\":\"http://localhost/blog\"},{\"label\":\"Play Now\",\"url\":\"http://localhost/blog/play-now/\"},{\"label\":\"Bug Reports\",\"url\":\"http://localhost/blog/bug-reports/\"},{\"label\":\"FAQ\",\"url\":\"http://localhost/blog/faq/\"},{\"label\":\"Our Mission\",\"url\":\"http://localhost/blog/our-mission/\"},{\"label\":\"Future Plans\",\"url\":\"http://localhost/blog/future-plans/\"}]', 'blog', '2018-08-02 22:25:37', '1', '2018-08-18 03:56:12', '1'),
 ('5b77985f86ea860079567751', 'slack', '[]', 'blog', '2018-08-02 22:25:37', '1', '2018-08-18 03:55:41', '1'),
 ('5b77985f86ea860079567752', 'unsplash', '{\"isActive\":false}', 'blog', '2018-08-02 22:25:37', '1', '2018-08-04 15:04:26', '1'),
-('5b77985f86ea860079567753', 'active_theme', 'newcasper', 'theme', '2018-08-18 03:54:07', '1', '2018-08-18 04:32:14', '1'),
+('5b77985f86ea860079567753', 'active_theme', 'casper', 'theme', '2018-08-18 03:54:07', '1', '2018-08-18 04:32:14', '1'),
 ('5b77985f86ea860079567754', 'active_apps', '[]', 'app', '2018-08-02 22:25:37', '1', '2018-08-02 22:25:37', '1'),
 ('5b77985f86ea860079567755', 'installed_apps', '[]', 'app', '2018-08-02 22:25:37', '1', '2018-08-02 22:25:37', '1'),
 ('5b77985f86ea860079567756', 'is_private', 'false', 'private', '2018-08-02 22:25:37', '1', '2018-08-02 22:25:37', '1'),
