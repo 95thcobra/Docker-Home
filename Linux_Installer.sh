@@ -76,7 +76,11 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        sudo apt update && sudo apt install screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        sudo apt-get update
+        sudo apt-get install software-properties-common -y
+        sudo add-apt-repository ppa:certbot/certbot -y
+        sudo apt-get update
+        sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
         echo ""
         echo ""
         echo "Do you have Docker installed? It is required for this."
@@ -95,7 +99,7 @@ if [ "$install" == "1" ]; then
             echo ""
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
             sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
-            sudo apt update && sudo apt install docker-ce docker-compose -y
+            sudo apt-get update && sudo apt-get install docker-ce docker-compose -y
         else
           continue
         fi

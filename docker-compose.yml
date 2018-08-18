@@ -2,20 +2,22 @@ version: '3.1'
 services:
 
     nginx:
-        image: bitnami/nginx:latest
+        image: nginx:latest
         container_name: nginx
         volumes:
-            - "./etc/nginx:/opt/bitnami/nginx/conf/vhosts"
-            - "./Website:/opt/bitnami/nginx/html"
-            - "./etc/logs/nginx:/opt/bitnami/nginx/logs"
+            - "./etc/nginx:/etc/nginx/conf.d"
+            - "./Website:/var/www/html"
+            - "./etc/logs/nginx:/var/log/nginx"
             - "./etc/letsencrypt:/etc/letsencrypt"
-#            - "./etc/nginx/fastcgi.conf:/bitnami/nginx/conf/fastcgi.conf"
         ports:
-            - "80:8080"
+            - "80:80"
             - "443:443"
         environment:
             - NGINX_HOST=${NGINX_HOST}
         restart: always
+        depends_on:
+            - tomcat
+            - mysqldb
 
     myadmin:
         image: phpmyadmin/phpmyadmin
@@ -35,8 +37,6 @@ services:
         command: chown -R 1001:1001 /bitnami
         volumes:
           - "./data/db/mysq:/bitnami/mariadb"
-        depends_on:
-          - nginx
 
     mysqldb:
         image: bitnami/mariadb:latest
@@ -69,8 +69,6 @@ services:
         volumes:
             - "./Website:/usr/local/tomcat/webapps/ROOT"
             - "./etc/tomcat:/usr/local/tomcat/conf"
-        depends_on:
-          - nginx
 
     fix-ghost-permissions:
         image: 'bitnami/ghost:latest'
@@ -78,9 +76,6 @@ services:
         command: chown -R 1001:1001 /bitnami/ghost
         volumes:
           - "./etc/ghost:/bitnami/ghost"
-        depends_on:
-          - mysqldb
-          - nginx
 
     ghost:
         image: bitnami/ghost:latest
