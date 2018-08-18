@@ -15,9 +15,8 @@ server {
     error_log                               /opt/bitnami/nginx/logs/error.log;
     access_log                              /opt/bitnami/nginx/logs/access.log;
 
-    location '/.well-known/acme-challenge' {
-        default_type "text/plain";
-        proxy_pass http://certbot_upstream;
+    location / {
+        root   /opt/bitnami/nginx/html;
     }
 
     rewrite ^ https://$http_host$request_uri? permanent; #Redirect traffic to HTTPS

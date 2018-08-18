@@ -17,19 +17,6 @@ services:
             - NGINX_HOST=${NGINX_HOST}
         restart: always
 
-    certbot:
-        build: ./etc/certbot
-        container_name: certbot
-        volumes:
-              - ./etc/letsencrypt/certs:/certs
-        restart: always
-        environment:
-            - WEBROOT="/opt/bitnami/nginx/html"
-            - DOMAINS=wolfkingdom.net
-            - EMAIL=cleako@gmail.com
-            - CONCAT=false
-            - SEPARATE=true
-
     myadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
