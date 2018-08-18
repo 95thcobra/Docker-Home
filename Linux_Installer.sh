@@ -546,9 +546,10 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC
     echo ""
     echo ""
-    echo "Importing the game databases."
+    echo "Importing the databases."
     echo ""
     sudo make import-game
+    sudo make import-ghost
     echo ""
     echo ""
     echo "Creating a backup of your current databases as \"Docker-Home/data/db/db.sql\""

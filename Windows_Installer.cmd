@@ -247,6 +247,7 @@ echo:
 echo Importing the game databases.
 echo:
 make import-windows-game
+make import-windows-ghost
 echo:
 echo:
 goto final

@@ -1,0 +1,29 @@
+{
+  "database": {
+    "client": "mysql",
+    "connection": {
+      "host": "mysql",
+      "port": 3306,
+      "password": "root",
+      "user": "root",
+      "database": "ghost"
+    }
+  },
+  "url": "http://localhost:2368/blog",
+  "server": {
+    "port": 2368,
+    "host": "0.0.0.0"
+  },
+  "mail": {
+    "transport": "Direct"
+  },
+  "logging": {
+    "transports": [
+      "file"
+    ]
+  },
+  "process": "local",
+  "paths": {
+    "contentPath": "/opt/bitnami/ghost/content"
+  }
+}
