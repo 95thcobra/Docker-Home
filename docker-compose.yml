@@ -33,6 +33,13 @@ services:
         depends_on:
             - mysqldb
 
+    fix-mariadb-permissions:
+        image: 'bitnami/mariadb:latest'
+        user: root
+        command: chown -R 1001:1001 /bitnami
+        volumes:
+        - "./data/db/mysq:/bitnami/mariadb"
+
     mysqldb:
         image: bitnami/mariadb:latest
         container_name: mysql
@@ -46,11 +53,11 @@ services:
             - ALLOW_EMPTY_PASSWORD=no
             - MARIADB_USER=${MARIADB_USER}
             - MARIADB_PASSWORD=${MARIADB_PASS}
-            - MARIADB_DATABASE=bitnami_ghost
+            - MARIADB_DATABASE=${GHOST_DATABASE_NAME}
         ports:
             - "127.0.0.1:3306:3306"
         volumes:
-            - "./data/db/mysql:/bitnami/mariadb"
+            - "./data/db/mysq:/bitnami/mariadb"
             - "./etc/mariadb/innodb.cnf:/bitnami/mariadb/conf/innodb.cnf:ro"
         depends_on:
           - nginx
@@ -67,6 +74,13 @@ services:
         depends_on:
           - nginx
 
+    fix-ghost-permissions:
+        image: 'bitnami/ghost:latest'
+        user: root
+        command: chown -R 1001:1001 /bitnami/ghost
+        volumes:
+        - "./etc/ghost:/bitnami/ghost"
+
     ghost:
         image: bitnami/ghost:latest
         container_name: ghost
@@ -74,7 +88,7 @@ services:
             - "127.0.0.1:2368:2368"
         restart: always
         volumes:
-            - "./etc:/bitnami"
+            - "./etc/ghost:/bitnami/ghost"
         env_file:
             - ".env"
         environment:
