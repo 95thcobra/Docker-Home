@@ -76,7 +76,11 @@ if [ "$install" == "1" ]; then
         echo ""
         echo "Verifying the basics are installed."
         echo ""
-        sudo apt update && sudo apt install screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
+        sudo apt-get update
+        sudo apt-get install software-properties-common -y
+        sudo add-apt-repository ppa:certbot/certbot -y
+        sudo apt-get update
+        sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
         echo ""
         echo ""
         echo "Do you have Docker installed? It is required for this."
@@ -95,7 +99,7 @@ if [ "$install" == "1" ]; then
             echo ""
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
             sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
-            sudo apt update && sudo apt install docker-ce docker-compose -y
+            sudo apt-get update && sudo apt-get install docker-ce docker-compose -y
         else
           continue
         fi
@@ -530,14 +534,15 @@ elif [ "$choice" == "2" ]; then
     echo ""
     echo "Starting up the Docker containers. If error, do \"sudo make stop\" and rerun script."
     echo ""
+    sudo chmod -R 777 .
     sudo make start
     echo ""
     echo ""
     echo "Fetching the Website and Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
-    echo ""
     sudo make clone-website
+    sudo chmod -R 777 .
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
@@ -546,18 +551,14 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC
     echo ""
     echo ""
-    echo "Importing the databases."
-    echo ""
-    sudo make import-game
-    sudo make import-ghost
-    echo ""
-    echo ""
-    echo "Creating a backup of your current databases as \"Docker-Home/data/db/db.sql\""
-    echo ""
-    sudo make backup
-    echo ""
-    echo ""
     echo "Next is manual file editing for the website domain and SQL user/pass."
+    echo ""
+    echo "It is suggested that you first navigate to your VPS's http://domain:9000"
+    echo ""
+    echo "Create a new SQL user and password, grant all permissions, then remove the others."
+    echo ""
+    echo ""
+    echo "When finished, it will be time to edit the files that rely on that new SQL user."
     echo ""
     echo "(Use Ctrl + X to save each file when done editing) - Press enter when ready."
     read next
@@ -565,9 +566,19 @@ elif [ "$choice" == "2" ]; then
     sudo nano Game/client/src/org/openrsc/client/Config.java
     sudo nano Game/Launcher/src/Main.java
     sudo nano Game/server/config/config.xml
+    sudo nano etc/ghost/config.production.json
     echo ""
     echo ""
-    echo "File edits complete. Restarting Docker containers."
+    echo "File edits complete."
+    echo ""
+    echo ""
+    echo "Importing the databases."
+    echo ""
+    sudo make import-game
+    sudo make import-ghost
+    echo ""
+    echo ""
+    echo "Restarting Docker containers"
     echo ""
     sudo make stop && sudo make start
     echo ""

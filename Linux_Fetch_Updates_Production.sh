@@ -32,12 +32,12 @@ sudo nano .env
 sudo nano client/src/org/openrsc/client/Config.java
 sudo nano Launcher/src/Main.java
 sudo nano server/config/config.xml
+sudo nano ../etc/ghost/config.production.json
 echo ""
 echo ""
 echo "File edits complete. Restarting Docker containers."
 echo ""
-sudo make stop
-sudo make start
+sudo make stop && sudo make start
 fi
 
 if [ "$edit" == "2" ]; then
