@@ -42,22 +42,22 @@ server {
     ssl_trusted_certificate   /etc/letsencrypt/live/${NGINX_HOST}/chain.pem;
 
     root /app;
-    index index.jsp index.html index.htm index.php;
+    index index.jsp index.html index.htm;
 
     client_max_body_size                    100M;
 
     location / {
-        try_files $uri $uri/index.php;
+        try_files $uri $uri/ =404;
     }
 
     ####### Proxies #######
     # PHP proxy
-    location ~ \.php$ {
-        fastcgi_pass php:9001;
-        fastcgi_index index.php;
-        include fastcgi.conf;
-        root /app;
-    }
+#    location /board {
+#        fastcgi_pass php:9001;
+#        fastcgi_index index.php;
+#        include fastcgi.conf;
+#        root /app;
+#    }
 
     location ~ \.htm$ {
         root   /opt/bitnami/nginx/html;
@@ -81,7 +81,6 @@ server {
         proxy_pass                          http://tomcat;
     }
 
-    # Certbot for HTTPS cert renewal
     location ~ /.well-known {
             root   /opt/bitnami/nginx/html;
             allow all;
