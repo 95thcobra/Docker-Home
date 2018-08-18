@@ -47,16 +47,20 @@ server {
     client_max_body_size                    100M;
 
     location / {
-        try_files $uri $uri/ =404;
+        try_files $uri $uri/index.php;
     }
 
     ####### Proxies #######
     # PHP proxy
     location ~ \.php$ {
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Server $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass                          http://php;
+        fastcgi_pass php:9001;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+        root /app;
+    }
+
+    location ~ \.htm$ {
+        root   /opt/bitnami/nginx/html;
     }
 
     # Ghost proxy
@@ -78,8 +82,9 @@ server {
     }
 
     # Certbot for HTTPS cert renewal
-    location ~ ^/.well-known {
-        root /data/letsencrypt/;
+    location ~ /.well-known {
+            root   /opt/bitnami/nginx/html;
+            allow all;
     }
 
 }

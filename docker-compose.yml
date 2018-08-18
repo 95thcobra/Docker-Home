@@ -8,17 +8,15 @@ services:
             - "./etc/nginx:/opt/bitnami/nginx/conf/vhosts"
             - "./Website:/opt/bitnami/nginx/html"
             - "./etc/logs/nginx:/opt/bitnami/nginx/logs"
-            #- "./etc/logs/letsencrypt:/var/log/letsencrypt"
-            #- "./etc/letsencrypt/certs:/etc/letsencrypt"
-            #- "./etc/letsencrypt/data:/data/letsencrypt"
+            - "./etc/letsencrypt/certs:/opt/bitnami/nginx/conf/bitnami/certs"
+            - "./etc/nginx/fastcgi.conf:/bitnami/nginx/conf/fastcgi.conf"
         ports:
             - "80:8080"
             - "443:443"
         environment:
             - NGINX_HOST=${NGINX_HOST}
-            #- VIRTUAL_HOST=localhost
-            #- LETSENCRYPT_HOST=localhost
-            #- LETSENCRYPT_EMAIL=your.email@here.com
+            - LETSENCRYPT_HOST=localhost
+            - LETSENCRYPT_EMAIL=your.email@here.com
         restart: always
 
     myadmin:
@@ -117,6 +115,7 @@ services:
         volumes:
             - "./etc/php/php.ini:/opt/bitnami/php/etc/conf.d/php.ini"
             - "./Website:/app"
+            - "./etc/logs/php:/opt/bitnami/php/log"
         depends_on:
           - nginx
 

@@ -6,4 +6,4 @@ sudo docker run -it --rm --name certbot \
         deliverous/certbot \
         certonly \
         --webroot --webroot-path=/data/letsencrypt \
-        -d openrsc.com -d www.openrsc.com --staging
+        -d localhost -d www.localhost --staging
