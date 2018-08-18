@@ -15,6 +15,11 @@ server {
     error_log                               /opt/bitnami/nginx/logs/error.log;
     access_log                              /opt/bitnami/nginx/logs/access.log;
 
+    location '/.well-known/acme-challenge' {
+        default_type "text/plain";
+        proxy_pass http://certbot_upstream;
+    }
+
     rewrite ^ https://$http_host$request_uri? permanent; #Redirect traffic to HTTPS
 
 }
@@ -50,6 +55,11 @@ server {
         root   /opt/bitnami/nginx/html;
     }
 
+    location '/.well-known/acme-challenge' {
+        default_type "text/plain";
+        proxy_pass http://certbot_upstream;
+    }
+
     ####### Proxies #######
     # PHP proxy
 #    location /board {
@@ -79,11 +89,6 @@ server {
         proxy_set_header X-Forwarded-Server $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_pass                          http://tomcat;
-    }
-
-    location ~ /\.well-known/acme-challenge {
-            root   /opt/bitnami/nginx/html;
-            allow all;
     }
 
 }
