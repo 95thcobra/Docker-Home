@@ -579,11 +579,6 @@ elif [ "$choice" == "2" ]; then
     sudo make stop && sudo make start
     echo ""
     echo ""
-    echo "Creating a backup of your current databases as \"Docker-Home/data/db/db.sql\""
-    echo ""
-    sudo make backup
-    echo ""
-    echo ""
     echo "Ready to launch \"./Linux_Fetch_Updates_Production.sh\" - Press enter when ready."
     echo ""
     echo ""
