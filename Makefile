@@ -57,28 +57,31 @@ logs:
 backup:
 	@sudo mkdir -p $(MYSQL_DUMPS_DIR)
 	@$(shell sudo chmod -R 777 $(MYSQL_DUMPS_DIR))
-	@docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
+	@docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
 
 backup-windows:
-	@docker exec -i mysql mysqldump --all-databases -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql
+	@docker exec -i mysql mysqldump --all-databases -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql
 
 restore:
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
+	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
 
 restore-windows:
-	@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql
+	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql
 
 import-game:
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_config.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_logs.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc.sql 2>/dev/null
-	@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Game/Databases/openrsc_tools.sql 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc_config.sql 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc_logs.sql 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc.sql 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc_tools.sql 2>/dev/null
 
 import-website:
-	#@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/openrsc_forum.sql 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/openrsc_forum.sql 2>/dev/null
+
+import-ghost:
+	docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < ghost.sql 2>/dev/null
 
 import-wiki:
-	#@docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql 2>/dev/null
 
 import-windows-game:
 	@docker exec -i mysql mysql -u"root" -p"root" < Game/Databases/openrsc_logs.sql
@@ -87,13 +90,16 @@ import-windows-game:
 	@docker exec -i mysql mysql -u"root" -p"root" < Game/Databases/openrsc_tools.sql
 
 import-windows-website:
-	#@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/openrsc_forum.sql
+	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/openrsc_forum.sql
+
+import-windows-ghost:
+	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < ghost.sql
 
 import-windows-wiki:
-	#@docker exec -i mysql mysql -u"$(MYSQL_ROOT_USER)" -p"$(MYSQL_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql
+	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql
 
 flush:
-	@$(shell rm -rf Website && rm -rf Game)
+	@$(shell sudo rm -rf Website && sudo rm -rf Game)
 
 flush-windows:
 	@rmdir "Website" /s /Q
