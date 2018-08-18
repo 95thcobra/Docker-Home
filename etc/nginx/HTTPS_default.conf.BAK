@@ -17,41 +17,6 @@ server {
 
     rewrite ^ https://$http_host$request_uri? permanent; #Redirect traffic to HTTPS
 
-    root /app;
-    index index.html index.htm index.php index.jsp;
-
-    client_max_body_size                    100M;
-
-    location / {
-        try_files $uri $uri/index.html;
-    }
-
-    ####### Proxies #######
-    # PHP proxy
-    location ~ \.php$ {
-        fastcgi_pass php:9001;
-        fastcgi_index index.php;
-        include fastcgi.conf;
-    }
-
-    # Ghost proxy
-    location /blog {
-        proxy_pass http://ghost;
-        proxy_set_header  Host              $http_host;   # required for docker client's sake
-        proxy_set_header  X-Real-IP         $remote_addr; # pass on real client's IP
-        proxy_set_header  X-Forwarded-For   $proxy_add_x_forwarded_for;
-        proxy_set_header  X-Forwarded-Proto $scheme;
-        proxy_read_timeout                  900;
-    }
-
-    # Tomcat proxy
-    location ~ \.(do|jspa|obr|jsp|txt|zip) {
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Server $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass                          http://tomcat;
-    }
-
 }
 
 # HTTPS
@@ -77,20 +42,21 @@ server {
     ssl_trusted_certificate   /etc/letsencrypt/live/${NGINX_HOST}/chain.pem;
 
     root /app;
-    index index.html index.htm index.php index.jsp;
+    index index.jsp index.html index.htm index.php;
 
     client_max_body_size                    100M;
 
     location / {
-        try_files $uri $uri/index.html;
+        try_files $uri $uri/ =404;
     }
 
     ####### Proxies #######
     # PHP proxy
     location ~ \.php$ {
-        fastcgi_pass php:9001;
-        fastcgi_index index.php;
-        include fastcgi.conf;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass                          http://php;
     }
 
     # Ghost proxy
@@ -104,7 +70,7 @@ server {
     }
 
     # Tomcat proxy
-    location ~ \.(do|jspa|obr|jsp|txt|zip) {
+    location ~ \.jsp$ {
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Server $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

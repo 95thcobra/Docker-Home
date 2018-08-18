@@ -9,7 +9,7 @@
       "database": "ghost"
     }
   },
-  "url": "http://localhost:2368/blog",
+  "url": "http://localhost/blog",
   "server": {
     "port": 2368,
     "host": "0.0.0.0"

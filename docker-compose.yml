@@ -38,7 +38,9 @@ services:
         user: root
         command: chown -R 1001:1001 /bitnami
         volumes:
-        - "./data/db/mysq:/bitnami/mariadb"
+          - "./data/db/mysq:/bitnami/mariadb"
+        depends_on:
+          - nginx
 
     mysqldb:
         image: bitnami/mariadb:latest
@@ -60,7 +62,7 @@ services:
             - "./data/db/mysq:/bitnami/mariadb"
             - "./etc/mariadb/innodb.cnf:/bitnami/mariadb/conf/innodb.cnf:ro"
         depends_on:
-          - nginx
+          - fix-mariadb-permissions
 
     tomcat:
         image: tomcat:latest
@@ -79,7 +81,10 @@ services:
         user: root
         command: chown -R 1001:1001 /bitnami/ghost
         volumes:
-        - "./etc/ghost:/bitnami/ghost"
+          - "./etc/ghost:/bitnami/ghost"
+        depends_on:
+          - mysqldb
+          - nginx
 
     ghost:
         image: bitnami/ghost:latest
@@ -98,12 +103,10 @@ services:
           - GHOST_DATABASE_PASSWORD=${MARIADB_ROOT_PASSWORD}
           - GHOST_DATABASE_NAME=${GHOST_DATABASE_NAME}
           - ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}
-          - GHOST_HOST=${GHOST_HOST}
           - GHOST_EMAIL=${GHOST_EMAIL}
           - GHOST_PASSWORD=${GHOST_PASSWORD}
         depends_on:
-          - mysqldb
-          - nginx
+          - fix-ghost-permissions
 
     php:
         image: bitnami/php-fpm:latest
