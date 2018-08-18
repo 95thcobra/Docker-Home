@@ -530,14 +530,15 @@ elif [ "$choice" == "2" ]; then
     echo ""
     echo "Starting up the Docker containers. If error, do \"sudo make stop\" and rerun script."
     echo ""
+    sudo chmod -R 777 .
     sudo make start
     echo ""
     echo ""
     echo "Fetching the Website and Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
-    echo ""
     sudo make clone-website
+    sudo chmod -R 777 .
     echo ""
     echo ""
     echo "Creating the client cache in your home folder."
