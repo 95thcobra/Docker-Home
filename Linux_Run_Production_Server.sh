@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Backs up all databases
+./Linux_Backup_Databases.sh
+
 # Run the game server in a detached screen
 echo ""
 echo ""
