@@ -105,6 +105,13 @@ if [ "$install" == "1" ]; then
         fi
         # Ubuntu Docker <===================================================
         echo ""
+        echo "Setting Docker to have the correct storage driver."
+        echo ""
+        echo '{
+    "storage-driver": "devicemapper"
+}' | sudo tee --append  /etc/docker/daemon.json && sudo service docker restart
+        echo ""
+
         echo ""
         echo "Configuring UFW to allow good ports and block MySQL from outside."
         echo ""
