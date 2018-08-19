@@ -1,6 +1,6 @@
 include .env
 
-MYSQL_DUMPS_DIR=./data/db
+MYSQL_DUMPS_DIR=./data
 
 start:
 	docker-compose --file docker-compose.yml up -d
@@ -57,13 +57,13 @@ logs:
 backup:
 	@sudo mkdir -p $(MYSQL_DUMPS_DIR)
 	@$(shell sudo chmod -R 777 $(MYSQL_DUMPS_DIR))
-	docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
+	docker exec $(shell docker-compose ps -q mysqldb) mysqldump --all-databases -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/"Backup `date "+%Y-%m-%d %H:%M %Z"`.sql"
 
 backup-windows:
 	@docker exec -i mysql mysqldump --all-databases -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" > $(MYSQL_DUMPS_DIR)/db.sql
 
 restore:
-	docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql 2>/dev/null
+	docker exec -i $(shell docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql
 
 restore-windows:
 	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql
