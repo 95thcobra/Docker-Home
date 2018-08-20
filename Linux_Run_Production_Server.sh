@@ -2,6 +2,7 @@
 
 # Verifies permissions are set correctly
 sudo chmod -R 777 Game
+sudo setfacl -m user:$USER:rw /var/run/docker.sock
 
 # Backs up all databases
 ./Linux_Backup_Databases.sh
