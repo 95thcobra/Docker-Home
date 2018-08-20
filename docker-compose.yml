@@ -20,7 +20,7 @@ services:
             - mysqldb
 
     myadmin:
-        image: phpmyadmin/phpmyadmin
+        image: phpmyadmin/phpmyadmin:latest
         container_name: phpmyadmin
         ports:
             - "9000:80"
