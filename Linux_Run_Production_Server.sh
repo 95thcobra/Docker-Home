@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Verifies permissions are set correctly
+sudo chmod -R 777 Game
+
 # Backs up all databases
 ./Linux_Backup_Databases.sh
 

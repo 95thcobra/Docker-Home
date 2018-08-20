@@ -2,5 +2,5 @@
 
 echo "Backing up all databases."
 echo ""
-sudo make backup
+make backup
 echo ""
