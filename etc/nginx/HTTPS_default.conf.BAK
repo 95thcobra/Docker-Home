@@ -42,9 +42,9 @@ server {
     ssl_stapling                            on;
     ssl_stapling_verify                     on;
     resolver                                8.8.8.8 1.1.1.1;
-    ssl_certificate                         /etc/letsencrypt/live/wolfkingdom.net/fullchain.pem;
-    ssl_certificate_key                     /etc/letsencrypt/live/wolfkingdom.net/privkey.pem;
-    ssl_trusted_certificate                 /etc/letsencrypt/live/wolfkingdom.net/chain.pem;
+    ssl_certificate                         /etc/letsencrypt/live/openrsc.com/fullchain.pem;
+    ssl_certificate_key                     /etc/letsencrypt/live/openrsc.com/privkey.pem;
+    ssl_trusted_certificate                 /etc/letsencrypt/live/openrsc.com/chain.pem;
 
     root /app;
     index index.jsp index.html index.htm;
