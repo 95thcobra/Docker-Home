@@ -62,9 +62,14 @@ if [ "$install" == "1" ]; then
         sudo ufw --force enable &>/dev/null
 
         clear
-        echo "Installing Oracle Java JDK 8."
-        sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y &>/dev/null
-        sudo add-apt-repository ppa:webupd8team/java -y &>/dev/null && sudo apt update &>/dev/null && sudo apt install ant oracle-java8-set-default openjfx -y &>/dev/null
+        echo "Installing Oracle Java JDK 8 and other related packages."
+        sudo apt-get remove -y openjdk-6-jre default-jre default-jre-headless &>/dev/null
+        sudo add-apt-repository -y ppa:webupd8team/java &>/dev/null
+        sudo apt update &>/dev/null
+        sudo apt install -y openjfx ant &>/dev/null
+        echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections &>/dev/null
+        sudo apt-get install -y oracle-java8-installer &>/dev/null
+        sudo apt install oracle-java8-set-default &>/dev/null
         fi
     # Ubuntu OS <===================================================
 
