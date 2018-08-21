@@ -3,70 +3,54 @@
 source .env
 
 # Check for any updates to the game server
-echo ""
+clear
 echo "Pulling recent updates from the Open-RSC Game repository."
-echo ""
-sudo git pull
-sudo make pull-game
-echo ""
-echo ""
+sudo git pull &>/dev/null
+sudo make pull-game &>/dev/null
+
+clear
 echo "Starting Docker containers."
-echo ""
-sudo make stop
-sudo make start-single-player
-echo ""
-echo ""
+sudo make stop &>/dev/null
+sudo make start-single-player &>/dev/null
 
 # Compile the game server and client
-echo "Compiling the game client."
-echo ""
-sudo ant -f "Game/client/build.xml" compile
-echo ""
-echo ""
-echo "Compiling the game server."
-echo ""
-sudo ant -f "Game/server/build.xml" compile
-echo ""
-echo ""
+clear
+echo "Compiling the game client. Any errors will be in compile.log"
+touch compile.log && chmod 777 compile.log &>/dev/null
+sudo ant -f "Game/client/build.xml" compile | tee compile.log &>/dev/null
+
+clear
+echo "Compiling the game server. Any errors will be in compile.log"
+sudo ant -f "Game/server/build.xml" compile | tee -a compile.log &>/dev/null
 
 #Create game cache
+clear
 echo "Removing old cache if exists and then extracting a fresh client cache to your home folder."
-echo ""
-sudo rm -rf ~/OpenRSC
-mkdir ~/OpenRSC
+sudo rm -rf ~/OpenRSC &>/dev/null
+mkdir ~/OpenRSC &>/dev/null
 unzip -o Game/client/cache.zip -d ~/OpenRSC >/dev/null
-echo ""
-echo ""
 
 #Import fresh version of config database
+clear
 echo "Importing a fresh openrsc_config.sql database."
-echo ""
 sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < Game/Databases/openrsc_config.sql 2>/dev/null
-echo ""
-echo ""
 
 #Generate updated cache files, copies them to cache folder overwriting existing
+clear
 echo "Generating cache .dat files from current config database and copying to client cache in your home folder."
-echo ""
-sudo ant -f Game/server/build.xml npcs items objects > /dev/null
-yes | cp -rf Game/server/npcs.dat ~/OpenRSC/npcs.dat
-yes | cp -rf Game/server/objects.dat ~/OpenRSC/objects.dat
-yes | cp -rf Game/server/items.dat ~/OpenRSC/items.dat
-echo ""
-echo ""
+sudo ant -f Game/server/build.xml npcs items objects &>/dev/null
+yes | cp -rf Game/server/npcs.dat ~/OpenRSC/npcs.dat &>/dev/null
+yes | cp -rf Game/server/objects.dat ~/OpenRSC/objects.dat &>/dev/null
+yes | cp -rf Game/server/items.dat ~/OpenRSC/items.dat &>/dev/null
 
 # Run the game client in a new window
+clear
 echo "Launching the game client."
-echo ""
 #ant -f Game/client/build.xml runclient &
 java -jar Game/client/Open_RSC_Client.jar &
-echo ""
-echo ""
 
 # Run the game server in the current window
+clear
 echo "Launching the game server."
-echo ""
-#ant -f Game/server/build.xml runserver
 cd Game/server
 java -jar Open_RSC_Server.jar
-echo ""
