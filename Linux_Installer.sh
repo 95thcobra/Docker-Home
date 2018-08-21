@@ -5,15 +5,15 @@ GREEN=`tput setaf 2`
 NC=`tput sgr0` # No Color
 
 # Install Choice ===================================================>
+clear
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server environment using Docker magic.
 
-Before continuing, Open RSC needs to know if you have Java, Docker, and Git installed.
-This installer can install one or both for you if needed.
+Do you wish to have all the pre-requiste software installed by this script?
 
 Choices:
-  ${RED}1${NC} - Install for me!
-  ${RED}2${NC} - Im all set, continue! (default)"
+  ${RED}1${NC} - Yes please, install for me!
+  ${RED}2${NC} - No thanks, continue (default)"
 echo ""
 echo "Which of the above do you wish to do? Type the choice number and press enter."
 echo ""
@@ -25,11 +25,8 @@ if [ "$install" == "1" ]; then
     clear
     echo "Which operating system are you running?"
     echo ""
-    echo "${RED}1${NC} - Ubuntu Linux"
-    echo "${RED}2${NC} - Fedora 28 Linux"
-    echo "${RED}3${NC} - CentOS 7 Linux"
-    echo "${RED}4${NC} - Mac OS High Sierra"
-    echo "${RED}5${NC} - Other"
+    echo "${RED}1${NC} - Ubuntu Linux 18.04 or above"
+    echo "${RED}2${NC} - Mac OS High Sierra or above"
     echo ""
     echo "Which of the above do you wish to do? Type the choice number and press enter."
     echo ""
@@ -38,30 +35,10 @@ if [ "$install" == "1" ]; then
 
     # Ubuntu OS ===================================================>
     if [ "$os" == "1" ]; then
-        echo ""
+        clear
         sudo dpkg-reconfigure tzdata
-        echo ""
-        echo ""
-        echo "Which Ubuntu Linux version are you running?"
-        echo ""
-        echo "${RED}1${NC} - Bionic 18.04"
-        echo "${RED}2${NC} - Cosmic 18.10"
-        echo ""
-        read ubuntu
 
-        # Ubuntu Version ===================================================>
-        if [ "$ubuntu" == "1" ]; then
-            vers="bionic"
-        elif [ "$ubuntu" == "2" ]; then
-            vers="cosmic"
-        else
-            vers="bionic"
-            continue
-        fi
-        # UBUNTU Version <===================================================
-
-        echo ""
-        echo ""
+        clear
         echo "Verifying the basics are installed."
         echo ""
         sudo apt-get update
@@ -69,71 +46,40 @@ if [ "$install" == "1" ]; then
         sudo add-apt-repository ppa:certbot/certbot -y
         sudo apt-get update
         sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y
-        echo ""
-        echo ""
-        echo "Do you have Docker installed? It is required for this."
-        echo ""
-        echo "${RED}1${NC} - No, install it for me!"
-        echo "${RED}2${NC} - Yes"
-        echo ""
-        echo "Which of the above do you wish to do? Type the choice number and press enter."
-        echo ""
-        echo ""
-        read docker
 
-        # Ubuntu Docker ===================================================>
-        if [ "$docker" == "1" ]; then
-            echo "Attempting to install Docker now"
-            echo ""
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $vers stable"
-            sudo apt-get update && sudo apt-get install docker-ce docker-compose -y
-        else
-          continue
-        fi
-        # Ubuntu Docker <===================================================
+        clear
+        echo "Attempting to install Docker now"
         echo ""
-        echo "Setting Docker to have the correct storage driver."
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+        sudo apt-get update && sudo apt-get install docker-ce docker-compose -y
+
+        clear
+        echo "Setting Docker to have the correct storage driver and reloading service."
         echo ""
         echo '{
     "storage-driver": "devicemapper"
-}' | sudo tee --append  /etc/docker/daemon.json && sudo service docker restart
-        echo ""
+}' | sudo tee /etc/docker/daemon.json && sudo service docker restart
 
+        clear
+        echo "Configuring UFW."
         echo ""
-        echo "Configuring UFW to allow good ports and block MySQL from outside."
-        echo ""
-        sudo ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 8080/tcp && ufw allow 443/tcp && ufw allow 9000/tcp && ufw allow 53595/tcp && ufw deny 3306/tcp
+        sudo ufw allow 22/tcp && sudo ufw allow 80/tcp && sudo ufw allow 8080/tcp && sudo ufw allow 443/tcp && sudo ufw allow 9000/tcp && sudo ufw allow 53595/tcp && sudo ufw deny 3306/tcp
         sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
         sudo ufw reload
-        echo ""
-        echo ""
-        echo "UFW firewall rules have been added. Enable it later via:"
-        echo "sudo ufw enable"
-        echo ""
-        echo ""
-        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
-        echo ""
-        echo "${RED}1${NC} - Install for me!"
-        echo "${RED}2${NC} - Im all set"
-        echo ""
-        echo "Which of the above do you wish to do? Type the choice number and press enter."
-        echo ""
-        echo ""
-        read java
+        sudo ufw --force enable
 
-        # Ubuntu Java ===================================================>
-        if [ "$java" == "1" ]; then
-            sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
-            sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install ant oracle-java8-set-default openjfx -y
-        else
-          continue
+        clear
+        echo "Installing Oracle Java JDK 8"
+        echo ""
+        sudo apt-get remove openjdk-6-jre default-jre default-jre-headless -y
+        echo ""
+        sudo add-apt-repository ppa:webupd8team/java -y && sudo apt update && sudo apt install ant oracle-java8-set-default openjfx -y
         fi
-        # Ubuntu Java <===================================================
     # Ubuntu OS <===================================================
 
     # Mac OS ===================================================>
-    elif [ "$os" == "4" ]; then
+  elif [ "$os" == "2" ]; then
         clear
         echo "Do you have brew installed? It is required for this."
         echo ""
@@ -152,82 +98,44 @@ if [ "$install" == "1" ]; then
         fi
         # Mac Brew <===================================================
 
-        echo ""
-        echo ""
+        clear
         echo "Verifying the basics are installed."
         echo ""
         brew install unzip wget git curl zip screen
-        echo ""
-        echo ""
-        echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
-        echo ""
-        echo "${RED}1${NC} - Install for me!"
-        echo "${RED}2${NC} - Im all set"
-        echo ""
-        echo "Which of the above do you wish to do? Type the choice number and press enter."
-        echo ""
-        echo ""
-        read java
+        brew tap AdoptOpenJDK/openjdk
+        brew install adoptopenjdk-openjdk8 ant openjfx
 
-        # Mac Java ===================================================>
-        if [ "$java" == "1" ]; then
-            brew tap AdoptOpenJDK/openjdk
-            brew install adoptopenjdk-openjdk8 ant openjfx
+        clear
+        echo "Downloading the Docker for Mac installer."
+        echo ""
+        wget https://download.docker.com/mac/stable/Docker.dmg
+        hdiutil attach Docker.dmg
+        echo ""
+        echo "Please drag Docker as instructed in the popup."
+        echo ""
+        echo "Press enter when finished."
+        echo ""
+        read
+
+        clear
+        open /Applications/Docker.app
+        echo ""
+        echo "Docker is launching. Please follow the directions that it gives you."
+        echo ""
+        echo "Press enter when finished."
+        echo ""
+        read
         fi
-        # Mac Java <===================================================
-
-        echo ""
-        echo ""
-        echo "Do you have Docker installed? It is required for this."
-        echo ""
-        echo "${RED}1${NC} - No, install it for me!"
-        echo "${RED}2${NC} - Yes"
-        echo ""
-        echo "Which of the above do you wish to do? Type the choice number and press enter."
-        echo ""
-        echo ""
-        read docker
-
-        # Mac Docker ===================================================>
-        if [ "$docker" == "1" ]; then
-            echo "Downloading the Docker for Mac installer."
-            echo ""
-            wget https://download.docker.com/mac/stable/Docker.dmg
-            hdiutil attach Docker.dmg
-            echo ""
-            echo "Please drag Docker as instructed in the popup."
-            echo ""
-            echo "Press enter when finished."
-            echo ""
-            read
-            echo ""
-            open /Applications/Docker.app
-            echo ""
-            echo "Docker is launching. Please follow the directions that it gives you."
-            echo ""
-            echo "Press enter when finished."
-            echo ""
-            read
-        fi
-        # Mac Docker <===================================================
     # Mac OS <===================================================
-
-    else
-      continue
-    fi
     # OS Selection <===================================================
 
-else
-  continue
-fi
 # Install Choice <===================================================
 
 clear
 echo "Checking for updates to the Docker-Home repository."
 echo ""
 sudo git pull
-echo ""
-echo ""
+
 clear
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server using Docker magic.
@@ -247,31 +155,31 @@ read choice
 # 1. Set up for single player ===================================================>
 if [ "$choice" == "1" ]; then
     clear
-    echo "You have picked ${GREEN}Set up for single player!${NC}"
+    echo "You have picked ${GREEN}set up for single player!${NC}"
     echo ""
     echo ""
     echo "Starting up the Docker containers. If error, do \"sudo make stop\" and rerun script."
     echo ""
     sudo make start-single-player
-    echo ""
-    echo ""
+
+    clear
     echo "Fetching the Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
     sudo chmod -R 777 Game
-    echo ""
-    echo ""
+
+    clear
     echo "Creating the client cache in your home folder."
     echo ""
     mkdir ~/OpenRSC
     unzip -o Game/client/cache.zip -d ~/OpenRSC
-    echo ""
-    echo ""
+
+    clear
     echo "Importing the game databases."
     echo ""
     sudo make import-game
-    echo ""
-    echo ""
+
+    clear
     echo "Ready to launch \"./Linux_Single_Player.sh\" - Press enter when ready."
     echo ""
     echo ""
@@ -289,21 +197,21 @@ elif [ "$choice" == "2" ]; then
     echo ""
     sudo chmod -R 777 .
     sudo make start
-    echo ""
-    echo ""
+
+    clear
     echo "Fetching the Website and Game from the Open RSC git repo."
     echo ""
     sudo make clone-game
     sudo make clone-website
     sudo chmod -R 777 .
-    echo ""
-    echo ""
+
+    clear
     echo "Creating the client cache in your home folder."
     echo ""
     mkdir ~/OpenRSC
     unzip -o Game/client/cache.zip -d ~/OpenRSC
-    echo ""
-    echo ""
+
+    clear
     echo "Next is manual file editing for the website domain and SQL user/pass."
     echo ""
     echo "It is suggested that you first navigate to your VPS's http://domain:9000"
@@ -320,22 +228,19 @@ elif [ "$choice" == "2" ]; then
     sudo nano Game/Launcher/src/Main.java
     sudo nano Game/server/config/config.xml
     sudo nano etc/ghost/config.production.json
-    echo ""
-    echo ""
-    echo "File edits complete."
-    echo ""
-    echo ""
+
+    clear
     echo "Importing the databases."
     echo ""
     sudo make import-game
     sudo make import-ghost
-    echo ""
-    echo ""
+
+    clear
     echo "Restarting Docker containers"
     echo ""
     sudo make stop && sudo make start
-    echo ""
-    echo ""
+
+    clear
     echo "Ready to launch \"./Linux_Fetch_Updates_Production.sh\" - Press enter when ready."
     echo ""
     echo ""
@@ -359,7 +264,7 @@ elif [ "$choice" == "3" ]; then
 # 3. Backup <===================================================
 
 else
-    echo ""
+    clear
     echo "Error! ${RED}$choice${NC} is not a valid option. Press enter to try again."
     echo ""
     read
