@@ -258,12 +258,12 @@ if [ "$install" == "1" ]; then
         echo ""
         echo ""
         echo "Permitting ports through the firewall."
-        firewall-cmd --permanent --add-port=53595/tcp
-        firewall-cmd --permanent --add-port=8080/tcp
-        firewall-cmd --permanent --add-port=9000/tcp
-        firewall-cmd --permanent --add-port=443/tcp
-        firewall-cmd --permanent --add-port=22/tcp
-        firewall-cmd --reload
+        sudo firewall-cmd --permanent --add-port=53595/tcp
+        sudo firewall-cmd --permanent --add-port=8080/tcp
+        sudo firewall-cmd --permanent --add-port=9000/tcp
+        sudo firewall-cmd --permanent --add-port=443/tcp
+        sudo firewall-cmd --permanent --add-port=22/tcp
+        sudo firewall-cmd --reload
         echo ""
         echo ""
         echo "Do you have Oracle Java JDK 8 and Ant installed already? It is required for this."
@@ -278,7 +278,7 @@ if [ "$install" == "1" ]; then
 
         # CentOS 7 Java ===================================================>
         if [ "$java" == "1" ]; then
-            sudo dnf -y install ant openjfx
+            sudo dnf -y install ant java-1.8.0-openjdk
             wget --no-cookies \
             --no-check-certificate \
             --header "Cookie: oraclelicense=accept-securebackup-cookie" \

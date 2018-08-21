@@ -51,11 +51,9 @@ ___
 
 * Mac OS X High Sierra
 
-* Ubuntu Linux 16.04 and above (or a derivative like Mint Linux)
+* Ubuntu Linux 18.04 and above (or a derivative like Mint Linux)
 
-* Fedora Linux 28
-
-* CentOS 7 x64
+* Other Linux (no support will be provided)
 
 [Return to top](#top)
 ___
