@@ -9,6 +9,9 @@ exec 0</dev/tty
 #
 # curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Cloner.sh | bash
 
+rm installer.log
+touch installer.log && chmod 777 installer.log | tee installer.log &>/dev/null
+
 choice=""
 RED=`tput setaf 1`
 GREEN=`tput setaf 2`
@@ -45,41 +48,43 @@ if [ "$install" == "1" ]; then
         sudo dpkg-reconfigure tzdata
 
         clear
-        echo "Verifying the basics are installed. Please wait."
-        sudo apt-get update &>/dev/null
-        sudo apt-get install software-properties-common -y &>/dev/null
-        sudo add-apt-repository ppa:certbot/certbot -y &>/dev/null
-        sudo apt-get update &>/dev/null
-        sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y &>/dev/null
+        echo "Installing required software. Please wait, this will take a while."
+        echo ""
+        echo "Debug information is being sent to installer.log"
+        sudo apt-get update | tee -a installer.log &>/dev/null
+        sudo apt-get install software-properties-common -y | tee -a installer.log &>/dev/null
+        sudo add-apt-repository ppa:certbot/certbot -y | tee -a installer.log &>/dev/null
+        sudo apt-get update | tee -a installer.log &>/dev/null
+        sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y | tee -a installer.log &>/dev/null
 
         clear
         echo "Attempting to install Docker now."
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &>/dev/null
-        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" &>/dev/null
-        sudo apt-get update &>/dev/null && sudo apt-get install docker-ce docker-compose -y &>/dev/null
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - | tee -a installer.log &>/dev/null
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" | tee -a installer.log &>/dev/null
+        sudo apt-get update | tee -a installer.log &>/dev/null && sudo apt-get install docker-ce docker-compose -y | tee -a installer.log &>/dev/null
 
         clear
         echo "Setting Docker to have the correct storage driver and reloading service."
         echo '{
     "storage-driver": "devicemapper"
-}' | sudo tee /etc/docker/daemon.json && sudo service docker restart &>/dev/null
+}' | sudo tee /etc/docker/daemon.json && sudo service docker restart | tee -a installer.log &>/dev/null
 
         clear
         echo "Configuring UFW."
-        sudo ufw allow 22/tcp &>/dev/null && sudo ufw allow 80/tcp &>/dev/null && sudo ufw allow 8080/tcp &>/dev/null && sudo ufw allow 443/tcp &>/dev/null && sudo ufw allow 9000/tcp &>/dev/null && sudo ufw allow 53595/tcp &>/dev/null && sudo ufw deny 3306/tcp &>/dev/null
-        sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw &>/dev/null
-        sudo ufw reload &>/dev/null
-        sudo ufw --force enable &>/dev/null
+        sudo ufw allow 22/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 80/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 8080/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 443/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 9000/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 53595/tcp | tee -a installer.log &>/dev/null && sudo ufw deny 3306/tcp | tee -a installer.log &>/dev/null
+        sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw | tee -a installer.log &>/dev/null
+        sudo ufw reload | tee -a installer.log &>/dev/null
+        sudo ufw --force enable | tee -a installer.log &>/dev/null
 
         clear
         echo "Installing Oracle Java JDK 8 and other related packages."
-        sudo apt-get remove -y openjdk-6-jre default-jre default-jre-headless &>/dev/null
-        sudo add-apt-repository -y ppa:webupd8team/java &>/dev/null
-        sudo apt update &>/dev/null
-        sudo apt install -y openjfx ant &>/dev/null
-        echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections &>/dev/null
-        sudo apt-get install -y oracle-java8-installer &>/dev/null
-        sudo apt install oracle-java8-set-default &>/dev/null
+        sudo apt-get remove -y openjdk-6-jre default-jre default-jre-headless | tee -a installer.log &>/dev/null
+        sudo add-apt-repository -y ppa:webupd8team/java | tee -a installer.log &>/dev/null
+        sudo apt update | tee -a installer.log &>/dev/null
+        sudo apt install -y openjfx ant | tee -a installer.log &>/dev/null
+        echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections | tee -a installer.log &>/dev/null
+        sudo apt-get install -y oracle-java8-installer | tee -a installer.log &>/dev/null
+        sudo apt install oracle-java8-set-default | tee -a installer.log &>/dev/null
         fi
     # Ubuntu OS <===================================================
 
@@ -96,21 +101,21 @@ if [ "$install" == "1" ]; then
 
         # Mac Brew ===================================================>
         if [ "$brew" == "1" ]; then
-            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &>/dev/null
-            brew install git &>/dev/null
+            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" | tee -a installer.log &>/dev/null
+            brew install git | tee -a installer.log &>/dev/null
         fi
         # Mac Brew <===================================================
 
         clear
         echo "Verifying the basics are installed."
-        brew install unzip wget git curl zip screen &>/dev/null
-        brew tap AdoptOpenJDK/openjdk &>/dev/null
-        brew install adoptopenjdk-openjdk8 ant openjfx &>/dev/null
+        brew install unzip wget git curl zip screen | tee -a installer.log &>/dev/null
+        brew tap AdoptOpenJDK/openjdk | tee -a installer.log &>/dev/null
+        brew install adoptopenjdk-openjdk8 ant openjfx | tee -a installer.log &>/dev/null
 
         clear
         echo "Downloading the Docker for Mac installer."
-        wget https://download.docker.com/mac/stable/Docker.dmg &>/dev/null
-        hdiutil attach Docker.dmg &>/dev/null
+        wget https://download.docker.com/mac/stable/Docker.dmg | tee -a installer.log &>/dev/null
+        hdiutil attach Docker.dmg | tee -a installer.log &>/dev/null
         echo ""
         echo "Please drag Docker as instructed in the popup."
         echo ""
@@ -131,7 +136,7 @@ if [ "$install" == "1" ]; then
 
 clear
 echo "Checking for updates to the Docker-Home repository."
-sudo git pull &>/dev/null
+sudo git pull | tee -a installer.log &>/dev/null
 
 clear
 echo "${RED}Open RSC Installer:${NC}
@@ -153,26 +158,26 @@ if [ "$choice" == "1" ]; then
     echo "You have picked ${GREEN}set up for single player!${NC}"
     echo ""
     echo ""
-    echo "Starting up the Docker containers."
-    sudo make start-single-player &>/dev/null
+    echo "Starting up the Docker containers. Please wait, this will take a while."
+    echo ""
+    echo "Debug information is being sent to installer.log"
+    sudo make start-single-player | tee -a installer.log &>/dev/null
 
     clear
     echo "Fetching the Game from the Open RSC git repo."
-    sudo make clone-game &>/dev/null
-    sudo chmod -R 777 Game &>/dev/null
+    sudo make clone-game | tee -a installer.log &>/dev/null
+    sudo chmod -R 777 Game | tee -a installer.log &>/dev/null
 
     clear
     echo "Creating the client cache in your home folder."
-    mkdir ~/OpenRSC &>/dev/null
-    unzip -o Game/client/cache.zip -d ~/OpenRSC &>/dev/null
+    mkdir ~/OpenRSC | tee -a installer.log &>/dev/null
+    unzip -o Game/client/cache.zip -d ~/OpenRSC | tee -a installer.log &>/dev/null
 
     clear
     echo "Importing the game databases."
-    sudo make import-game &>/dev/null
+    sudo make import-game | tee -a installer.log &>/dev/null
 
     clear
-    echo "Ready to launch \"./Linux_Single_Player.sh\" - Press enter when ready."
-    read next
     ./Linux_Single_Player.sh
 # 1. Set up for single player <===================================================
 
@@ -183,19 +188,20 @@ elif [ "$choice" == "2" ]; then
     echo ""
     echo ""
     echo "Starting up the Docker containers."
-    sudo chmod -R 777 &>/dev/null
-    sudo make start &>/dev/null
+    sudo chmod -R 777 . | tee -a installer.log &>/dev/null
+    sudo make stop | tee -a installer.log &>/dev/null
+    sudo make start | tee -a installer.log &>/dev/null
 
     clear
     echo "Fetching the Website and Game from the Open RSC git repo."
-    sudo make clone-game &>/dev/null
-    sudo make clone-website &>/dev/null
-    sudo chmod -R 777 &>/dev/null
+    sudo make clone-game | tee -a installer.log &>/dev/null
+    sudo make clone-website | tee -a installer.log &>/dev/null
+    sudo chmod -R 777 . | tee -a installer.log &>/dev/null
 
     clear
     echo "Creating the client cache in your home folder."
-    mkdir ~/OpenRSC &>/dev/null
-    unzip -o Game/client/cache.zip -d ~/OpenRSC &>/dev/null
+    mkdir ~/OpenRSC | tee -a installer.log &>/dev/null
+    unzip -o Game/client/cache.zip -d ~/OpenRSC | tee -a installer.log &>/dev/null
 
     clear
     echo "Next is manual file editing for the website domain and SQL user/pass."
@@ -213,20 +219,17 @@ elif [ "$choice" == "2" ]; then
     sudo nano Game/client/src/org/openrsc/client/Config.java
     sudo nano Game/Launcher/src/Main.java
     sudo nano Game/server/config/config.xml
-    sudo nano etc/ghost/config.production.json
 
     clear
-    echo "Importing the databases."
-    sudo make import-game &>/dev/null
-    sudo make import-ghost &>/dev/null
+    echo "Importing the game databases."
+    sudo make import-game | tee -a installer.log &>/dev/null
+    sudo make import-ghost | tee -a installer.log &>/dev/null
 
     clear
     echo "Restarting Ghost container."
-    sudo docker stop ghost && sudo docker start ghost &>/dev/null
+    sudo docker stop ghost && sudo docker start ghost | tee -a installer.log &>/dev/null
 
     clear
-    echo "Ready to launch \"./Linux_Fetch_Updates_Production.sh\" - Press enter when ready."
-    read next
     ./Linux_Fetch_Updates_Production.sh
 # 2. Deployment for a publicly hosted server <===================================================
 
@@ -234,7 +237,7 @@ elif [ "$choice" == "2" ]; then
 elif [ "$choice" == "3" ]; then
 
   echo "You have picked ${GREEN}backup all SQL databases!${NC}"
-  sudo make backup &>/dev/null
+  sudo make backup | tee -a installer.log &>/dev/null
   clear
   echo "Done! - Press enter to return back to the menu."
   read
@@ -247,5 +250,5 @@ else
     echo ""
     read
     ./Linux_Installer.sh
+    continue
 fi
-# Selection <===================================================
