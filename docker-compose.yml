@@ -92,6 +92,8 @@ services:
             - ".env"
         environment:
           - NODE_ENV=production
+          - privacy__useUpdateCheck=0
+          - URL=${URL}
           - MARIADB_HOST=mysql
           - MARIADB_PORT_NUMBER=3306
           - GHOST_DATABASE_USER=${MARIADB_ROOT_USER}
@@ -102,3 +104,10 @@ services:
           - GHOST_PASSWORD=${GHOST_PASSWORD}
         depends_on:
           - fix-ghost-permissions
+
+    php:
+        image: nanoninja/php-fpm:7.2
+        container_name: php
+        volumes:
+            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "./Website:/var/www/html/public"
