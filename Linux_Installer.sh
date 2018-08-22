@@ -1,4 +1,5 @@
 #!/bin/bash
+exec 0</dev/tty
 
 # Open RSC: A replica RSC private server framework
 #
@@ -127,6 +128,10 @@ if [ "$install" == "1" ]; then
     # OS Selection <===================================================
 
 # Install Choice <===================================================
+
+clear
+echo "Checking for updates to the Docker-Home repository."
+sudo git pull &>/dev/null
 
 clear
 echo "${RED}Open RSC Installer:${NC}
