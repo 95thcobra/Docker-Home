@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Open RSC: A replica RSC private server framework
 #
 # Installs and updates Open RSC
@@ -8,8 +6,7 @@
 #
 # curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Cloner.sh | bash
 
-choice=""
 cd /
-sudo git clone https://github.com/Marwolf/Docker-Home.git &>/dev/null
+sudo git clone https://github.com/Marwolf/Docker-Home.git
 cd /Docker-Home
 "./Linux_Installer.sh"
