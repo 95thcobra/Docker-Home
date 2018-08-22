@@ -16,7 +16,7 @@
 
 Install with this command (from your Linux machine):
 
-    curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Installer.sh | bash
+    curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Cloner.sh | bash
 
 [Return to top](#top)
 ___
