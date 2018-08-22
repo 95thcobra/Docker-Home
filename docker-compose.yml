@@ -7,7 +7,7 @@ services:
         volumes:
             - "./etc/nginx:/etc/nginx/conf.d"
             - "./Website:/var/www/html"
-            - "./etc/logs/nginx:/var/log/nginx"
+            - "./etc/nginx/logs:/var/log/nginx"
             - "./etc/letsencrypt:/etc/letsencrypt"
         ports:
             - "80:80"
@@ -33,6 +33,7 @@ services:
 
     fix-mariadb-permissions:
         image: 'bitnami/mariadb:latest'
+        container_name: mariadb-fix-permissions
         user: root
         command: chown -R 1001:1001 /bitnami
         volumes:
@@ -72,22 +73,25 @@ services:
 
     fix-ghost-permissions:
         image: 'bitnami/ghost:latest'
+        container_name: ghost-fix-permissions
         user: root
         command: chown -R 1001:1001 /bitnami/ghost
         volumes:
           - "./etc/ghost:/bitnami/ghost"
+        depends_on:
+          - mysqldb
 
     ghost:
         image: bitnami/ghost:latest
         container_name: ghost
         ports:
             - "127.0.0.1:2368:2368"
-        restart: always
         volumes:
-            - "./etc/ghost:/bitnami/ghost"
+            - "./etc/ghost/content:/opt/bitnami/ghost/content"
         env_file:
             - ".env"
         environment:
+          - NODE_ENV=production
           - MARIADB_HOST=mysql
           - MARIADB_PORT_NUMBER=3306
           - GHOST_DATABASE_USER=${MARIADB_ROOT_USER}
@@ -98,22 +102,3 @@ services:
           - GHOST_PASSWORD=${GHOST_PASSWORD}
         depends_on:
           - fix-ghost-permissions
-
-#    php:
-#        image: bitnami/php-fpm:latest
-#        container_name: php
-#        restart: always
-#        ports:
-#            - "9001:9000"
-#        volumes:
-#            - "./etc/php/php.ini:/opt/bitnami/php/etc/conf.d/php.ini"
-#            - "./Website:/app"
-#            - "./etc/logs/php:/opt/bitnami/php/log"
-#        depends_on:
-#          - nginx
-
-volumes:
-  mariadb_data:
-    driver: local
-  ghost_data:
-    driver: local

@@ -15,13 +15,7 @@ server {
     error_log                               /var/log/nginx/error.log;
     access_log                              /var/log/nginx/access.log;
 
-    location ~ /.well-known/acme-challenge {
-        allow all;
-        root /var/www/html;
-    }
-
     rewrite ^ https://$http_host$request_uri? permanent;
-
 }
 
 # HTTPS
@@ -42,9 +36,12 @@ server {
     ssl_stapling                            on;
     ssl_stapling_verify                     on;
     resolver                                8.8.8.8 1.1.1.1;
-    ssl_certificate                         /etc/letsencrypt/live/openrsc.com/fullchain.pem;
-    ssl_certificate_key                     /etc/letsencrypt/live/openrsc.com/privkey.pem;
-    ssl_trusted_certificate                 /etc/letsencrypt/live/openrsc.com/chain.pem;
+#    ssl_certificate                         /etc/letsencrypt/live/openrsc.com/fullchain.pem;
+#    ssl_certificate_key                     /etc/letsencrypt/live/openrsc.com/privkey.pem;
+#    ssl_trusted_certificate                 /etc/letsencrypt/live/openrsc.com/chain.pem;
+ssl_certificate                         /etc/letsencrypt/live/localhost/selfsigned.crt;
+ssl_certificate_key                     /etc/letsencrypt/live/localhost/selfsigned.key;
+ssl_trusted_certificate                 /etc/letsencrypt/live/localhost/dhparam.pem;
 
     root /app;
     index index.jsp index.html index.htm;
@@ -56,17 +53,13 @@ server {
     }
 
     ####### Proxies #######
-    # PHP proxy
+#    # PHP proxy
 #    location /board {
 #        fastcgi_pass                       php:9001;
 #        fastcgi_index                      index.php;
 #        include                            fastcgi.conf;
 #        root                               /app;
 #    }
-
-    location ~ \.htm$ {
-        root                                /var/www/html;
-    }
 
     # Ghost proxy
     location /blog {
@@ -85,5 +78,4 @@ server {
         proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
         proxy_pass                          http://tomcat;
     }
-
 }
