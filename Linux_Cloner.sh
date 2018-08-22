@@ -11,4 +11,4 @@
 cd /
 sudo git clone https://github.com/Open-RSC/Docker-Home.git &>/dev/null
 cd /Docker-Home
-`pwd`/Linux_Installer.sh
+"./Linux_Installer.sh"
