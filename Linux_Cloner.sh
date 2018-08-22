@@ -10,6 +10,6 @@
 
 choice=""
 cd /
-sudo git clone https://github.com/Open-RSC/Docker-Home.git &>/dev/null
+sudo git clone https://github.com/Marwolf/Docker-Home.git &>/dev/null
 cd /Docker-Home
 "./Linux_Installer.sh"
