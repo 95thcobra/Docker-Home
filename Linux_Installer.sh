@@ -129,10 +129,6 @@ if [ "$install" == "1" ]; then
 # Install Choice <===================================================
 
 clear
-echo "Checking for updates to the Docker-Home repository."
-sudo git pull &>/dev/null
-
-clear
 echo "${RED}Open RSC Installer:${NC}
 An easy to run RSC private server using Docker magic.
 

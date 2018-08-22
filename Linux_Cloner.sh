@@ -8,6 +8,7 @@
 #
 # curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Cloner.sh | bash
 
+choice=""
 cd /
 sudo git clone https://github.com/Open-RSC/Docker-Home.git &>/dev/null
 cd /Docker-Home
