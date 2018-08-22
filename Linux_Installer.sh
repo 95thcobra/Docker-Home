@@ -62,6 +62,7 @@ if [ "$install" == "1" ]; then
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - | tee -a installer.log &>/dev/null
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" | tee -a installer.log &>/dev/null
         sudo apt-get update | tee -a installer.log &>/dev/null && sudo apt-get install docker-ce docker-compose -y | tee -a installer.log &>/dev/null
+        sudo setfacl -m user:$USER:rw /var/run/docker.sock | tee -a ../installer.log &>/dev/null
 
         clear
         echo "Setting Docker to have the correct storage driver and reloading service."
