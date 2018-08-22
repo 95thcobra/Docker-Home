@@ -3,19 +3,27 @@
 ![Death](https://i.imgur.com/tzLgEwV.png)
 
 # Table of contents <a name="top"></a>
-1. [Project Introduction](#introduction)
-1. [Default Credentials](#credentials)
-2. [Minimum Requirements](#requirements)
-3. [How to Obtain Open RSC](#obtain)
-4. [Required Step For Windows Users](#windows)
-5. [Setup Process](#setup)
-6. [Steps to Host on a VPS](#vps)
-7. [Remote JMX Sampling](#jmx)
+1. [How to Install](#install)
+2. [Choices](#choices)
+3. [Default Credentials](#credentials)
+4. [Minimum Requirements](#requirements)
+5. [Required Step For Windows Users](#windows)
+6. [Setup Process](#setup)
+7. [Steps to Host on a VPS](#vps)
 
 
-## Project Introduction <a name="introduction"></a>
+## How to Install Open RSC <a name="install"></a>
 
-Choices:
+Install with this command (from your Linux machine):
+
+    ```sh
+    curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Installer.sh | bash
+    ```
+
+[Return to top](#top)
+___
+
+## Choices <a name="choices"></a>
 
   1. Single player RSC game + basic database editing (PHPMyAdmin)
   2. Game + Website + PHPMyAdmin
@@ -29,7 +37,7 @@ ___
 
 ## Default Credentials <a name="credentials"></a>
 
-#### Website
+#### Ghost CMS Website
 
 Username: admin@openrsc.com
 
@@ -45,32 +53,15 @@ Password: root
 [Return to top](#top)
 ___
 
-## Minimum Requirements (suggested use a VPS host or a VirtualBox VM) <a name="requirements"></a>
+## Minimum Requirements <a name="requirements"></a>
 
-* Windows 10 (sorry, no Windows 7 due to Docker for Windows incompatibility)
+* Windows 10
 
 * Mac OS X High Sierra
 
-* Ubuntu Linux 18.04 and above (or a derivative like Mint Linux)
+* Ubuntu Linux 18.04
 
-* Other Linux (no support will be provided)
-
-[Return to top](#top)
-___
-
-## How to Obtain Open RSC <a name="obtain"></a>
-
-#### Option 1: Download the zip, extract it, and open the "Docker-Home" folder
-
-https://github.com/Open-RSC/Docker-Home/archive/master.zip
-
-#### Option 2: Clone the project with git
-
-Install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), then clone the project:
-
-  ```sh
-  git clone https://github.com/Open-RSC/Docker-Home.git
-  ```
+* Other Linux (no support provided)
 
 [Return to top](#top)
 ___
@@ -89,57 +80,47 @@ ___
 1. Perform the first time setup:
 
     ```sh
-    Mac/Linux: ./Setup_Linux_Mac.sh
+    Mac/Linux: ./Linux_Installer.sh
     ```
 
     ```sh
-    Windows: "Setup_Windows.cmd"
+    Windows: "Windows_Installer.cmd"
     ```
 
 2. Open your favorite browser:
 
     * [http://localhost](http://localhost)
     * [http://localhost:9000](http://localhost:9000) PHPMyAdmin (default username: root, password: root)
-    * [http://localhost:8080](http://localhost:8080) Apache Tomcat webserver, used to serve files over HTTP
+    * [http://localhost:8080](http://localhost:8080) Apache Tomcat webserver
 
-3. Start the game's Docker containers, then run the game server and client:
+3. Start the Docker containers and run the game server and client:
 
     ```sh
-    Mac/Linux: ./Start_Single_Player_Game_Linux_Mac.sh
+    Mac/Linux: ./Linux_Single_Player.sh
     ```
 
     ```sh
-    Windows: "Start_Single_Player_Game_Windows.cmd"
+    Windows: "Windows_Single_Player.cmd"
     ```
 
-4. Backup game databases:
+4. Backup all databases:
 
     ```sh
-    Mac/Linux: ./Backup_Game_Databases_Linux_Mac.sh
-    ```
-
-    ```sh
-    Windows: "Backup_Game_Databases_Windows.cmd"
-    ```
-
-5. Restore game databases:
-
-    ```sh
-    Mac/Linux: ./Restore_Game_Database_Backup_Linux_Mac.sh
+    Mac/Linux: ./Linux_Backup_Databases.sh
     ```
 
     ```sh
-    Windows: "Restore_Game_Database_Backup_Windows.cmd"
+    Windows: "Windows_Backup_Databases.cmd"
     ```
 
 6. Stop the game's Docker containers and shut down the game server:
 
     ```sh
-    Mac/Linux: ./Stop-Game-Linux_Mac.sh
+    Mac/Linux: sudo make stop
     ```
 
     ```sh
-    Windows: "Stop_Game_Windows.cmd"
+    Windows: "Windows_Stop_Game_Server.cmd"
     ```
 
 [Return to top](#top)
@@ -147,7 +128,11 @@ ___
 
 ## Steps to Host on a VPS <a name="vps"></a>
 
-  * Execute "Linux_Installer.sh"
+  * Run the installer:
+
+  ```sh
+  curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Installer.sh | bash
+  ```
 
   * Follow the steps to install needed programs
 
@@ -165,7 +150,7 @@ PHPMyAdmin MariaDB SQL users
 
   * The main website is running through Ghost CMS. For the section starting with # Ghost:
 
-  * Replace: "URL=http://localhost"
+  * Replace: "URL=http://localhost/blog"
 
   * Nginx has a hostname reference for localhost as "NGINX_HOST=localhost" under the # Nginx section. It can be safely left alone at this time.
 
@@ -191,7 +176,7 @@ PHPMyAdmin MariaDB SQL users
 
 ### Website config import:
 
-  * Visit http://localhost/ghost
+  * Visit http://localhost/blog/ghost
 
   * Click on "Labs" once registered / logged in
 
@@ -217,29 +202,4 @@ PHPMyAdmin MariaDB SQL users
 
   * Starts the game server in a detached screen console. Access via "screen -r", return via "Ctrl + A + D", exit via "Ctrl + C" (executes "Docker-Home/Game/server/run_server.sh")
 
-#### Docker-Home/Game/server/run_server.sh
-
-  * Kills existing java jar processes (used during server auto restart)
-
-  * Launches "Docker-Home/Game/server/ant_launcher.sh"
-
-#### Docker-Home/Game/server/ant_launcher.sh
-
-  * Starts the game server in a detached screen console. Access via "screen -r", return via "Ctrl + A + D", exit via "Ctrl + C"
-
 [Return to top](#top)
-___
-
-## Remote JMX Sampling <a name="jmx"></a>
-
-If hosting externally on a VPS, it is possible to monitor the game server via JMX sampling with VisualVM.
-
- * ssh -l USERNAME VPS_DOMAIN -L 9990:localhost:9990
-
- * Open Visual VM and under "Local", right click and select "Add JMX Connection"
-
- * In "Connection", specify "localhost:9990" and click "OK"
-
- * Right click where it reads "localhost:9990 (pid xxxx)" and select "Sample"
-
- [Return to top](#top)
