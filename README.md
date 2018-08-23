@@ -14,9 +14,13 @@
 
 ## How to Install Open RSC <a name="install"></a>
 
-Install with this command (from your Linux machine):
+Docker version (Linux and Windows):
 
     curl -sSL https://raw.githubusercontent.com/Open-RSC/Docker-Home/master/Linux_Cloner.sh | bash
+
+Direct install version (Linux only):
+
+    curl -sSL https://raw.githubusercontent.com/Open-RSC/Game/master/Linux_Simple_Cloner.sh | bash
 
 [Return to top](#top)
 ___
