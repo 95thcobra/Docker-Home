@@ -36,3 +36,6 @@ etc/logs/nginx/*.log
 etc/logs/letsencrypt/*
 etc/ghost/logs/*.log
 etc/ghost/logs/*.log.*
+!etc/ghost/content/data/
+!etc/ghost/content/logs
+etc/ghost/content/data/\.DS_Store
