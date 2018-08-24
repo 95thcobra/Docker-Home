@@ -30,8 +30,6 @@ Splunk/opt-splunk-var/*
 
 *.log
 
-etc/nginx/default.conf
-
 etc/logs/nginx/*.log
 etc/logs/letsencrypt/*
 etc/ghost/logs/*.log

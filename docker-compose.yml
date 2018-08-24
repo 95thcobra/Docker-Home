@@ -77,8 +77,8 @@ services:
         ports:
             - "127.0.0.1:2368:2368"
         restart: always
-        #env_file:
-        #    - ".env"
+        env_file:
+            - ".env"
         volumes:
             - "./etc/ghost/content:/var/lib/ghost/content"
         environment:
@@ -89,6 +89,8 @@ services:
             - database__connection__password=root
             - database__connection__database=ghost
             - privacy__useUpdateCheck=false
+        depends_on:
+            - mysqldb
 
     php:
         image: nanoninja/php-fpm:7.2
