@@ -71,39 +71,26 @@ services:
             - "./Website:/usr/local/tomcat/webapps/ROOT"
             - "./etc/tomcat:/usr/local/tomcat/conf"
 
-    fix-ghost-permissions:
-        image: 'bitnami/ghost:latest'
-        container_name: ghost-fix-permissions
-        user: root
-        command: chown -R 1001:1001 /bitnami/ghost
-        volumes:
-          - "./etc/ghost:/bitnami/ghost"
-        depends_on:
-          - mysqldb
-
     ghost:
-        image: bitnami/ghost:latest
+        image: ghost:latest
         container_name: ghost
         ports:
             - "127.0.0.1:2368:2368"
-        volumes:
-            - "./etc/ghost/content:/opt/bitnami/ghost/content"
+        restart: always
         env_file:
             - ".env"
+        volumes:
+            - "./etc/ghost/content:/var/lib/ghost/content"
         environment:
-          - NODE_ENV=production
-          - privacy__useUpdateCheck=0
-          - URL=${URL}
-          - MARIADB_HOST=mysql
-          - MARIADB_PORT_NUMBER=3306
-          - GHOST_DATABASE_USER=${MARIADB_ROOT_USER}
-          - GHOST_DATABASE_PASSWORD=${MARIADB_ROOT_PASSWORD}
-          - GHOST_DATABASE_NAME=${GHOST_DATABASE_NAME}
-          - ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}
-          - GHOST_EMAIL=${GHOST_EMAIL}
-          - GHOST_PASSWORD=${GHOST_PASSWORD}
+            - url=${URL}
+            - database__client=mysql
+            - database__connection__host=mysql
+            - database__connection__user=${MARIADB_ROOT_USER}
+            - database__connection__password=${MARIADB_ROOT_PASSWORD}
+            - database__connection__database=ghost
+            - privacy__useUpdateCheck=false
         depends_on:
-          - fix-ghost-permissions
+            - mysqldb
 
     php:
         image: nanoninja/php-fpm:7.2
