@@ -77,18 +77,18 @@ services:
         ports:
             - "127.0.0.1:2368:2368"
         restart: always
-        env_file:
-            - ".env"
+        #env_file:
+        #    - ".env"
         volumes:
             - "./etc/ghost/content:/var/lib/ghost/content"
         environment:
-          - url=http://localhost/blog
-          - database__client=mysql
-          - database__connection__host=mysql
-          - database__connection__user=root
-          - database__connection__password=root
-          - database__connection__database=ghost
-          - privacy__useUpdateCheck=false
+            - url=http://localhost/blog
+            - database__client=mysql
+            - database__connection__host=mysql
+            - database__connection__user=root
+            - database__connection__password=root
+            - database__connection__database=ghost
+            - privacy__useUpdateCheck=false
 
     php:
         image: nanoninja/php-fpm:7.2
