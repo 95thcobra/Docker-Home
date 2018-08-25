@@ -229,7 +229,7 @@ elif [ "$choice" == "2" ]; then
     echo "Which of the above do you wish to do? Type the choice number and press enter."
     read httpsask
 
-    if [ "$httpask" == "1" ]; then
+    if [ "$httpsask" == "1" ]; then
         clear
         echo "Please enter your email address for Lets Encrypt HTTPS registration."
         read -s email
@@ -244,7 +244,7 @@ elif [ "$choice" == "2" ]; then
 
         sudo certbot certonly --standalone --preferred-challenges http --agree-tos -n --config-dir ./etc/letsencrypt -d $publicdomain -d $privatedomain --expand -m $email | tee -a installer.log &>/dev/null
 
-    elif [ "$httpask" == "2" ]; then
+    elif [ "$httpsask" == "2" ]; then
         continue
     fi
 
