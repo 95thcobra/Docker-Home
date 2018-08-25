@@ -77,6 +77,7 @@ import-website:
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/openrsc_forum.sql 2>/dev/null
 
 import-ghost:
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" -Bse "DROP DATABASE IF EXISTS ghost;" 2>/dev/null
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < ghost.sql 2>/dev/null
 
 import-wiki:
