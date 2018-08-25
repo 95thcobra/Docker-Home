@@ -20,7 +20,7 @@ NC=`tput sgr0` # No Color
 # Install Choice ===================================================>
 clear
 echo "${RED}Open RSC Installer:${NC}
-An easy to run RSC private server environment using Docker magic.
+An easy to use RSC private server environment using Docker magic.
 
 Do you wish to have all the pre-requiste software installed by this script?
 
@@ -49,36 +49,38 @@ if [ "$install" == "1" ]; then
 
         clear
         echo "Installing required software. Please wait, this will take a while."
+        echo "Installing certbot, screen, zip, fail2ban, unzip, git, build-essential, "
+        echo "software-properties-common, apt-transport-https, ca-certificates, and curl."
         echo ""
-        echo "Debug information is being sent to installer.log"
+        echo "Installation logs are being sent to installer.log"
         sudo apt-get update | tee -a installer.log &>/dev/null
         sudo apt-get install software-properties-common -y | tee -a installer.log &>/dev/null
         sudo add-apt-repository ppa:certbot/certbot -y | tee -a installer.log &>/dev/null
         sudo apt-get update | tee -a installer.log &>/dev/null
-        sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl software-properties-common -y | tee -a installer.log &>/dev/null
+        sudo apt-get install certbot screen zip fail2ban unzip git build-essential apt-transport-https ca-certificates curl -y | tee -a installer.log &>/dev/null
 
         clear
-        echo "Attempting to install Docker now."
+        echo "Attempting to install Docker CE and Docker Compose. Please wait."
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - | tee -a installer.log &>/dev/null
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" | tee -a installer.log &>/dev/null
         sudo apt-get update | tee -a installer.log &>/dev/null && sudo apt-get install docker-ce docker-compose -y | tee -a installer.log &>/dev/null
         sudo setfacl -m user:$USER:rw /var/run/docker.sock | tee -a ../installer.log &>/dev/null
 
         clear
-        echo "Setting Docker to have the correct storage driver and reloading service."
+        echo "Setting Docker to have the correct storage driver and restarting the service."
         echo '{
     "storage-driver": "devicemapper"
 }' | sudo tee /etc/docker/daemon.json && sudo service docker restart | tee -a installer.log &>/dev/null
 
         clear
-        echo "Configuring UFW."
+        echo "Setting Ubuntu Firewall permissions."
         sudo ufw allow 22/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 80/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 8080/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 443/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 9000/tcp | tee -a installer.log &>/dev/null && sudo ufw allow 53595/tcp | tee -a installer.log &>/dev/null && sudo ufw deny 3306/tcp | tee -a installer.log &>/dev/null
         sudo sed -i 's/DEFAULT_FORWARD_POLICY="DENY"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw | tee -a installer.log &>/dev/null
         sudo ufw reload | tee -a installer.log &>/dev/null
         sudo ufw --force enable | tee -a installer.log &>/dev/null
 
         clear
-        echo "Installing Oracle Java JDK 8 and other related packages."
+        echo "Installing Oracle Java JDK 8, openjfx, and Apache ant. Please wait."
         sudo apt-get remove -y openjdk-6-jre default-jre default-jre-headless | tee -a installer.log &>/dev/null
         sudo add-apt-repository -y ppa:webupd8team/java | tee -a installer.log &>/dev/null
         sudo apt update | tee -a installer.log &>/dev/null
@@ -92,7 +94,7 @@ if [ "$install" == "1" ]; then
     # Mac OS ===================================================>
   elif [ "$os" == "2" ]; then
         clear
-        echo "Do you have brew installed? It is required for this."
+        echo "Do you have Brew installed? It is required for this."
         echo ""
         echo "${RED}1${NC} - No, install it for me!"
         echo "${RED}2${NC} - Yes"
@@ -108,7 +110,7 @@ if [ "$install" == "1" ]; then
         # Mac Brew <===================================================
 
         clear
-        echo "Verifying the basics are installed."
+        echo "Verifying the basics are installed via Brew."
         brew install unzip wget git curl zip screen | tee -a installer.log &>/dev/null
         brew tap AdoptOpenJDK/openjdk | tee -a installer.log &>/dev/null
         brew install adoptopenjdk-openjdk8 ant openjfx | tee -a installer.log &>/dev/null
@@ -136,17 +138,17 @@ if [ "$install" == "1" ]; then
 # Install Choice <===================================================
 
 clear
-echo "Checking for updates to the Docker-Home repository."
+echo "Fetching updates from the Docker-Home GitHub repository."
 sudo git pull | tee -a installer.log &>/dev/null
 
 clear
 echo "${RED}Open RSC Installer:${NC}
-An easy to run RSC private server using Docker magic.
+An easy to use RSC private server using Docker magic.
 
 Choices:
   ${RED}1${NC} - Set up for single player
-  ${RED}2${NC} - Deployment for a publicly hosted server
-  ${RED}3${NC} - Backup all SQL databases
+  ${RED}2${NC} - Deploy to a VPS
+  ${RED}3${NC} - Backup all databases
 "
 echo ""
 echo "Which of the above do you wish to do? Type the choice number and press enter."
@@ -161,7 +163,7 @@ if [ "$choice" == "1" ]; then
     echo ""
     echo "Starting up the Docker containers. Please wait, this will take a while."
     echo ""
-    echo "Debug information is being sent to installer.log"
+    echo "Installation logs are being sent to installer.log"
     sudo make start-single-player | tee -a installer.log &>/dev/null
 
     clear
@@ -185,7 +187,7 @@ if [ "$choice" == "1" ]; then
 # 2. Deployment for a publicly hosted server ===================================================>
 elif [ "$choice" == "2" ]; then
     clear
-    echo "You have picked ${GREEN}deployment for a publicly hosted server!${NC}"
+    echo "You have picked ${GREEN}deploy to a VPS!${NC}"
     echo ""
     echo ""
     echo "Starting up the Docker containers."
@@ -237,7 +239,7 @@ elif [ "$choice" == "2" ]; then
 # 3. Backup ===================================================>
 elif [ "$choice" == "3" ]; then
 
-  echo "You have picked ${GREEN}backup all SQL databases!${NC}"
+  echo "You have picked ${GREEN}backup all databases!${NC}"
   sudo make backup | tee -a installer.log &>/dev/null
   clear
   echo "Done! - Press enter to return back to the menu."
