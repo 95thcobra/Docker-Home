@@ -315,6 +315,7 @@ elif [ "$choice" == "2" ]; then
         sudo sed -i 's/"Dev Server"/\/\/"'"$worldname2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
         sudo sed -i 's/Dev\_Domain = "localhost"/Dev\_Domain = "'"$worldurl2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
         sudo sed -i 's/Dev\_GAME\_NAME = "Dev Test World"/Dev\_GAME\_NAME = "Play '"$worldname2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/Dev Server News/'"$worldname2"' News/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
 
     elif [ "$launcherbutton" == "2" ]; then
         # Disables the extra world button
