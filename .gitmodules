@@ -1,6 +1,0 @@
-[submodule "Game"]
-	path = Game
-	url = https://github.com/Open-RSC/Game.git
-[submodule "Website"]
-	path = Website
-	url = https://github.com/Open-RSC/Website.git
