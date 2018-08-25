@@ -254,8 +254,6 @@ elif [ "$choice" == "2" ]; then
         -d $publicdomain -d $privatedomain --expand \
         -m $email | tee -a certbot.log &>/dev/null
 
-        sudo docker start nginx | tee -a certbot.log &>/dev/null
-        
     elif [ "$httpask" == "2" ]; then
         continue
     fi
@@ -291,8 +289,8 @@ elif [ "$choice" == "2" ]; then
     sudo make clean-users
 
     clear
-    echo "Restarting Docker containers to enable changes."
-    sudo make stop && sudo make start | tee -a installer.log &>/dev/null
+    echo "Restarting Nginx to enact changes."
+    sudo docker stop nginx | tee -a installer.log &>/dev/null && sudo docker start nginx | tee -a installer.log &>/dev/null
 
     # Automated file edits
     clear
