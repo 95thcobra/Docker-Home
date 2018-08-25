@@ -215,8 +215,13 @@ elif [ "$choice" == "2" ]; then
     read -s dbpass
 
     clear
-    echo "Please enter your server's domain name."
-    read -s domain
+    echo "Please enter your server's public domain name."
+    read -s publicdomain
+
+    clear
+    echo "Please enter your server's private domain name if one exists or re-enter"
+    echo "the public domain name again."
+    read -s privatedomain
 
     clear
     echo "Please enter the name of your game."
@@ -235,8 +240,8 @@ elif [ "$choice" == "2" ]; then
     read -s loopmode
 
     # Automated edits of the .env file
-    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$domain"'\/blog/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$domain"'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$publicdomain"'\/blog/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$publicdomain"'/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='"$dbuser"'/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
 
@@ -250,7 +255,7 @@ elif [ "$choice" == "2" ]; then
 
     clear
     echo "Restarting Docker containers to enable changes."
-    sudo make stop && sudo make start
+    sudo make stop && sudo make start | tee -a installer.log &>/dev/null
 
     # Automated file edits
     clear
@@ -262,8 +267,8 @@ elif [ "$choice" == "2" ]; then
     sudo sed -i 's/COMBAT\_XP\_RATE">1/COMBAT\_XP\_RATE">'"$xprate"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/SKILL_XP_RATE">1/SKILL_XP_RATE">'"$skillrate"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/SKILL_LOOP_MODE">0/SKILL_LOOP_MODE">'"$loopmode"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/String IP = "127.0.0.1";/String IP = "'$domain'";/g' Game/client/src/org/openrsc/client/Config.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/String Domain = "localhost";/String Domain = "'$domain'";/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+    sudo sed -i 's/String IP = "127.0.0.1";/String IP = "'$privatedomain'";/g' Game/client/src/org/openrsc/client/Config.java | tee -a installer.log &>/dev/null
+    sudo sed -i 's/String Domain = "localhost";/String Domain = "'$privatedomain'";/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
     sudo sed -i 's/String GAME\_NAME = "Open RSC/String GAME\_NAME = "'"$gamename"'/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
 
     clear
@@ -306,11 +311,6 @@ elif [ "$choice" == "2" ]; then
     clear
     echo "Importing the game databases."
     sudo make import-game | tee -a installer.log &>/dev/null
-    #sudo make import-ghost | tee -a installer.log &>/dev/null
-
-    clear
-    echo "Restarting Ghost container."
-    sudo docker stop ghost && sudo docker start ghost | tee -a installer.log &>/dev/null
 
     clear
     ./Linux_Fetch_Updates_Production.sh
