@@ -67,6 +67,16 @@ restore:
 restore-windows:
 	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < $(MYSQL_DUMPS_DIR)/db.sql
 
+create-user:
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"root" -p"root" -Bse "DROP USER IF EXISTS 'openrsc'@'%';FLUSH PRIVILEGES;" 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"root" -p"root" -Bse "CREATE USER 'openrsc'@'%' IDENTIFIED BY '$(MARIADB_ROOT_PASSWORD)';GRANT ALL PRIVILEGES ON * . * TO 'openrsc'@'%';FLUSH PRIVILEGES;" 2>/dev/null
+
+clean-users:
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" -Bse "DROP USER IF EXISTS 'root'@'localhost';FLUSH PRIVILEGES;" 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" -Bse "DROP USER IF EXISTS 'root'@'%';FLUSH PRIVILEGES;" 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" -Bse "DROP USER IF EXISTS 'user'@'%';FLUSH PRIVILEGES;" 2>/dev/null
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" -Bse "DROP USER IF EXISTS 'Any'@'%';FLUSH PRIVILEGES;" 2>/dev/null
+
 import-game:
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc_config.sql 2>/dev/null
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc_logs.sql 2>/dev/null

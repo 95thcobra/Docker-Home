@@ -25,31 +25,6 @@ sudo chmod -R 777 Game | tee -a ../updater.log &>/dev/null
 sudo setfacl -m user:$USER:rw /var/run/docker.sock | tee -a ../updater.log &>/dev/null
 cd ..
 
-clear
-echo "Do you need to do any manual file editing?"
-echo ""
-echo "${RED}1${NC} - Yes, lets begin."
-echo "${RED}2${NC} - No, continue."
-echo ""
-echo "Which of the above do you wish to do? Type the choice number and press enter."
-read edit
-
-if [ "$edit" == "1" ]; then
-clear
-sudo nano .env
-sudo nano Game/client/src/org/openrsc/client/Config.java
-sudo nano Game/Launcher/src/Main.java
-sudo nano Game/server/config/config.xml
-
-clear
-echo "Restarting Ghost container"
-sudo docker stop ghost && sudo docker start ghost | tee -a updater.log &>/dev/null
-fi
-
-if [ "$edit" == "2" ]; then
-echo ""
-fi
-
 # Server
 cd Game
 clear
