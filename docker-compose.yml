@@ -31,35 +31,24 @@ services:
         depends_on:
             - mysqldb
 
-    fix-mariadb-permissions:
-        image: 'bitnami/mariadb:latest'
-        container_name: mariadb-fix-permissions
-        user: root
-        command: chown -R 1001:1001 /bitnami
-        volumes:
-          - "./data/db/mysq:/bitnami/mariadb"
-
     mysqldb:
-        image: bitnami/mariadb:latest
+        image: mariadb:latest
         container_name: mysql
         restart: always
         env_file:
             - ".env"
         environment:
-            - MARIADB_DATABASE=${MARIADB_DATABASE}
-            - MARIADB_ROOT_USER=${MARIADB_ROOT_USER}
-            - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-            - ALLOW_EMPTY_PASSWORD=no
-            - MARIADB_USER=${MARIADB_USER}
-            - MARIADB_PASSWORD=${MARIADB_PASS}
-            - MARIADB_DATABASE=${GHOST_DATABASE_NAME}
+            - MYSQL_DATABASE=mysql
+            - MYSQL_ROOT_USER=${MARIADB_ROOT_USER}
+            - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+            - MYSQL_ALLOW_EMPTY_PASSWORD=no
+            - MYSQL_USER=${MARIADB_USER}
+            - MYSQL_PASSWORD=${MARIADB_PASS}
         ports:
             - "127.0.0.1:3306:3306"
         volumes:
-            - "./data/db/mysq:/bitnami/mariadb"
-            - "./etc/mariadb/innodb.cnf:/bitnami/mariadb/conf/innodb.cnf:ro"
-        depends_on:
-          - fix-mariadb-permissions
+            - "./data/db/mysq:/etc/mysql"
+            - "./etc/mariadb/innodb.cnf:/etc/mysql/conf/innodb.cnf:ro"
 
     tomcat:
         image: tomcat:latest
