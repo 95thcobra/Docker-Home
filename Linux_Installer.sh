@@ -207,15 +207,19 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC | tee -a installer.log &>/dev/null
 
     clear
-    echo "Please enter your desired password for SQL user 'openrsc'."
-    read -s pass
+    echo "Please enter your desired username for the root SQL user. (No spaces)"
+    read -s dbuser
+
+    clear
+    echo "Please enter your desired password for SQL user '$dbuser'."
+    read -s dbpass
 
     clear
     echo "Please enter your server's domain name."
     read -s domain
 
     clear
-    echo "Please enter your game's name. (No spaces or edits will fail!)"
+    echo "Please enter the name of your game. (No spaces)"
     read -s gamename
 
     clear
@@ -230,6 +234,12 @@ elif [ "$choice" == "2" ]; then
     echo "Should batched skills be enabled? 0 = disabled, 1 = try till success, 2 = full auto till empty"
     read -s loopmode
 
+    # Automated edits of the .env file
+    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'$domain'\/blog/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='$domain'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='$dbuser'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='$dbpass'/g' .env | tee -a installer.log &>/dev/null
+
     clear
     echo "Creating SQL user 'openrsc'."
     sudo make create-user
@@ -238,18 +248,13 @@ elif [ "$choice" == "2" ]; then
     echo "Removing pre-existing SQL users."
     sudo make clean-users
 
+    # Automated file edits
     clear
     echo "Configuring Open RSC based on your input."
-    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'$domain'\/blog/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='$domain'/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER=openrsc/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='$pass'/g' .env | tee -a installer.log &>/dev/null
-
-    # Automated file edits
-    sudo sed -i 's/DB_LOGIN">root/DB_LOGIN">openrsc/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/DB_PASS">root/DB_PASS">'$pass'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/NAME">Open RSC/NAME">'$gamename'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/\@OpenRSC/\@'$gamename'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/DB_LOGIN">root/DB_LOGIN">'$dbuser'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/DB_PASS">root/DB_PASS">'$dbpass'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/NAME">Open RSC/NAME">'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/\@OpenRSC/\@'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/COMBAT\_XP\_RATE">1/COMBAT\_XP\_RATE">'$xprate'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/SKILL_XP_RATE">1/SKILL_XP_RATE">'$skillrate'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/SKILL_LOOP_MODE">0/SKILL_LOOP_MODE">'$loopmode'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
