@@ -207,11 +207,11 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC | tee -a installer.log &>/dev/null
 
     clear
-    echo "Please enter your desired username for the root SQL user. (No spaces)"
+    echo "Please enter your desired username for the new root SQL user. (No spaces)"
     read -s dbuser
 
     clear
-    echo "Please enter your desired password for SQL user '$dbuser'."
+    echo "Please enter your desired password for '"$dbuser"'."
     read -s dbpass
 
     clear
@@ -219,7 +219,7 @@ elif [ "$choice" == "2" ]; then
     read -s domain
 
     clear
-    echo "Please enter the name of your game. (No spaces)"
+    echo "Please enter the name of your game."
     read -s gamename
 
     clear
@@ -235,43 +235,70 @@ elif [ "$choice" == "2" ]; then
     read -s loopmode
 
     # Automated edits of the .env file
-    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'$domain'\/blog/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='$domain'/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='$dbuser'/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='$dbpass'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$domai"n'\/blog/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$domain"'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='"$dbuser"'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
 
     clear
-    echo "Creating SQL user 'openrsc'."
+    echo "Creating SQL user '"$dbuser"'."
     sudo make create-user
 
     clear
     echo "Removing pre-existing SQL users."
     sudo make clean-users
 
+    sudo docker stop ghost && sudo docker start ghost
+
     # Automated file edits
     clear
     echo "Configuring Open RSC based on your input."
-    sudo sed -i 's/DB_LOGIN">root/DB_LOGIN">'$dbuser'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/DB_PASS">root/DB_PASS">'$dbpass'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/DB_LOGIN">root/DB_LOGIN">'"$dbuser"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/DB_PASS">root/DB_PASS">'"$dbpass"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/NAME">Open RSC/NAME">'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/\@OpenRSC/\@'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/COMBAT\_XP\_RATE">1/COMBAT\_XP\_RATE">'$xprate'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/SKILL_XP_RATE">1/SKILL_XP_RATE">'$skillrate'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/SKILL_LOOP_MODE">0/SKILL_LOOP_MODE">'$loopmode'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/COMBAT\_XP\_RATE">1/COMBAT\_XP\_RATE">'"$xprate"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/SKILL_XP_RATE">1/SKILL_XP_RATE">'"$skillrate"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
+    sudo sed -i 's/SKILL_LOOP_MODE">0/SKILL_LOOP_MODE">'"$loopmode"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/String IP = "127.0.0.1";/String IP = "'$domain'";/g' Game/client/src/org/openrsc/client/Config.java | tee -a installer.log &>/dev/null
     sudo sed -i 's/String Domain = "localhost";/String Domain = "'$domain'";/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
 
-    # Leave disabled, Tomcat handles :8080, useful with HTTPS
-    #sudo sed -i 's/:8080";/:80";/g' Game/Launcher/src/Main.java  | tee -a installer.log &>/dev/null
+    clear
+    echo "Do you want a Launcher button for a second world?
 
-    # Disables the extra dev buttons
-    sudo sed -i 's/toolBar.getChildren().add(Dev/\/\/toolBar.getChildren().add(Dev/g' Game/Launcher/src/Main.java  | tee -a installer.log &>/dev/null
-    sudo sed -i 's/2930.png",/2930.png"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/"2937/\/\/"2930.png",/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/"News",/"News"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/"Dev Server News"/\/\/"Dev Server News"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/Secure+Domain,/Secure+Domain/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/Secure+Dev_Domain/\/\/Secure+Dev_Domain/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+    Choices:
+      ${RED}1${NC} - Yes
+      ${RED}2${NC} - No
+    "
+    echo ""
+    echo "Which of the above do you wish to do? Type the choice number and press enter."
+    read launcherbutton
+
+    if [ "$launcherbutton" == "1" ]; then
+        # Modifies the extra world button
+
+        clear
+        echo "Please enter the name of your second world for the button."
+        read -s worldname2
+
+        clear
+        echo "Please enter the domain name for the second world."
+        read -s worldurl2
+
+        sudo sed -i 's/"Dev Server"/\/\/"'"$worldname2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/Dev\_Domain = "localhost"/Dev\_Domain = "'"$worldurl2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/Dev\_GAME\_NAME = "Dev Test World"/Dev\_GAME\_NAME = "Play '"$worldname2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+
+    elif [ "$launcherbutton" == "2" ]; then
+        # Disables the extra world button
+        sudo sed -i 's/toolBar.getChildren().add(Dev/\/\/toolBar.getChildren().add(Dev/g' Game/Launcher/src/Main.java  | tee -a installer.log &>/dev/null
+        sudo sed -i 's/2930.png",/2930.png"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/"2937/\/\/"2930.png",/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/"News",/"News"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/"Dev Server News"/\/\/"Dev Server News"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/Secure+Domain,/Secure+Domain/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/Secure+Dev_Domain/\/\/Secure+Dev_Domain/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+    fi
 
     clear
     echo "Importing the game databases."
