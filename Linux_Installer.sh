@@ -248,6 +248,8 @@ elif [ "$choice" == "2" ]; then
     echo "Removing pre-existing SQL users."
     sudo make clean-users
 
+    clear
+    echo "Restarting Docker containers to enable changes."
     sudo make stop && sudo make start
 
     # Automated file edits
