@@ -262,6 +262,7 @@ elif [ "$choice" == "2" ]; then
     sudo sed -i 's/SKILL_LOOP_MODE">0/SKILL_LOOP_MODE">'"$loopmode"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/String IP = "127.0.0.1";/String IP = "'$domain'";/g' Game/client/src/org/openrsc/client/Config.java | tee -a installer.log &>/dev/null
     sudo sed -i 's/String Domain = "localhost";/String Domain = "'$domain'";/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+    sudo sed -i 's/String GAME\_NAME = "Open RSC/String GAME\_NAME = "'"$gamename"'/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
 
     clear
     echo "Do you want a Launcher button for a second world?
