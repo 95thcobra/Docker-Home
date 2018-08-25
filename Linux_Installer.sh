@@ -248,7 +248,7 @@ elif [ "$choice" == "2" ]; then
     echo "Removing pre-existing SQL users."
     sudo make clean-users
 
-    sudo docker stop ghost && sudo docker start ghost
+    sudo make stop && sudo make start
 
     # Automated file edits
     clear

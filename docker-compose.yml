@@ -72,14 +72,7 @@ services:
             - "./etc/ghost/content:/var/lib/ghost/content"
         environment:
             - url=${URL}
-            - database__client=mysql
-            - database__connection__host=mysql
-            - database__connection__user=${MARIADB_ROOT_USER}
-            - database__connection__password=${MARIADB_ROOT_PASSWORD}
-            - database__connection__database=ghost
             - privacy__useUpdateCheck=false
-        depends_on:
-            - mysqldb
 
     php:
         image: nanoninja/php-fpm:7.2
