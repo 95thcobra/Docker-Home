@@ -207,11 +207,7 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC | tee -a installer.log &>/dev/null
 
     clear
-    echo "Please enter your desired username for the new root SQL user. (No spaces)"
-    read -s dbuser
-
-    clear
-    echo "Please enter your desired password for '"$dbuser"'."
+    echo "Please enter your desired password for SQL user 'root'."
     read -s dbpass
 
     clear
@@ -238,21 +234,15 @@ elif [ "$choice" == "2" ]; then
         echo "Please enter your email address for Lets Encrypt HTTPS registration."
         read -s email
 
-        sudo docker stop nginx | tee -a certbot.log &>/dev/null
-        sudo mv etc/nginx/default.conf etc/nginx/default.conf.BAK | tee -a certbot.log &>/dev/null
-        sudo mv etc/nginx/HTTPS_default.conf.BAK etc/nginx/default.conf | tee -a certbot.log &>/dev/null
-        sudo sed -i 's/live\/openrsc.com/live\/'"$publicdomain"'/g' etc/nginx/default.conf | tee -a certbot.log &>/dev/null
+        sudo docker stop nginx | tee -a installer.log &>/dev/null
+        sudo mv etc/nginx/default.conf etc/nginx/default.conf.BAK | tee -a installer.log &>/dev/null
+        sudo mv etc/nginx/HTTPS_default.conf.BAK etc/nginx/default.conf | tee -a installer.log &>/dev/null
+        sudo sed -i 's/live\/openrsc.com/live\/'"$publicdomain"'/g' etc/nginx/default.conf | tee -a installer.log &>/dev/null
 
         clear
         echo "Enabling HTTPS"
 
-        sudo certbot certonly \
-        --standalone \
-        --preferred-challenges http \
-        --agree-tos -n \
-        --config-dir ./etc/letsencrypt \
-        -d $publicdomain -d $privatedomain --expand \
-        -m $email | tee -a certbot.log &>/dev/null
+        sudo certbot certonly --standalone --preferred-challenges http --agree-tos -n --config-dir ./etc/letsencrypt -d $publicdomain -d $privatedomain --expand -m $email | tee -a installer.log &>/dev/null
 
     elif [ "$httpask" == "2" ]; then
         continue
@@ -277,25 +267,19 @@ elif [ "$choice" == "2" ]; then
     # Automated edits of the .env file
     sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$publicdomain"'\/blog/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$publicdomain"'/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='"$dbuser"'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/MARIADB_PASS=pass/MARIADB_PASS='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
 
     clear
-    echo "Creating SQL user '"$dbuser"'."
-    sudo make create-user
+    #echo "Restarting Nginx to enact changes."
+    #sudo docker stop nginx | tee -a installer.log &>/dev/null && sudo docker start nginx | tee -a installer.log &>/dev/null
 
-    clear
-    echo "Removing pre-existing SQL users."
-    sudo make clean-users
-
-    clear
-    echo "Restarting Nginx to enact changes."
-    sudo docker stop nginx | tee -a installer.log &>/dev/null && sudo docker start nginx | tee -a installer.log &>/dev/null
+    echo "Restarting Docker containers to enact changes."
+    sudo make stop | tee -a installer.log &>/dev/null && sudo make start | tee -a installer.log &>/dev/null
 
     # Automated file edits
     clear
     echo "Configuring Open RSC based on your input."
-    sudo sed -i 's/DB_LOGIN">root/DB_LOGIN">'"$dbuser"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/DB_PASS">root/DB_PASS">'"$dbpass"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/NAME">Open RSC/NAME">'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/\@OpenRSC/\@'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
