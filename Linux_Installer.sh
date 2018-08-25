@@ -238,10 +238,10 @@ elif [ "$choice" == "2" ]; then
         echo "Please enter your email address for Lets Encrypt HTTPS registration."
         read -s email
 
-        sudo docker stop nginx
-        sudo mv etc/nginx/default.conf etc/nginx/default.conf.BAK
-        sudo mv etc/nginx/HTTPS_default.conf.BAK etc/nginx/default.conf
-        sudo sed -i 's/live\/openrsc.com/live\/'"$publicdomain"'/g' etc/nginx/default.conf | tee -a installer.log &>/dev/null
+        sudo docker stop nginx | tee -a certbot.log &>/dev/null
+        sudo mv etc/nginx/default.conf etc/nginx/default.conf.BAK | tee -a certbot.log &>/dev/null
+        sudo mv etc/nginx/HTTPS_default.conf.BAK etc/nginx/default.conf | tee -a certbot.log &>/dev/null
+        sudo sed -i 's/live\/openrsc.com/live\/'"$publicdomain"'/g' etc/nginx/default.conf | tee -a certbot.log &>/dev/null
 
         clear
         echo "Enabling HTTPS"
@@ -252,10 +252,10 @@ elif [ "$choice" == "2" ]; then
         --agree-tos -n \
         --config-dir ./etc/letsencrypt \
         -d $publicdomain -d $privatedomain --expand \
-        -m $email \
-        -q
+        -m $email | tee -a certbot.log &>/dev/null
 
-        sudo docker start nginx
+        sudo docker start nginx | tee -a certbot.log &>/dev/null
+        
     elif [ "$httpask" == "2" ]; then
         continue
     fi
