@@ -207,16 +207,46 @@ elif [ "$choice" == "2" ]; then
     unzip -o Game/client/cache.zip -d ~/OpenRSC | tee -a installer.log &>/dev/null
 
     clear
-    echo "Please enter your desired username for the new root SQL user. (No spaces)"
-    read -s dbuser
-
-    clear
-    echo "Please enter your desired password for '"$dbuser"'."
+    echo "Please enter your desired password for SQL user 'root'."
     read -s dbpass
 
     clear
-    echo "Please enter your server's domain name."
-    read -s domain
+    echo "Please enter your server's public domain name."
+    read -s publicdomain
+
+    clear
+    echo "Please enter your server's private domain name if one exists or re-enter the public domain name again."
+    read -s privatedomain
+
+    clear
+    echo "Do you want a Lets Encrypt HTTPS certificate installed?
+
+    Choices:
+      ${RED}1${NC} - Yes
+      ${RED}2${NC} - No
+    "
+    echo ""
+    echo "Which of the above do you wish to do? Type the choice number and press enter."
+    read httpsask
+
+    if [ "$httpsask" == "1" ]; then
+        clear
+        echo "Please enter your email address for Lets Encrypt HTTPS registration."
+        read -s email
+
+        sudo docker stop nginx | tee -a installer.log &>/dev/null
+        sudo mv etc/nginx/default.conf etc/nginx/default.conf.BAK | tee -a installer.log &>/dev/null
+        sudo mv etc/nginx/HTTPS_default.conf.BAK etc/nginx/default.conf | tee -a installer.log &>/dev/null
+        sudo sed -i 's/live\/openrsc.com/live\/'"$publicdomain"'/g' etc/nginx/default.conf | tee -a installer.log &>/dev/null
+
+        clear
+        echo "Enabling HTTPS"
+
+        sudo certbot certonly --standalone --preferred-challenges http --agree-tos -n --config-dir ./etc/letsencrypt -d $publicdomain -d $privatedomain --expand -m $email | tee -a installer.log &>/dev/null
+
+    elif [ "$httpsask" == "2" ]; then
+        continue
+    fi
 
     clear
     echo "Please enter the name of your game."
@@ -235,33 +265,30 @@ elif [ "$choice" == "2" ]; then
     read -s loopmode
 
     # Automated edits of the .env file
-    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$domai"n'\/blog/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$domain"'/g' .env | tee -a installer.log &>/dev/null
-    sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='"$dbuser"'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$publicdomain"'\/blog/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$publicdomain"'/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/MARIADB_PASS=pass/MARIADB_PASS='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
 
     clear
-    echo "Creating SQL user '"$dbuser"'."
-    sudo make create-user
+    #echo "Restarting Nginx to enact changes."
+    #sudo docker stop nginx | tee -a installer.log &>/dev/null && sudo docker start nginx | tee -a installer.log &>/dev/null
 
-    clear
-    echo "Removing pre-existing SQL users."
-    sudo make clean-users
-
-    sudo docker stop ghost && sudo docker start ghost
+    echo "Restarting Docker containers to enact changes."
+    sudo make stop | tee -a installer.log &>/dev/null && sudo make start | tee -a installer.log &>/dev/null
 
     # Automated file edits
     clear
     echo "Configuring Open RSC based on your input."
-    sudo sed -i 's/DB_LOGIN">root/DB_LOGIN">'"$dbuser"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/DB_PASS">root/DB_PASS">'"$dbpass"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/NAME">Open RSC/NAME">'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/\@OpenRSC/\@'"$gamename"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/COMBAT\_XP\_RATE">1/COMBAT\_XP\_RATE">'"$xprate"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/SKILL_XP_RATE">1/SKILL_XP_RATE">'"$skillrate"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
     sudo sed -i 's/SKILL_LOOP_MODE">0/SKILL_LOOP_MODE">'"$loopmode"'/g' Game/server/config/config.xml | tee -a installer.log &>/dev/null
-    sudo sed -i 's/String IP = "127.0.0.1";/String IP = "'$domain'";/g' Game/client/src/org/openrsc/client/Config.java | tee -a installer.log &>/dev/null
-    sudo sed -i 's/String Domain = "localhost";/String Domain = "'$domain'";/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+    sudo sed -i 's/String IP = "127.0.0.1";/String IP = "'$privatedomain'";/g' Game/client/src/org/openrsc/client/Config.java | tee -a installer.log &>/dev/null
+    sudo sed -i 's/String Domain = "localhost";/String Domain = "'$privatedomain'";/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+    sudo sed -i 's/String GAME\_NAME = "Open RSC/String GAME\_NAME = "'"$gamename"'/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
 
     clear
     echo "Do you want a Launcher button for a second world?
@@ -288,6 +315,7 @@ elif [ "$choice" == "2" ]; then
         sudo sed -i 's/"Dev Server"/\/\/"'"$worldname2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
         sudo sed -i 's/Dev\_Domain = "localhost"/Dev\_Domain = "'"$worldurl2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
         sudo sed -i 's/Dev\_GAME\_NAME = "Dev Test World"/Dev\_GAME\_NAME = "Play '"$worldname2"'"/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
+        sudo sed -i 's/Dev Server News/'"$worldname2"' News/g' Game/Launcher/src/Main.java | tee -a installer.log &>/dev/null
 
     elif [ "$launcherbutton" == "2" ]; then
         # Disables the extra world button
@@ -303,11 +331,6 @@ elif [ "$choice" == "2" ]; then
     clear
     echo "Importing the game databases."
     sudo make import-game | tee -a installer.log &>/dev/null
-    #sudo make import-ghost | tee -a installer.log &>/dev/null
-
-    clear
-    echo "Restarting Ghost container."
-    sudo docker stop ghost && sudo docker start ghost | tee -a installer.log &>/dev/null
 
     clear
     ./Linux_Fetch_Updates_Production.sh
