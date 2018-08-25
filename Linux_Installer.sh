@@ -226,7 +226,7 @@ elif [ "$choice" == "2" ]; then
     clear
     echo "Importing the game databases."
     sudo make import-game | tee -a installer.log &>/dev/null
-    sudo make import-ghost | tee -a installer.log &>/dev/null
+    #sudo make import-ghost | tee -a installer.log &>/dev/null
 
     clear
     echo "Restarting Ghost container."
