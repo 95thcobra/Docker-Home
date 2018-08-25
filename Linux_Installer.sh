@@ -219,9 +219,46 @@ elif [ "$choice" == "2" ]; then
     read -s publicdomain
 
     clear
-    echo "Please enter your server's private domain name if one exists or re-enter"
-    echo "the public domain name again."
+    echo "Please enter your server's private domain name if one exists or re-enter the public domain name again."
     read -s privatedomain
+
+    clear
+    echo "Do you want a Lets Encrypt HTTPS certificate installed?
+
+    Choices:
+      ${RED}1${NC} - Yes
+      ${RED}2${NC} - No
+    "
+    echo ""
+    echo "Which of the above do you wish to do? Type the choice number and press enter."
+    read httpsask
+
+    if [ "$httpask" == "1" ]; then
+        clear
+        echo "Please enter your email address for Lets Encrypt HTTPS registration."
+        read -s email
+
+        sudo docker stop nginx
+        sudo mv etc/nginx/default.conf etc/nginx/default.conf.BAK
+        sudo mv etc/nginx/HTTPS_default.conf.BAK etc/nginx/default.conf
+        sudo sed -i 's/live\/openrsc.com/live\/'"$publicdomain"'/g' etc/nginx/default.conf | tee -a installer.log &>/dev/null
+
+        clear
+        echo "Enabling HTTPS"
+
+        sudo certbot certonly \
+        --standalone \
+        --preferred-challenges http \
+        --agree-tos -n \
+        --config-dir ./etc/letsencrypt \
+        -d $publicdomain -d $privatedomain --expand \
+        -m $email \
+        -q
+
+        sudo docker start nginx
+    elif [ "$httpask" == "2" ]; then
+        continue
+    fi
 
     clear
     echo "Please enter the name of your game."
