@@ -235,7 +235,7 @@ elif [ "$choice" == "2" ]; then
     read -s loopmode
 
     # Automated edits of the .env file
-    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$domai"n'\/blog/g' .env | tee -a installer.log &>/dev/null
+    sudo sed -i 's/URL=http:\/\/localhost\/blog/URL=http:\/\/'"$domain"'\/blog/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/NGINX_HOST=localhost/NGINX_HOST='"$domain"'/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/MARIADB_ROOT_USER=root/MARIADB_ROOT_USER='"$dbuser"'/g' .env | tee -a installer.log &>/dev/null
     sudo sed -i 's/MARIADB_ROOT_PASSWORD=root/MARIADB_ROOT_PASSWORD='"$dbpass"'/g' .env | tee -a installer.log &>/dev/null
