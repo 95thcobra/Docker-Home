@@ -47,8 +47,8 @@ services:
         ports:
             - "127.0.0.1:3306:3306"
         volumes:
-            - "./data/db/mysq:/etc/mysql"
-            - "./etc/mariadb/innodb.cnf:/etc/mysql/conf/innodb.cnf:ro"
+            - "./data/db/mysql:/var/lib/mysql"
+            - "./etc/mariadb/innodb.cnf:/etc/mysql/conf.d/innodb.cnf:ro"
 
     tomcat:
         image: tomcat:latest
