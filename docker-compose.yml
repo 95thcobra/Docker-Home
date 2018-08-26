@@ -37,6 +37,9 @@ services:
         restart: always
         env_file:
             - ".env"
+        command: [
+            '--wait_timeout=360000',
+            ]
         environment:
             - MYSQL_DATABASE=mysql
             - MYSQL_ROOT_USER=${MARIADB_ROOT_USER}
