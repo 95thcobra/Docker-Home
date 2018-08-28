@@ -49,6 +49,7 @@ yes | sudo cp -a -rf "Game/client/Cache/." "Website/downloads/cache/" | tee -a u
 sudo rm Website/downloads/cache/MD5CHECKSUM | tee -a updater.log &>/dev/null
 sudo touch Website/downloads/cache/MD5CHECKSUM && sudo chmod 777 Website/downloads/cache/MD5CHECKSUM | tee updater.log | &>/dev/null
 md5sum Website/downloads/cache/* | sed 's/Website\/downloads\/cache\///g' |  grep ^[a-zA-Z0-9]* | awk '{print $2"="$1}' | tee Website/downloads/cache/MD5CHECKSUM | tee -a updater.log &>/dev/null
+sudo sed -i 's/MD5CHECKSUM=/#MD5CHECKSUM=/g' "Website/downloads/cache/MD5CHECKSUM"
 
 # Database
 clear
