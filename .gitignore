@@ -40,6 +40,4 @@ etc/ghost/content/data/\.DS_Store
 
 etc/ghost/content/themes/
 
-etc/ghost/content/logs/http___localhost_blog_production\.log\.0
-
-etc/ghost/content/logs/http___localhost_blog_production\.error\.log\.0
+etc/ghost/content/logs/*.log.*
