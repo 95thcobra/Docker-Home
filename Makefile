@@ -18,8 +18,14 @@ restart: init
 clone-game:
 	@$(shell git clone https://github.com/Open-RSC/Game.git)
 
+clone-game-v2:
+	@$(shell git clone -b 2.0.0 https://github.com/Open-RSC/Game.git)
+
 clone-website:
 	@$(shell git clone https://github.com/Open-RSC/Website.git)
+
+clone-website-v2:
+	@$(shell git clone -b 2.0.0 https://github.com/Open-RSC/Website.git)
 
 clone-wiki:
 	@$(shell cd Website && git clone https://github.com/Open-RSC/Wiki.git)
@@ -73,12 +79,11 @@ import-game:
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc.sql 2>/dev/null
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/Databases/openrsc_tools.sql 2>/dev/null
 
+import-game-v2:
+	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Game/openrsc_game.sql 2>/dev/null
+
 import-website:
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/openrsc_forum.sql 2>/dev/null
-
-import-ghost:
-	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" -Bse "DROP DATABASE IF EXISTS ghost;" 2>/dev/null
-	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < ghost.sql 2>/dev/null
 
 import-wiki:
 	@docker exec -i $(shell sudo docker-compose ps -q mysqldb) mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql 2>/dev/null
@@ -92,9 +97,6 @@ import-windows-game:
 import-windows-website:
 	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/openrsc_forum.sql
 
-import-windows-ghost:
-	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < ghost.sql
-
 import-windows-wiki:
 	@docker exec -i mysql mysql -u"$(MARIADB_ROOT_USER)" -p"$(MARIADB_ROOT_PASSWORD)" < Website/Wiki/openrsc_wiki.sql
 
@@ -104,5 +106,3 @@ flush:
 flush-windows:
 	@rmdir "Website" /s /Q
 	@rmdir "Game" /s /Q
-
-.PHONY: clean test code-sniff init
